@@ -1,7 +1,7 @@
 import type {
   CreateProductDto,
   PaginatedResult,
-  PaginationQuery,
+  ProductListQuery,
   UpdateProductDto,
 } from '@maghami-system/schemas'
 import { apiRequest, jsonBody } from './client'
@@ -9,9 +9,13 @@ import { toListQuery } from './pagination'
 import type { Product } from './types'
 
 export const productsApi = {
-  list: (query: PaginationQuery) =>
+  list: (query: ProductListQuery) =>
     apiRequest<PaginatedResult<Product>>(`/products${toListQuery(query)}`),
   get: (id: string) => apiRequest<Product>(`/products/${id}`),
+  previewSku: (categoryId: string) =>
+    apiRequest<{ sku: string }>(
+      `/products/sku-preview?categoryId=${encodeURIComponent(categoryId)}`,
+    ),
   create: (dto: CreateProductDto) =>
     apiRequest<Product>('/products', {
       method: 'POST',

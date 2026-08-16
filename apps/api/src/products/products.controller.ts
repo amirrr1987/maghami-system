@@ -18,10 +18,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas';
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas';
 import { RequireAbility } from '../auth/decorators/require-ability.decorator';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import {

@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import {
   AppstoreOutlined,
+  BarsOutlined,
+  BgColorsOutlined,
+  ClusterOutlined,
   LogoutOutlined,
+  NumberOutlined,
   SafetyCertificateOutlined,
   SettingOutlined,
+  ShoppingOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue'
 import {
   Avatar,
   Button,
+  Divider,
   Dropdown,
   Flex,
   Layout,
@@ -20,19 +26,18 @@ import {
   Space,
   TypographyText,
   TypographyTitle,
-  Divider
 } from 'ant-design-vue'
 import type { MenuProps } from 'ant-design-vue'
-import { computed, h, ref, watch } from 'vue'
-import { useRoute, useRouter, type RouterLink } from 'vue-router'
-import { useAppAbility } from '@/ability'
-import SettingDrawer from '@/components/SettingDrawer.vue'
-import UserProfileModal from '@/components/UserProfileModal.vue'
-import { useAuthStore } from '@/stores/auth.store'
 import {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas'
+import { computed, h, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAppAbility } from '@/ability'
+import SettingDrawer from '@/components/SettingDrawer.vue'
+import UserProfileModal from '@/components/UserProfileModal.vue'
+import { useAuthStore } from '@/stores/auth.store'
 
 const route = useRoute()
 const router = useRouter()
@@ -50,7 +55,16 @@ const selectedKeys = computed(() => [
 ])
 
 const USER_MANAGEMENT_KEY = 'user-management'
+const PRODUCT_CODING_KEY = 'product-coding'
 const userManagementChildKeys = new Set(['users', 'roles', 'permissions'])
+const productCodingChildKeys = new Set([
+  'products',
+  'product-categories',
+  'product-brands',
+  'product-units',
+  'product-attributes',
+  'product-code-patterns',
+])
 
 const openKeys = ref<string[]>([])
 
@@ -58,9 +72,21 @@ watch(
   () => route.name,
   (name) => {
     if (!name) return
-    if (!userManagementChildKeys.has(String(name))) return
-    if (openKeys.value.includes(USER_MANAGEMENT_KEY)) return
-    openKeys.value = [...openKeys.value, USER_MANAGEMENT_KEY]
+    const key = String(name)
+    const next = [...openKeys.value]
+    if (
+      userManagementChildKeys.has(key) &&
+      !next.includes(USER_MANAGEMENT_KEY)
+    ) {
+      next.push(USER_MANAGEMENT_KEY)
+    }
+    if (
+      productCodingChildKeys.has(key) &&
+      !next.includes(PRODUCT_CODING_KEY)
+    ) {
+      next.push(PRODUCT_CODING_KEY)
+    }
+    openKeys.value = next
   },
   { immediate: true },
 )
@@ -89,6 +115,50 @@ const menuItems = computed<MenuProps['items']>(() => {
     })
   }
 
+  const productCoding: NonNullable<MenuProps['items']> = []
+  if (can(PermissionAction.Read, PermissionResource.Products)) {
+    productCoding.push({
+      key: 'products',
+      icon: () => h(ShoppingOutlined),
+      label: 'محصولات',
+    })
+  }
+  if (can(PermissionAction.Read, PermissionResource.ProductCategories)) {
+    productCoding.push({
+      key: 'product-categories',
+      icon: () => h(ClusterOutlined),
+      label: 'دسته‌بندی',
+    })
+  }
+  if (can(PermissionAction.Read, PermissionResource.ProductBrands)) {
+    productCoding.push({
+      key: 'product-brands',
+      icon: () => h(BgColorsOutlined),
+      label: 'برند',
+    })
+  }
+  if (can(PermissionAction.Read, PermissionResource.ProductUnits)) {
+    productCoding.push({
+      key: 'product-units',
+      icon: () => h(NumberOutlined),
+      label: 'واحد',
+    })
+  }
+  if (can(PermissionAction.Read, PermissionResource.ProductAttributes)) {
+    productCoding.push({
+      key: 'product-attributes',
+      icon: () => h(BarsOutlined),
+      label: 'ویژگی',
+    })
+  }
+  if (can(PermissionAction.Read, PermissionResource.ProductCodePatterns)) {
+    productCoding.push({
+      key: 'product-code-patterns',
+      icon: () => h(AppstoreOutlined),
+      label: 'الگوی کدینگ',
+    })
+  }
+
   const items: NonNullable<MenuProps['items']> = []
   if (userManagement.length > 0) {
     items.push({
@@ -98,14 +168,15 @@ const menuItems = computed<MenuProps['items']>(() => {
       children: userManagement,
     })
   }
-  if (can(PermissionAction.Read, PermissionResource.Products)) {
-    if (userManagement.length > 0) {
+  if (productCoding.length > 0) {
+    if (items.length > 0) {
       items.push({ type: 'divider' })
     }
     items.push({
-      key: 'products',
-      icon: () => h(AppstoreOutlined),
-      label: 'محصولات',
+      key: PRODUCT_CODING_KEY,
+      icon: () => h(ShoppingOutlined),
+      label: 'سیستم کدینگ کالا',
+      children: productCoding,
     })
   }
   return items
@@ -127,7 +198,7 @@ const userMenuItems = computed<MenuProps['items']>(() => [
 
 const onMenuClick: MenuProps['onClick'] = (info) => {
   const key = String(info.key)
-  if (key === USER_MANAGEMENT_KEY) return
+  if (key === USER_MANAGEMENT_KEY || key === PRODUCT_CODING_KEY) return
   void router.push({ name: key })
 }
 
@@ -164,7 +235,6 @@ async function onLogout(): Promise<void> {
           </TypographyTitle>
         </RouterLink>
         <Space :size="8">
-
           <Dropdown :trigger="['click']">
             <Space class="cursor-pointer">
               <Avatar :size="32">
@@ -202,6 +272,7 @@ async function onLogout(): Promise<void> {
         v-model:collapsed="collapsed"
         collapsible
         breakpoint="lg"
+        :width="270"
       >
         <Menu
           mode="inline"

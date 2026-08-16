@@ -7,6 +7,11 @@ export const APP_ROUTE_NAMES = [
   'roles',
   'permissions',
   'products',
+  'product-categories',
+  'product-brands',
+  'product-units',
+  'product-attributes',
+  'product-code-patterns',
 ] as const
 
 export type AppRouteName = (typeof APP_ROUTE_NAMES)[number]

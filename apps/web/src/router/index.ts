@@ -80,6 +80,72 @@ const router = createRouter({
             },
           },
         },
+        {
+          path: 'product-categories',
+          name: 'product-categories',
+          component: () =>
+            import('@/views/product-categories/ProductCategoriesView.vue'),
+          meta: {
+            title: 'دسته‌بندی کالا',
+            ability: {
+              action: PermissionAction.Read,
+              subject: PermissionResource.ProductCategories,
+            },
+          },
+        },
+        {
+          path: 'product-brands',
+          name: 'product-brands',
+          component: () =>
+            import('@/views/product-brands/ProductBrandsView.vue'),
+          meta: {
+            title: 'برند کالا',
+            ability: {
+              action: PermissionAction.Read,
+              subject: PermissionResource.ProductBrands,
+            },
+          },
+        },
+        {
+          path: 'product-units',
+          name: 'product-units',
+          component: () => import('@/views/product-units/ProductUnitsView.vue'),
+          meta: {
+            title: 'واحد کالا',
+            ability: {
+              action: PermissionAction.Read,
+              subject: PermissionResource.ProductUnits,
+            },
+          },
+        },
+        {
+          path: 'product-attributes',
+          name: 'product-attributes',
+          component: () =>
+            import('@/views/product-attributes/ProductAttributesView.vue'),
+          meta: {
+            title: 'ویژگی کالا',
+            ability: {
+              action: PermissionAction.Read,
+              subject: PermissionResource.ProductAttributes,
+            },
+          },
+        },
+        {
+          path: 'product-code-patterns',
+          name: 'product-code-patterns',
+          component: () =>
+            import(
+              '@/views/product-code-patterns/ProductCodePatternsView.vue'
+            ),
+          meta: {
+            title: 'الگوی کدینگ',
+            ability: {
+              action: PermissionAction.Read,
+              subject: PermissionResource.ProductCodePatterns,
+            },
+          },
+        },
       ],
     },
   ],

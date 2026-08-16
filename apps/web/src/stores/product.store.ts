@@ -1,43 +1,45 @@
 import { message } from 'ant-design-vue'
 import type {
   CreateProductDto,
-  PaginationQuery,
+  ProductListQuery,
   UpdateProductDto,
 } from '@maghami-system/schemas'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { productsApi } from '@/api/products.api'
-import { ApiError } from '@/api/types'
 import type { Product } from '@/api/types'
-
-function notifyError(error: unknown, fallback: string): void {
-  if (error instanceof ApiError) {
-    message.error(error.message)
-    return
-  }
-  message.error(fallback)
-}
+import { notifyApiError } from './notify-api-error'
 
 export const useProductStore = defineStore('product', () => {
   const productList = ref<Product[]>([])
   const total = ref(0)
   const page = ref(1)
-  const pageSize = ref(5)
+  const pageSize = ref(10)
+  const q = ref('')
   const loading = ref(false)
   const saving = ref(false)
 
   async function fetchPage(
-    query: PaginationQuery = { page: page.value, pageSize: pageSize.value },
+    query: Partial<ProductListQuery> = {},
   ): Promise<void> {
     loading.value = true
+    const next: ProductListQuery = {
+      page: query.page ?? page.value,
+      pageSize: query.pageSize ?? pageSize.value,
+      q: query.q !== undefined ? query.q : q.value || undefined,
+      categoryId: query.categoryId,
+      brandId: query.brandId,
+      isActive: query.isActive,
+    }
     try {
-      const result = await productsApi.list(query)
+      const result = await productsApi.list(next)
       productList.value = result.items
       total.value = result.total
       page.value = result.page
       pageSize.value = result.pageSize
+      if (query.q !== undefined) q.value = query.q ?? ''
     } catch (error) {
-      notifyError(error, 'بارگذاری محصولات ناموفق بود')
+      notifyApiError(error, 'بارگذاری محصولات ناموفق بود')
     } finally {
       loading.value = false
     }
@@ -51,7 +53,7 @@ export const useProductStore = defineStore('product', () => {
       await fetchPage({ page: 1, pageSize: pageSize.value })
       return created
     } catch (error) {
-      notifyError(error, 'ایجاد محصول ناموفق بود')
+      notifyApiError(error, 'ایجاد محصول ناموفق بود')
       return null
     } finally {
       saving.value = false
@@ -69,7 +71,7 @@ export const useProductStore = defineStore('product', () => {
       await fetchPage()
       return updated
     } catch (error) {
-      notifyError(error, 'به‌روزرسانی محصول ناموفق بود')
+      notifyApiError(error, 'به‌روزرسانی محصول ناموفق بود')
       return null
     } finally {
       saving.value = false
@@ -84,7 +86,7 @@ export const useProductStore = defineStore('product', () => {
       await fetchPage()
       return true
     } catch (error) {
-      notifyError(error, 'حذف محصول ناموفق بود')
+      notifyApiError(error, 'حذف محصول ناموفق بود')
       return false
     } finally {
       saving.value = false
@@ -96,6 +98,7 @@ export const useProductStore = defineStore('product', () => {
     total,
     page,
     pageSize,
+    q,
     loading,
     saving,
     fetchPage,
