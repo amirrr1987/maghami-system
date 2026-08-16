@@ -16,6 +16,12 @@ const RESOURCE_LABEL_FA: Readonly<
   [PermissionResource.Users]: 'کاربران',
   [PermissionResource.Roles]: 'نقش‌ها',
   [PermissionResource.Permissions]: 'مجوزها',
+  [PermissionResource.Products]: 'محصولات',
+  [PermissionResource.ProductCategories]: 'دسته‌بندی کالا',
+  [PermissionResource.ProductBrands]: 'برند کالا',
+  [PermissionResource.ProductUnits]: 'واحد کالا',
+  [PermissionResource.ProductAttributes]: 'ویژگی کالا',
+  [PermissionResource.ProductCodePatterns]: 'الگوی کدینگ کالا',
 };
 
 const ACTION_LABEL_FA: Readonly<Record<PermissionAction, string>> = {
@@ -26,9 +32,8 @@ const ACTION_LABEL_FA: Readonly<Record<PermissionAction, string>> = {
 };
 
 /**
- * Ensures core catalog permissions, `super-admin` role, and bootstrap user.
- * Domain resources (e.g. products) are not seeded — create them in the UI.
- * Controlled by BOOTSTRAP_ADMIN_EMAIL + BOOTSTRAP_ADMIN_PASSWORD.
+ * Ensures catalog permissions (RBAC + Product Coding), `super-admin` role,
+ * and bootstrap user. Controlled by BOOTSTRAP_ADMIN_EMAIL + BOOTSTRAP_ADMIN_PASSWORD.
  */
 @Injectable()
 export class AuthBootstrapService implements OnModuleInit {

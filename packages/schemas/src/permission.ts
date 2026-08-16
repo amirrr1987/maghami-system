@@ -6,6 +6,11 @@ export enum PermissionResource {
   Roles = 'roles',
   Permissions = 'permissions',
   Products = 'products',
+  ProductCategories = 'product-categories',
+  ProductBrands = 'product-brands',
+  ProductUnits = 'product-units',
+  ProductAttributes = 'product-attributes',
+  ProductCodePatterns = 'product-code-patterns',
 }
 
 /** CASL catalog actions (no write↔create/update aliases). */
@@ -21,13 +26,27 @@ export const PERMISSION_RESOURCES = [
   PermissionResource.Roles,
   PermissionResource.Permissions,
   PermissionResource.Products,
+  PermissionResource.ProductCategories,
+  PermissionResource.ProductBrands,
+  PermissionResource.ProductUnits,
+  PermissionResource.ProductAttributes,
+  PermissionResource.ProductCodePatterns,
 ] as const satisfies readonly PermissionResource[];
 
-/** Core RBAC catalog resources seeded on API bootstrap (not domain modules). */
+/**
+ * Resources ensured on API bootstrap (`resource:action` catalog rows).
+ * Includes Product Coding subjects so RBAC can gate the new module immediately.
+ */
 export const SEEDED_PERMISSION_RESOURCES = [
   PermissionResource.Users,
   PermissionResource.Roles,
   PermissionResource.Permissions,
+  PermissionResource.Products,
+  PermissionResource.ProductCategories,
+  PermissionResource.ProductBrands,
+  PermissionResource.ProductUnits,
+  PermissionResource.ProductAttributes,
+  PermissionResource.ProductCodePatterns,
 ] as const satisfies readonly PermissionResource[];
 
 export const PERMISSION_ACTIONS = [

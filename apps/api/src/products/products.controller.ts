@@ -19,24 +19,25 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
-  paginationQuerySchema,
   PermissionAction,
   PermissionResource,
-  type PaginationQuery,
 } from '@vue-nestjs-admin-template/schemas';
 import { RequireAbility } from '../auth/decorators/require-ability.decorator';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import {
   ApiResultPaginatedProductsResponse,
   ApiResultProductResponse,
+  ApiResultSkuPreviewResponse,
   ApiResultVoidResponse,
   CreateProductBody,
   UpdateProductBody,
 } from '../common/swagger/openapi.models';
 import {
   createProductSchema,
+  productListQuerySchema,
   updateProductSchema,
   type CreateProductDto,
+  type ProductListQuery,
   type UpdateProductDto,
 } from './product.schemas';
 import { ProductsService } from './products.service';
@@ -49,15 +50,30 @@ export class ProductsController {
 
   @Get()
   @RequireAbility(PermissionAction.Read, PermissionResource.Products)
-  @ApiOperation({ summary: 'List products (paginated for antdv Table)' })
+  @ApiOperation({ summary: 'List products (paginated, searchable)' })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'pageSize', required: false, type: Number, example: 10 })
+  @ApiQuery({ name: 'q', required: false, type: String })
+  @ApiQuery({ name: 'categoryId', required: false, type: String, format: 'uuid' })
+  @ApiQuery({ name: 'brandId', required: false, type: String, format: 'uuid' })
+  @ApiQuery({ name: 'isActive', required: false, type: Boolean })
   @ApiOkResponse({ type: ApiResultPaginatedProductsResponse })
   findAll(
-    @Query(new ZodValidationPipe(paginationQuerySchema))
-    query: PaginationQuery,
+    @Query(new ZodValidationPipe(productListQuerySchema))
+    query: ProductListQuery,
   ) {
     return this.productsService.findAll(query);
+  }
+
+  @Get('sku-preview')
+  @RequireAbility(PermissionAction.Create, PermissionResource.Products)
+  @ApiOperation({
+    summary: 'Preview next SKU for a category (does not allocate)',
+  })
+  @ApiQuery({ name: 'categoryId', required: true, type: String, format: 'uuid' })
+  @ApiOkResponse({ type: ApiResultSkuPreviewResponse })
+  previewSku(@Query('categoryId', ParseUUIDPipe) categoryId: string) {
+    return this.productsService.previewSku(categoryId);
   }
 
   @Get(':id')
@@ -71,7 +87,9 @@ export class ProductsController {
 
   @Post()
   @RequireAbility(PermissionAction.Create, PermissionResource.Products)
-  @ApiOperation({ summary: 'Create product' })
+  @ApiOperation({
+    summary: 'Create product (SKU auto-generated when omitted)',
+  })
   @ApiBody({ type: CreateProductBody })
   @ApiOkResponse({ type: ApiResultProductResponse })
   create(

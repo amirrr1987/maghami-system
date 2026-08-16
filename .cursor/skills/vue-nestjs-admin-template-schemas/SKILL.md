@@ -85,12 +85,25 @@ import {
 } from '@vue-nestjs-admin-template/schemas'
 ```
 
-- `PermissionResource` — `users` | `roles` | `permissions` | `products`
+- `PermissionResource` — `users` | `roles` | `permissions` | `products` | `product-categories` | `product-brands` | `product-units` | `product-attributes` | `product-code-patterns`
 - `PermissionAction` — `read` | `create` | `update` | `delete` (`write` is not an alias)
 - Catalog row: `{ resource, action, name }` with **unique `(resource, action)`** (no separate `code` column)
-- Bootstrap seeds only `SEEDED_PERMISSION_RESOURCES` (`users`, `roles`, `permissions`) — domain resources like `products` stay in the enum for CASL but are created in the UI
+- Bootstrap seeds `SEEDED_PERMISSION_RESOURCES` (RBAC + Product Coding subjects)
 - Session `abilities` use `AbilityAction` / `AbilitySubject` (catalog enums + `manage`/`all` for super-admin)
 - Session `permissionCodes` are derived display keys (`resource:action`, plus `*` for super-admin)
+
+### Product Coding contracts
+
+| File | DTOs |
+|------|------|
+| `product-category.ts` | `createProductCategorySchema` / `updateProductCategorySchema` |
+| `product-brand.ts` | brand create/update |
+| `product-unit.ts` | unit create/update |
+| `product-attribute.ts` | attribute create/update (`TEXT` \| `NUMBER` \| `SELECT` \| `BOOLEAN`; SELECT needs `options`) |
+| `product-code-pattern.ts` | SKU pattern per category |
+| `product.ts` | product create/update (`sku` optional → auto), `productListQuerySchema` (`q`, filters) |
+
+Wire shapes: `ProductCategory`, `ProductBrand`, `ProductUnit`, `ProductAttribute`, `ProductCodePattern`, `Product` (+ `attributeValues`) in `entities.ts`.
 
 Self-service profile (`PATCH /auth/me`): `updateProfileSchema` / `UpdateProfileDto` — name, email, optional password. Not `users:update`; cannot change roles or `isActive`.
 

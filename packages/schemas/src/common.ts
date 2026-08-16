@@ -1,5 +1,15 @@
 import { z } from 'zod';
-import type { Permission, Product, Role, User } from './entities';
+import type {
+  Permission,
+  Product,
+  ProductAttribute,
+  ProductBrand,
+  ProductCategory,
+  ProductCodePattern,
+  ProductUnit,
+  Role,
+  User,
+} from './entities';
 
 /** Display label — any language (e.g. Persian); not unique. */
 export const roleLabelSchema: z.ZodType<Role['label']> = z
@@ -23,6 +33,16 @@ export const permissionIdSchema: z.ZodType<Permission['id']> = z.string().uuid()
 export const roleIdSchema = roleValueSchema;
 export const userIdSchema: z.ZodType<User['id']> = z.string().uuid();
 export const productIdSchema: z.ZodType<Product['id']> = z.string().uuid();
+export const productCategoryIdSchema: z.ZodType<ProductCategory['id']> =
+  z.string().uuid();
+export const productBrandIdSchema: z.ZodType<ProductBrand['id']> =
+  z.string().uuid();
+export const productUnitIdSchema: z.ZodType<ProductUnit['id']> =
+  z.string().uuid();
+export const productAttributeIdSchema: z.ZodType<ProductAttribute['id']> =
+  z.string().uuid();
+export const productCodePatternIdSchema: z.ZodType<ProductCodePattern['id']> =
+  z.string().uuid();
 
 /** Assignment lists — TS equivalent: `Permission['id'][]` / `Role['value'][]`. */
 export const permissionIdListSchema = z.array(permissionIdSchema).default([]);

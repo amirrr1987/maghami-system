@@ -4,6 +4,7 @@
  */
 
 import type { PermissionAction, PermissionResource } from './permission';
+import type { ProductAttributeType } from './product-coding-common';
 
 /** antdv Select-compatible option (`:options` / assignment refs). */
 export interface LabelValue {
@@ -73,13 +74,90 @@ export interface AuthUser {
   isActive: boolean;
 }
 
+export interface ProductCategory {
+  id: string;
+  name: string;
+  code: string;
+  description: string | null;
+  parentId: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Nested category tree node for admin tree views. */
+export interface ProductCategoryTreeNode extends ProductCategory {
+  children: ProductCategoryTreeNode[];
+}
+
+export interface ProductBrand {
+  id: string;
+  name: string;
+  code: string;
+  logoUrl: string | null;
+  description: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProductUnit {
+  id: string;
+  name: string;
+  code: string;
+  symbol: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProductAttribute {
+  id: string;
+  name: string;
+  code: string;
+  type: ProductAttributeType;
+  options: string[] | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProductAttributeValue {
+  id: string;
+  productId: string;
+  attributeId: string;
+  value: string;
+  attribute?: Pick<
+    ProductAttribute,
+    'id' | 'name' | 'code' | 'type' | 'options'
+  >;
+}
+
+export interface ProductCodePattern {
+  id: string;
+  categoryId: string;
+  prefix: string;
+  separator: string;
+  length: number;
+  nextSequence: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Product {
   id: string;
   sku: string;
   name: string;
+  categoryId: string | null;
+  brandId: string | null;
+  unitId: string | null;
+  barcode: string | null;
   description: string | null;
+  /** Legacy field — kept for existing products UI compatibility. */
   price: number;
   isActive: boolean;
+  attributeValues: ProductAttributeValue[];
   createdAt: string;
   updatedAt: string;
 }
@@ -89,6 +167,11 @@ export type PermissionId = Permission['id'];
 export type RoleId = Role['value'];
 export type UserId = User['id'];
 export type ProductId = Product['id'];
+export type ProductCategoryId = ProductCategory['id'];
+export type ProductBrandId = ProductBrand['id'];
+export type ProductUnitId = ProductUnit['id'];
+export type ProductAttributeId = ProductAttribute['id'];
+export type ProductCodePatternId = ProductCodePattern['id'];
 
 export interface AuthSession {
   user: AuthUser;

@@ -30,6 +30,11 @@ async function bootstrap() {
     .addTag('auth')
     .addTag('permissions')
     .addTag('products')
+    .addTag('product-categories')
+    .addTag('product-brands')
+    .addTag('product-units')
+    .addTag('product-attributes')
+    .addTag('product-code-patterns')
     .addTag('roles')
     .addTag('users')
     .build();
