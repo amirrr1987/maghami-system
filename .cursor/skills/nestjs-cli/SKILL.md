@@ -14,11 +14,11 @@ Versions: `@nestjs/cli` **^10**, `@nestjs/schematics` **^10** in `apps/api` devD
 
 ```bash
 pnpm dev:api                         # build schemas, then nest start --watch
-pnpm --filter @vue-nestjs-admin-template/api build  # nest build (prebuild compiles schemas)
-pnpm --filter @vue-nestjs-admin-template/api start
+pnpm --filter @maghami-system/api build  # nest build (prebuild compiles schemas)
+pnpm --filter @maghami-system/api start
 ```
 
-`@vue-nestjs-admin-template/schemas` must be compiled to `packages/schemas/dist` before Nest can resolve the package (types + CommonJS). Root `dev` / `dev:api` and the API `predev` / `prebuild` scripts do that.
+`@maghami-system/schemas` must be compiled to `packages/schemas/dist` before Nest can resolve the package (types + CommonJS). Root `dev` / `dev:api` and the API `predev` / `prebuild` scripts do that.
 
 Global prefix: **`/v1`**. Responses are wrapped in `ApiResult` via `ResultInterceptor` / `ResultExceptionFilter` in `main.ts`.
 
@@ -27,4 +27,4 @@ Prefer generating into `apps/api/src` with Nest schematics when scaffolding; kee
 ## Anti-patterns
 
 - Global `npm i -g @nestjs/cli` for this monorepo — use workspace **pnpm** scripts
-- Generated DTOs with `class-validator` when this repo uses Zod + `@vue-nestjs-admin-template/schemas`
+- Generated DTOs with `class-validator` when this repo uses Zod + `@maghami-system/schemas`

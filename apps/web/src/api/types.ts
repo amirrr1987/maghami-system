@@ -4,7 +4,7 @@ import type {
   Product,
   Role,
   User,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 
 /** API resource shapes (passwordHash / nested permission trees never on User). */
 export type { LabelValue, Permission, Product, Role }

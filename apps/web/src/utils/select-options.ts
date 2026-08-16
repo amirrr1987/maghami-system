@@ -1,10 +1,10 @@
-import type { LabelValue, Permission } from '@vue-nestjs-admin-template/schemas'
+import type { LabelValue, Permission } from '@maghami-system/schemas'
 import {
   PERMISSION_ACTIONS,
   PERMISSION_RESOURCES,
   PermissionAction,
   PermissionResource,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import type { DefaultOptionType } from 'ant-design-vue/es/select'
 
 /** Map domain rows to antdv Select `:options` (`label` + `value`). */

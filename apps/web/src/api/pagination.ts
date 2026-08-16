@@ -1,4 +1,4 @@
-import type { PaginationQuery } from '@vue-nestjs-admin-template/schemas'
+import type { PaginationQuery } from '@maghami-system/schemas'
 
 export function toListQuery(query: PaginationQuery): string {
   const params = new URLSearchParams({

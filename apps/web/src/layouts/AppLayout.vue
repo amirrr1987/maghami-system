@@ -32,7 +32,7 @@ import { useAuthStore } from '@/stores/auth.store'
 import {
   PermissionAction,
   PermissionResource,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 
 const route = useRoute()
 const router = useRouter()

@@ -4,7 +4,7 @@ import type {
   PaginationQuery,
   SetUserRolesDto,
   UpdateUserDto,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { apiRequest, jsonBody } from './client'
 import { toListQuery } from './pagination'
 import type { PublicUser } from './types'

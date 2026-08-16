@@ -39,7 +39,7 @@ import { repairPermissionsCatalogBeforeSync } from './common/repair-permissions-
           port: Number(config.get<string>('DATABASE_PORT', '5432')),
           username: config.get<string>('DATABASE_USER', 'postgres'),
           password: config.get<string>('DATABASE_PASSWORD', 'postgres'),
-          database: config.get<string>('DATABASE_NAME', 'vue_nestjs_admin_template'),
+          database: config.get<string>('DATABASE_NAME', 'maghami_system'),
         };
         await ensurePostgresDatabase(connection);
         await repairPermissionsCatalogBeforeSync(connection);

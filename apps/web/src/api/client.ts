@@ -1,4 +1,4 @@
-import { isApiResult, type ApiResult, type LoginResult } from '@vue-nestjs-admin-template/schemas'
+import { isApiResult, type ApiResult, type LoginResult } from '@maghami-system/schemas'
 import { ApiError } from './types'
 import { clearTokens, getAccessToken, setAccessToken } from './token'
 

@@ -3,7 +3,7 @@ import type {
   AbilityRule,
   PermissionAction,
   PermissionResource,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 
 export const REQUIRED_ABILITY_KEY = 'requiredAbility';
 

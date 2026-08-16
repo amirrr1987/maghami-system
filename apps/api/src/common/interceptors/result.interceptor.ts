@@ -4,7 +4,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { isApiResult, okResult } from '@vue-nestjs-admin-template/schemas';
+import { isApiResult, okResult } from '@maghami-system/schemas';
 import type { Request } from 'express';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

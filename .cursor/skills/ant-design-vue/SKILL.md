@@ -68,11 +68,11 @@ const props = defineProps<Props>();
 
 ### Forms
 
-Contract constraints come from **`@vue-nestjs-admin-template/schemas`**. Build antdv `RuleObject`s with `zodRule` and optionally **extra UX rules** (required copy, whitespace) that are not looser than Zod — see `.cursor/rules/shared-validation.mdc`.
+Contract constraints come from **`@maghami-system/schemas`**. Build antdv `RuleObject`s with `zodRule` and optionally **extra UX rules** (required copy, whitespace) that are not looser than Zod — see `.cursor/rules/shared-validation.mdc`.
 
 ```ts
 import type { FormInstance, RuleObject } from 'ant-design-vue/es/form';
-import { createRoleSchema, type CreateRoleDto } from '@vue-nestjs-admin-template/schemas';
+import { createRoleSchema, type CreateRoleDto } from '@maghami-system/schemas';
 import { zodRule } from '@/validation/zod-rule';
 
 const formRef = ref<FormInstance>();
@@ -98,7 +98,7 @@ const rules: Record<'label' | 'value' | 'description', RuleObject | RuleObject[]
 
 Prefer `apps/web/src/validation/*.form-rules.ts` for reusable rule maps. Use `v-model:value` on inputs; `@finish` on `Form`.
 
-Do **not** put antdv imports inside `@vue-nestjs-admin-template/schemas`.
+Do **not** put antdv imports inside `@maghami-system/schemas`.
 
 ### Tables
 

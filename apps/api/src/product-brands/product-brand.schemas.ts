@@ -3,4 +3,4 @@ export {
   updateProductBrandSchema,
   type CreateProductBrandDto,
   type UpdateProductBrandDto,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';

@@ -1,8 +1,8 @@
-import type { PaginatedResult, PaginationQuery } from '@vue-nestjs-admin-template/schemas';
+import type { PaginatedResult, PaginationQuery } from '@maghami-system/schemas';
 import {
   paginationSkipTake,
   toPaginatedResult,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 
 export { paginationSkipTake, toPaginatedResult };
 export type { PaginatedResult, PaginationQuery };

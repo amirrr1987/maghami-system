@@ -1,16 +1,16 @@
 {
-  "name": "vue-nestjs-admin-template",
+  "name": "maghami-system",
   "private": true,
   "version": "1.0.0",
   "packageManager": "pnpm@9.15.0",
   "scripts": {
-    "dev": "pnpm --filter @vue-nestjs-admin-template/schemas build && pnpm -r --parallel --filter @vue-nestjs-admin-template/api --filter @vue-nestjs-admin-template/web run dev",
-    "dev:api": "pnpm --filter @vue-nestjs-admin-template/api dev",
-    "dev:web": "pnpm --filter @vue-nestjs-admin-template/web dev",
-    "build": "pnpm --filter @vue-nestjs-admin-template/schemas build && pnpm -r --filter !@vue-nestjs-admin-template/schemas run build",
-    "build:schemas": "pnpm --filter @vue-nestjs-admin-template/schemas build",
-    "build:api": "pnpm --filter @vue-nestjs-admin-template/schemas build && pnpm --filter @vue-nestjs-admin-template/api build",
-    "build:web": "pnpm --filter @vue-nestjs-admin-template/schemas build && pnpm --filter @vue-nestjs-admin-template/web build"
+    "dev": "pnpm --filter @maghami-system/schemas build && pnpm -r --parallel --filter @maghami-system/api --filter @maghami-system/web run dev",
+    "dev:api": "pnpm --filter @maghami-system/api dev",
+    "dev:web": "pnpm --filter @maghami-system/web dev",
+    "build": "pnpm --filter @maghami-system/schemas build && pnpm -r --filter !@maghami-system/schemas run build",
+    "build:schemas": "pnpm --filter @maghami-system/schemas build",
+    "build:api": "pnpm --filter @maghami-system/schemas build && pnpm --filter @maghami-system/api build",
+    "build:web": "pnpm --filter @maghami-system/schemas build && pnpm --filter @maghami-system/web build"
   },
   "engines": {
     "node": ">=20"

@@ -24,7 +24,7 @@ import {
 Augment `RouteMeta` via module declaration — do not use untyped `meta` bags:
 
 ```ts
-import type { AbilityRule } from '@vue-nestjs-admin-template/schemas'
+import type { AbilityRule } from '@maghami-system/schemas'
 
 declare module 'vue-router' {
   interface RouteMeta {

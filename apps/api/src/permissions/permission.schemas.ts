@@ -3,4 +3,4 @@ export {
   updatePermissionSchema,
   type CreatePermissionDto,
   type UpdatePermissionDto,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';

@@ -8,7 +8,7 @@ import { Reflector } from '@nestjs/core';
 import {
   abilityCovers,
   type AbilityRule,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { UsersService } from '../../users/users.service';
 import type { AuthRequest } from '../decorators/current-user.decorator';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';

@@ -27,7 +27,7 @@ These and similar phrases **do not** authorize Shell:
 
 ## Only exception
 
-Run a command **only** when the **same user message** explicitly names the command and tells you to execute it, e.g. “run `pnpm --filter @vue-nestjs-admin-template/schemas build`”.
+Run a command **only** when the **same user message** explicitly names the command and tells you to execute it, e.g. “run `pnpm --filter @maghami-system/schemas build`”.
 
 - Vague “run the build” without the exact command → ask for the exact command, or paste candidates; **do not** execute.
 - Prior chat history never weakens this ban.

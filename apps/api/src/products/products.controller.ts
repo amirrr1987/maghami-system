@@ -21,7 +21,7 @@ import {
 import {
   PermissionAction,
   PermissionResource,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { RequireAbility } from '../auth/decorators/require-ability.decorator';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import {

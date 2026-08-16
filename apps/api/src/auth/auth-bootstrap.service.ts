@@ -5,7 +5,7 @@ import {
   PermissionAction,
   PermissionResource,
   SEEDED_PERMISSION_RESOURCES,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { PermissionsService } from '../permissions/permissions.service';
 import { RolesService } from '../roles/roles.service';
 import { UsersService } from '../users/users.service';

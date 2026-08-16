@@ -1,13 +1,13 @@
 {
-  "name": "@vue-nestjs-admin-template/api",
+  "name": "@maghami-system/api",
   "version": "1.0.0",
   "private": true,
   "description": "",
   "license": "UNLICENSED",
   "author": "",
   "scripts": {
-    "predev": "pnpm --dir ../.. --filter @vue-nestjs-admin-template/schemas build",
-    "prebuild": "pnpm --dir ../.. --filter @vue-nestjs-admin-template/schemas build",
+    "predev": "pnpm --dir ../.. --filter @maghami-system/schemas build",
+    "prebuild": "pnpm --dir ../.. --filter @maghami-system/schemas build",
     "dev": "nest start --watch",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -23,7 +23,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@vue-nestjs-admin-template/schemas": "workspace:*",
+    "@maghami-system/schemas": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^11.0.1",

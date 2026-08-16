@@ -12,14 +12,14 @@ import type {
   PermissionRef,
   Role as RoleDto,
   RoleRef,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import {
   isSuperAdminRoleValue,
   paginationSkipTake,
   PermissionAction,
   SUPER_ADMIN_ROLE_VALUE,
   toPaginatedResult,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { In, QueryFailedError, Repository } from 'typeorm';
 import type { Permission } from '../permissions/permission.entity';
 import { PermissionsService } from '../permissions/permissions.service';

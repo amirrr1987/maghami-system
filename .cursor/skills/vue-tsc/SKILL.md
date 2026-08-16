@@ -13,7 +13,7 @@ Version: `vue-tsc` **^3.3** in `apps/web`. Also see `typescript` skill.
 ## Usage (this repo)
 
 ```bash
-pnpm --filter @vue-nestjs-admin-template/web type-check
+pnpm --filter @maghami-system/web type-check
 # → vue-tsc --build
 ```
 
@@ -21,7 +21,7 @@ pnpm --filter @vue-nestjs-admin-template/web type-check
 
 ## Guidance
 
-- Fix errors using types from **source packages** (`vue`, `ant-design-vue`, `@vue-nestjs-admin-template/schemas`) — not `any` suppressions
+- Fix errors using types from **source packages** (`vue`, `ant-design-vue`, `@maghami-system/schemas`) — not `any` suppressions
 - Prefer narrowing (`asUser(record)`) over casting table `record` to `any`
 - Keep `tsconfig` aligned with `@vue/tsconfig` / `@tsconfig/node24` (`vue-tsconfig` skill)
 

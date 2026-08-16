@@ -29,7 +29,7 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       // Vite aliases workspace schemas to source (CJS dist is for Nest)
-      '@vue-nestjs-admin-template/schemas': schemasEntry,
+      '@maghami-system/schemas': schemasEntry,
     },
   },
   server: {
@@ -39,10 +39,10 @@ export default defineConfig({
 })
 ```
 
-Scripts: `pnpm --filter @vue-nestjs-admin-template/web dev` → `vite`.
+Scripts: `pnpm --filter @maghami-system/web dev` → `vite`.
 
 ## Anti-patterns
 
 - Untyped `as any` on `defineConfig`
-- Breaking the `@vue-nestjs-admin-template/schemas` source alias without a Nest/Vite dual-resolve plan
+- Breaking the `@maghami-system/schemas` source alias without a Nest/Vite dual-resolve plan
 - Adding npm/yarn — use **pnpm** only

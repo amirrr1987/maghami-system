@@ -1,5 +1,5 @@
 import type { RuleObject } from 'ant-design-vue/es/form'
-import { createPermissionSchema } from '@vue-nestjs-admin-template/schemas'
+import { createPermissionSchema } from '@maghami-system/schemas'
 import { zodRule } from './zod-rule'
 
 export const createPermissionFormRules: Record<

@@ -1,5 +1,5 @@
 import type { RuleObject } from 'ant-design-vue/es/form'
-import { createUserSchema, type Role } from '@vue-nestjs-admin-template/schemas'
+import { createUserSchema, type Role } from '@maghami-system/schemas'
 import { zodRule } from './zod-rule'
 
 export type UserFormModel = {

@@ -4,7 +4,7 @@ import type {
   PaginationQuery,
   SetUserRolesDto,
   UpdateUserDto,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { usersApi } from '@/api/users.api'

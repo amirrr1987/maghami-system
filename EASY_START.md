@@ -70,7 +70,7 @@ DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
-DATABASE_NAME=vue_nestjs_admin_template
+DATABASE_NAME=maghami_system
 TYPEORM_SYNC=true
 CORS_ORIGIN=http://localhost:5173
 ```
@@ -130,7 +130,7 @@ WEB_PORT=5173
 DATABASE_PORT=5432
 DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
-DATABASE_NAME=vue_nestjs_admin_template
+DATABASE_NAME=maghami_system
 TYPEORM_SYNC=true
 CORS_ORIGIN=http://localhost:5173
 ```

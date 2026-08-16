@@ -1,4 +1,4 @@
-import type { ProductAttributeType } from '@vue-nestjs-admin-template/schemas';
+import type { ProductAttributeType } from '@maghami-system/schemas';
 import {
   Column,
   CreateDateColumn,

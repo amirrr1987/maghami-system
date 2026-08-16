@@ -52,5 +52,5 @@ Bootstrap: `apps/api/src/main.ts` via `NestFactory.create`. Related skills: `nes
 ## Anti-patterns
 
 - Untyped `@Body() body: any`
-- Business DTOs not from `@vue-nestjs-admin-template/schemas`
+- Business DTOs not from `@maghami-system/schemas`
 - Skipping DI for new services (manual `new Service()`)

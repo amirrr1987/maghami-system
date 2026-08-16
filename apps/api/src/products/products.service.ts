@@ -11,11 +11,11 @@ import type {
   ProductAttributeValue as ProductAttributeValueDto,
   ProductAttributeValueInputDto,
   ProductListQuery,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import {
   paginationSkipTake,
   toPaginatedResult,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { In, QueryFailedError, Repository } from 'typeorm';
 import { ProductAttribute } from '../product-attributes/product-attribute.entity';
 import { ProductBrandsService } from '../product-brands/product-brands.service';

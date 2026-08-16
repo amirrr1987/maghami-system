@@ -10,8 +10,8 @@ import type {
   Permission as PermissionDto,
   PermissionAction,
   PermissionResource,
-} from '@vue-nestjs-admin-template/schemas';
-import { paginationSkipTake, toPaginatedResult } from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
+import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { In, QueryFailedError, Repository } from 'typeorm';
 import { Permission } from './permission.entity';
 import type {

@@ -1,9 +1,9 @@
 ---
 name: monitoring-schemas
-description: DEPRECATED — use vue-nestjs-admin-template-schemas skill instead.
+description: DEPRECATED — use maghami-system-schemas skill instead.
 ---
 
 # Deprecated
 
-Moved to `.cursor/skills/vue-nestjs-admin-template-schemas/SKILL.md`.
-Package is now `@vue-nestjs-admin-template/schemas`.
+Moved to `.cursor/skills/maghami-system-schemas/SKILL.md`.
+Package is now `@maghami-system/schemas`.

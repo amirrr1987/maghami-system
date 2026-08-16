@@ -21,7 +21,7 @@ Use package exports only — do not hand-roll a parallel store typing layer or c
 ## Setup store pattern (this repo)
 
 ```ts
-import type { PaginationQuery } from '@vue-nestjs-admin-template/schemas'
+import type { PaginationQuery } from '@maghami-system/schemas'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 

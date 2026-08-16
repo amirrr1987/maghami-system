@@ -12,14 +12,14 @@ import type {
   PaginationQuery,
   UpdateProfileDto,
   User as UserDto,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import {
   isSuperAdminRoleValue,
   paginationSkipTake,
   SUPER_ADMIN_ABILITY,
   SUPER_ADMIN_PERMISSION_CODE,
   toPaginatedResult,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import * as bcrypt from 'bcrypt';
 import { QueryFailedError, Repository } from 'typeorm';
 import { RolesService } from '../roles/roles.service';

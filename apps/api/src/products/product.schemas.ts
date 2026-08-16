@@ -5,4 +5,4 @@ export {
   type CreateProductDto,
   type UpdateProductDto,
   type ProductListQuery,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';

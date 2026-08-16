@@ -20,7 +20,7 @@ import { test, expect, type Page, type Locator } from '@playwright/test'
 
 - Config: `apps/web/playwright.config.ts`
 - Specs: `apps/web/e2e/**`
-- Script: `pnpm --filter @vue-nestjs-admin-template/web test:e2e`
+- Script: `pnpm --filter @maghami-system/web test:e2e`
 - ESLint: `eslint-plugin-playwright` (`eslint` skill)
 
 ```ts

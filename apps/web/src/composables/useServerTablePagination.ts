@@ -1,4 +1,4 @@
-import type { PaginationQuery } from '@vue-nestjs-admin-template/schemas'
+import type { PaginationQuery } from '@maghami-system/schemas'
 import type { TableProps } from 'ant-design-vue/es/table'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 import { computed, type Ref } from 'vue'

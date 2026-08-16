@@ -7,7 +7,7 @@ import {
   Modal,
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
-import type { UpdateProfileDto } from '@vue-nestjs-admin-template/schemas'
+import type { UpdateProfileDto } from '@maghami-system/schemas'
 import { computed, reactive, ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/auth.store'
 import {

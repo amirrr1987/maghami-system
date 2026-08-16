@@ -1,4 +1,4 @@
-# vue-nestjs-admin-template
+# maghami-system
 
 Monorepo with **NestJS** (`apps/api`) and **Vue 3** (`apps/web`).
 

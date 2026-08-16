@@ -1,4 +1,4 @@
-const ACCESS_TOKEN_KEY = 'vue-nestjs-admin-template.accessToken'
+const ACCESS_TOKEN_KEY = 'maghami-system.accessToken'
 
 export function getAccessToken(): string | null {
   try {

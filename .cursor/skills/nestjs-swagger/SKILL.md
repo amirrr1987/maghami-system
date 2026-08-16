@@ -42,7 +42,7 @@ UI path: **`/docs`**. Wired in `apps/api/src/main.ts`:
 
 ```ts
 const swaggerConfig = new DocumentBuilder()
-  .setTitle('Monitoring API')
+  .setTitle('Maghami System API')
   .setDescription('…')
   .setVersion('0.0.0')
   .addBearerAuth()
@@ -69,7 +69,7 @@ OpenAPI uses **top-level** id schemas (stable for Swagger). Do **not** `$ref` in
 
 ```ts
 import { permissionIdRef, roleIdRef } from '../common/swagger/openapi.ids';
-import type { Permission, Role } from '@vue-nestjs-admin-template/schemas';
+import type { Permission, Role } from '@maghami-system/schemas';
 
 @ApiProperty({ allOf: [permissionIdRef] })
 id!: Permission['id'];

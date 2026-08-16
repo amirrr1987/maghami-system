@@ -1,7 +1,7 @@
 ---
 name: zod
 description: >
-  Type-safe Zod schema design — shared @vue-nestjs-admin-template/schemas contract, NestJS
+  Type-safe Zod schema design — shared @maghami-system/schemas contract, NestJS
   ZodValidationPipe, z.infer / ZodType / safeParse only. Use when writing DTOs,
   API validation, or shared request schemas.
 ---
@@ -12,10 +12,10 @@ Docs: [zod.dev](https://zod.dev). Confirm version in `packages/schemas/package.j
 
 ## Source of truth (this monorepo)
 
-Domain request schemas live in **`@vue-nestjs-admin-template/schemas`** (`packages/schemas`). Apps import from there — do not redefine user/role/permission bodies in `apps/api` or invent parallel interfaces.
+Domain request schemas live in **`@maghami-system/schemas`** (`packages/schemas`). Apps import from there — do not redefine user/role/permission bodies in `apps/api` or invent parallel interfaces.
 
 ```ts
-import { createRoleSchema, type CreateRoleDto } from '@vue-nestjs-admin-template/schemas';
+import { createRoleSchema, type CreateRoleDto } from '@maghami-system/schemas';
 import type { ZodType } from 'zod';
 ```
 
@@ -35,7 +35,7 @@ import { createUserSchema, type CreateUserDto } from './user.schemas';
 dto: CreateUserDto
 ```
 
-API `*.schemas.ts` files are **thin re-exports** of `@vue-nestjs-admin-template/schemas` so controllers keep local import paths.
+API `*.schemas.ts` files are **thin re-exports** of `@maghami-system/schemas` so controllers keep local import paths.
 
 ## Vue / antdv
 
@@ -57,7 +57,7 @@ OpenAPI uses separate `PermissionId` / `RoleId` schemas — that is intentional 
 ## Auth
 
 ```ts
-import { loginSchema, type LoginDto } from '@vue-nestjs-admin-template/schemas';
+import { loginSchema, type LoginDto } from '@maghami-system/schemas';
 ```
 
 Login lives in `packages/schemas/src/auth.ts`; Nest and Vue forms both consume it.

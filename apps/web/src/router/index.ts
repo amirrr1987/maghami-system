@@ -2,7 +2,7 @@ import {
   PermissionAction,
   PermissionResource,
   type AbilityRule,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 import { firstAllowedRouteName, routeAllowed } from './access'

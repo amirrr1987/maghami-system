@@ -26,7 +26,7 @@ import {
   PermissionResource,
   type CreatePermissionDto,
   type UpdatePermissionDto,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { onMounted, reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { Permission } from '@/api/types'

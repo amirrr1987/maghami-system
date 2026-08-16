@@ -1,4 +1,4 @@
-import { loginSchema } from '@vue-nestjs-admin-template/schemas'
+import { loginSchema } from '@maghami-system/schemas'
 import type { RuleObject } from 'ant-design-vue/es/form'
 import { zodRule } from './zod-rule'
 

@@ -38,7 +38,7 @@ Decorators for Nest stay on:
 
 Vue + Vite — follow `tsconfig.app.json` / `@vue/tsconfig`. Do not force Nest’s `commonjs` settings into the web app.
 
-`@vue-nestjs-admin-template/schemas` stays CommonJS for Nest (`packages/schemas` → `dist/`). Vite aliases that package to `packages/schemas/src/index.ts` in `apps/web/vite.config.ts` so named Zod exports work under native ESM — do not remove that alias without adding an ESM (or dual) schemas build.
+`@maghami-system/schemas` stays CommonJS for Nest (`packages/schemas` → `dist/`). Vite aliases that package to `packages/schemas/src/index.ts` in `apps/web/vite.config.ts` so named Zod exports work under native ESM — do not remove that alias without adding an ESM (or dual) schemas build.
 
 ## Anti-patterns
 

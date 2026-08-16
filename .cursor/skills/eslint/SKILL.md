@@ -41,7 +41,7 @@ export default defineConfigWithVueTs(
 )
 ```
 
-Script: `pnpm --filter @vue-nestjs-admin-template/web lint:eslint` → `eslint . --fix --cache`.
+Script: `pnpm --filter @maghami-system/web lint:eslint` → `eslint . --fix --cache`.
 
 Formatting is **oxfmt** / Prettier skip — do not re-enable formatting rules in ESLint.
 

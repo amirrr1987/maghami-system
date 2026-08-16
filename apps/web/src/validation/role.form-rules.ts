@@ -1,10 +1,10 @@
 import type { RuleObject } from 'ant-design-vue/es/form'
-import { createRoleSchema, SUPER_ADMIN_ROLE_VALUE } from '@vue-nestjs-admin-template/schemas'
+import { createRoleSchema, SUPER_ADMIN_ROLE_VALUE } from '@maghami-system/schemas'
 import { zodRule } from './zod-rule'
 
 /**
  * Form rules for create/edit role. Shared Zod enforces API limits;
- * leading rules are UX-only and must not contradict `@vue-nestjs-admin-template/schemas`.
+ * leading rules are UX-only and must not contradict `@maghami-system/schemas`.
  */
 export const createRoleFormRules: Record<
   'label' | 'value' | 'description' | 'permissionIds',

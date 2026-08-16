@@ -15,7 +15,7 @@ import {
   TypographyTitle,
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
-import type { LoginDto } from '@vue-nestjs-admin-template/schemas'
+import type { LoginDto } from '@maghami-system/schemas'
 import { onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ApiError } from '@/api/types'

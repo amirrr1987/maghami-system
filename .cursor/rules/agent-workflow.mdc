@@ -18,7 +18,7 @@ See **`no-terminal.mdc`** (hard ban). Summary:
 - **Never** run Shell / terminal for the user (installs, builds, tests, git, docker, verify, etc.).
 - Give the exact command(s); they run them.
 - Non-shell file read/edit is allowed.
-- Exception **only** if the **same message** explicitly names the command to execute (e.g. “run `pnpm --filter @vue-nestjs-admin-template/schemas build`”). “Verify/fix/check” is **not** permission.
+- Exception **only** if the **same message** explicitly names the command to execute (e.g. “run `pnpm --filter @maghami-system/schemas build`”). “Verify/fix/check” is **not** permission.
 
 ## Git commit message after every change (good commits)
 

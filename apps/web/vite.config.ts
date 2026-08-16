@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
-// Nest consumes @vue-nestjs-admin-template/schemas as CommonJS from dist/. Vite cannot
+// Nest consumes @maghami-system/schemas as CommonJS from dist/. Vite cannot
 // resolve named ESM exports from that CJS re-export surface — point at source.
 const schemasEntry = fileURLToPath(
   new URL('../../packages/schemas/src/index.ts', import.meta.url),
@@ -31,7 +31,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@vue-nestjs-admin-template/schemas': schemasEntry,
+      '@maghami-system/schemas': schemasEntry,
     },
   },
 })

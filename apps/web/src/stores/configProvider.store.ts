@@ -11,7 +11,7 @@ import { defineStore } from 'pinia'
 import { computed, watch } from 'vue'
 import { seedColorTokens } from '@/theme/palettes'
 
-const STORAGE_KEY = 'vue-nestjs-admin-template.configProvider'
+const STORAGE_KEY = 'maghami-system.configProvider'
 
 /** App is Persian / RTL only. */
 export const APP_LOCALE: Locale = faIR

@@ -24,9 +24,9 @@ COPY tsconfig.base.json ./
 COPY packages/schemas packages/schemas
 COPY apps/api apps/api
 COPY apps/web apps/web
-RUN pnpm --filter @vue-nestjs-admin-template/schemas build \
-  && pnpm --filter @vue-nestjs-admin-template/api build \
-  && pnpm --filter @vue-nestjs-admin-template/web build
+RUN pnpm --filter @maghami-system/schemas build \
+  && pnpm --filter @maghami-system/api build \
+  && pnpm --filter @maghami-system/web build
 
 # ----- API (NestJS) -----
 # Copy the built workspace so pnpm's linked node_modules keep working.

@@ -20,7 +20,7 @@ async function bootstrap() {
   });
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Monitoring API')
+    .setTitle('Maghami System API')
     .setDescription(
       'Dynamic RBAC API — permissions, roles, users, and JWT auth (Zod-validated). Uniform ApiResult envelope under /v1.',
     )

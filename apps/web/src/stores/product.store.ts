@@ -3,7 +3,7 @@ import type {
   CreateProductDto,
   PaginationQuery,
   UpdateProductDto,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { productsApi } from '@/api/products.api'

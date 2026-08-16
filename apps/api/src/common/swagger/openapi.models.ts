@@ -8,7 +8,7 @@ import {
   type Product,
   type Role,
   type User,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import {
   permissionIdRef,
   productIdRef,
@@ -879,7 +879,7 @@ export class PaginatedProductCodePatternsResponse extends PaginatedMeta {
   items!: ProductCodePatternResponse[];
 }
 
-/** Uniform ApiResult envelope fields (matches @vue-nestjs-admin-template/schemas ApiResult). */
+/** Uniform ApiResult envelope fields (matches @maghami-system/schemas ApiResult). */
 export class ApiResultBase {
   @ApiProperty({ example: 200 })
   status!: number;

@@ -3,4 +3,4 @@ export {
   updateProductUnitSchema,
   type CreateProductUnitDto,
   type UpdateProductUnitDto,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';

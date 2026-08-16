@@ -3,7 +3,7 @@ import type {
   LoginDto,
   LoginResult,
   UpdateProfileDto,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { apiRequest, jsonBody } from './client'
 
 function meRequestInit(): RequestInit & {

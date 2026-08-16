@@ -23,11 +23,11 @@ import {
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { TableColumnType } from 'ant-design-vue'
-import type { CreateUserDto, UpdateUserDto } from '@vue-nestjs-admin-template/schemas'
+import type { CreateUserDto, UpdateUserDto } from '@maghami-system/schemas'
 import {
   PermissionAction,
   PermissionResource,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { PublicUser } from '@/api/types'

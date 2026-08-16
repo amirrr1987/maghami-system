@@ -29,7 +29,7 @@ import {
   PermissionResource,
   type CreateRoleDto,
   type UpdateRoleDto,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { onMounted, reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { Role } from '@/api/types'

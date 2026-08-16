@@ -7,7 +7,7 @@ import type {
   LoginDto,
   LoginResult,
   UpdateProfileDto,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { UsersService } from '../users/users.service';
 import type { User } from '../users/user.entity';
 import type { JwtPayload } from './jwt-payload';

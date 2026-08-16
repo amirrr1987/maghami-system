@@ -3,7 +3,7 @@ import type {
   CreatePermissionDto,
   PaginationQuery,
   UpdatePermissionDto,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { permissionsApi } from '@/api/permissions.api'

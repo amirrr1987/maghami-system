@@ -10,11 +10,11 @@ import type {
   PaginationQuery,
   ProductCategory as ProductCategoryDto,
   ProductCategoryTreeNode,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import {
   paginationSkipTake,
   toPaginatedResult,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ProductCategory } from './product-category.entity';
 import type {

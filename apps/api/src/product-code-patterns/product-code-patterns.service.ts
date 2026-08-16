@@ -8,11 +8,11 @@ import type {
   PaginatedResult,
   PaginationQuery,
   ProductCodePattern as ProductCodePatternDto,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import {
   paginationSkipTake,
   toPaginatedResult,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ProductCategoriesService } from '../product-categories/product-categories.service';
 import { ProductCodePattern } from './product-code-pattern.entity';

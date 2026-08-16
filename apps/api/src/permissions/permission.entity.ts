@@ -10,7 +10,7 @@ import {
 import {
   PermissionAction,
   PermissionResource,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { Role } from '../roles/role.entity';
 
 @Entity({ name: 'permissions' })

@@ -5,7 +5,7 @@ import type {
   LoginDto,
   LoginResult,
   UpdateProfileDto,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { message } from 'ant-design-vue'

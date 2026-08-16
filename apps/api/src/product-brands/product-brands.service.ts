@@ -8,11 +8,11 @@ import type {
   PaginatedResult,
   PaginationQuery,
   ProductBrand as ProductBrandDto,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import {
   paginationSkipTake,
   toPaginatedResult,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ProductBrand } from './product-brand.entity';
 import type {

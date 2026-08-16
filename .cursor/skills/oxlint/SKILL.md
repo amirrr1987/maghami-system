@@ -13,7 +13,7 @@ Versions: `oxlint` **~1.74**, `eslint-plugin-oxlint` **~1.73** in `apps/web`.
 ## This repo
 
 - Config: `apps/web/.oxlintrc.json`
-- Script: `pnpm --filter @vue-nestjs-admin-template/web lint:oxlint` → `oxlint . --fix`
+- Script: `pnpm --filter @maghami-system/web lint:oxlint` → `oxlint . --fix`
 - ESLint bridge: `pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json')` (`eslint` skill)
 
 Prefer fixing findings properly; do not disable broadly without reason.

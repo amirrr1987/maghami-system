@@ -1,5 +1,5 @@
 {
-  "name": "@vue-nestjs-admin-template/web",
+  "name": "@maghami-system/web",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -21,7 +21,7 @@
     "@ant-design/icons-vue": "^7.0.1",
     "@casl/ability": "^6.8.1",
     "@casl/vue": "^2.2.6",
-    "@vue-nestjs-admin-template/schemas": "workspace:*",
+    "@maghami-system/schemas": "workspace:*",
     "@vueuse/core": "^14.4.0",
     "ant-design-vue": "^4.2.6",
     "pinia": "^4.0.2",

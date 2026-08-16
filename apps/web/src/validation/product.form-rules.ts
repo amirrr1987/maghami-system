@@ -1,5 +1,5 @@
 import type { RuleObject } from 'ant-design-vue/es/form'
-import { createProductSchema } from '@vue-nestjs-admin-template/schemas'
+import { createProductSchema } from '@maghami-system/schemas'
 import { zodRule } from './zod-rule'
 
 export const createProductFormRules: Record<

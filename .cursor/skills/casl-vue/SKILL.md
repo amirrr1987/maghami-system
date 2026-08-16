@@ -23,7 +23,7 @@ import {
   type CreateAbility,
 } from '@casl/ability';
 import { abilitiesPlugin, useAbility } from '@casl/vue';
-import type { AbilityRule } from '@vue-nestjs-admin-template/schemas';
+import type { AbilityRule } from '@maghami-system/schemas';
 ```
 
 This app wraps them in `apps/web/src/ability/index.ts` (`AppAbility`, `useAppAbility`, `updateAbilityFromRules`).
@@ -32,7 +32,7 @@ This app wraps them in `apps/web/src/ability/index.ts` (`AppAbility`, `useAppAbi
 
 Authz is **resource + action** from shared enums (not free-form strings).
 
-1. Enums in `@vue-nestjs-admin-template/schemas`: `PermissionResource`, `PermissionAction`
+1. Enums in `@maghami-system/schemas`: `PermissionResource`, `PermissionAction`
 2. Permission row: enum `resource` + enum `action` (unique together) + `name`
 3. `/auth/me` returns `abilities: AbilityRule[]` (super-admin → `{ action: 'manage', subject: 'all' }`)
 4. `updateAbilityFromRules(abilities)` → CASL `can(action, subject)` with **no** write↔update aliases
@@ -43,7 +43,7 @@ Authz is **resource + action** from shared enums (not free-form strings).
 A new action or resource requires extending the enums (then seed / UI Select options), not inventing ad-hoc strings.
 
 ```ts
-import { PermissionAction, PermissionResource } from '@vue-nestjs-admin-template/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 
 app.use(abilitiesPlugin, ability, { useGlobalProperties: true });
 

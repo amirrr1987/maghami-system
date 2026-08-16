@@ -1,4 +1,4 @@
-import type { AbilityRule } from '@vue-nestjs-admin-template/schemas'
+import type { AbilityRule } from '@maghami-system/schemas'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 import { ability } from '@/ability'
 

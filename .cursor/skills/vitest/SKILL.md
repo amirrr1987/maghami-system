@@ -21,7 +21,7 @@ import type { Mock } from 'vitest'
 ## This repo
 
 - Config: `apps/web/vitest.config.ts`
-- Script: `pnpm --filter @vue-nestjs-admin-template/web test:unit`
+- Script: `pnpm --filter @maghami-system/web test:unit`
 - Tests under `src/**/__tests__/*`
 
 ```ts

@@ -1,5 +1,5 @@
 import type { RuleObject } from 'ant-design-vue/es/form'
-import { updateProfileSchema } from '@vue-nestjs-admin-template/schemas'
+import { updateProfileSchema } from '@maghami-system/schemas'
 import { zodRule } from './zod-rule'
 
 export type ProfileFormModel = {

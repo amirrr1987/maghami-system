@@ -6,4 +6,4 @@ export {
   type CreateRoleDto,
   type UpdateRoleDto,
   type SetRolePermissionsDto,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';

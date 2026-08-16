@@ -24,7 +24,7 @@ import {
   PermissionAction,
   PermissionResource,
   type PaginationQuery,
-} from '@vue-nestjs-admin-template/schemas';
+} from '@maghami-system/schemas';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { RequireAbility } from '../auth/decorators/require-ability.decorator';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';

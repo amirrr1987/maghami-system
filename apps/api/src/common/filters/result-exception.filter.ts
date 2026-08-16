@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { failResult } from '@vue-nestjs-admin-template/schemas';
+import { failResult } from '@maghami-system/schemas';
 import type { Response } from 'express';
 
 function collectStringMessages(value: unknown): string[] {

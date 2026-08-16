@@ -9,7 +9,7 @@ import type {
   AbilityAction,
   AbilityRule,
   AbilitySubject,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 
 /**
  * Dynamic CASL: rules come from session `abilities` (permission.resource +

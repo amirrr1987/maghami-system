@@ -1,14 +1,14 @@
 ---
-name: vue-nestjs-admin-template-schemas
+name: maghami-system-schemas
 description: >
-  Shared @vue-nestjs-admin-template/schemas Zod contracts — DTOs, pagination, auth entities.
+  Shared @maghami-system/schemas Zod contracts — DTOs, pagination, auth entities.
   Use when changing API/web request/response shapes or importing from
   packages/schemas (workspace package).
 ---
 
-# @vue-nestjs-admin-template/schemas (type-safe)
+# @maghami-system/schemas (type-safe)
 
-Workspace package: `packages/schemas`. Apps depend via `"@vue-nestjs-admin-template/schemas": "workspace:*"`.
+Workspace package: `packages/schemas`. Apps depend via `"@maghami-system/schemas": "workspace:*"`.
 
 Also see skills: `zod`, and rule `.cursor/rules/shared-validation.mdc`.
 
@@ -23,7 +23,7 @@ import {
   type CreateUserDto,
   type PaginationQuery,
   type PaginatedResult,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 ```
 
 ## Build
@@ -31,10 +31,10 @@ import {
 After editing schemas, rebuild before the API consumes `dist/` (web aliases source in Vite):
 
 ```bash
-pnpm --filter @vue-nestjs-admin-template/schemas build
+pnpm --filter @maghami-system/schemas build
 ```
 
-`pnpm dev` / `pnpm dev:api` build this package first. A missing `packages/schemas/dist` is `TS2307: Cannot find module '@vue-nestjs-admin-template/schemas'`.
+`pnpm dev` / `pnpm dev:api` build this package first. A missing `packages/schemas/dist` is `TS2307: Cannot find module '@maghami-system/schemas'`.
 
 ## Layers
 
@@ -45,7 +45,7 @@ pnpm --filter @vue-nestjs-admin-template/schemas build
 ## Pagination
 
 ```ts
-import type { PaginatedResult, PaginationQuery } from '@vue-nestjs-admin-template/schemas'
+import type { PaginatedResult, PaginationQuery } from '@maghami-system/schemas'
 
 // Query: page, pageSize → PaginatedResult<T> { items, total, page, pageSize }
 ```
@@ -55,8 +55,8 @@ import type { PaginatedResult, PaginationQuery } from '@vue-nestjs-admin-templat
 All Nest JSON responses (under `/v1`) use:
 
 ```ts
-import type { ApiResult } from '@vue-nestjs-admin-template/schemas'
-import { okResult, failResult } from '@vue-nestjs-admin-template/schemas'
+import type { ApiResult } from '@maghami-system/schemas'
+import { okResult, failResult } from '@maghami-system/schemas'
 
 // { status, message: string[], isSuccess, data? }
 // CRUD success: message like ["Created successfully"]
@@ -82,7 +82,7 @@ import {
   PERMISSION_ACTIONS,
   PERMISSION_RESOURCES,
   permissionKey,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 ```
 
 - `PermissionResource` — `users` | `roles` | `permissions` | `products` | `product-categories` | `product-brands` | `product-units` | `product-attributes` | `product-code-patterns`
@@ -115,7 +115,7 @@ import {
   PermissionAction,
   PermissionResource,
   type AbilityRule,
-} from '@vue-nestjs-admin-template/schemas'
+} from '@maghami-system/schemas'
 ```
 
 ## Anti-patterns

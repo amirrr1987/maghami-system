@@ -12,7 +12,7 @@ Docs: [oxc.rs](https://oxc.rs). Version: `oxfmt` **^0.59** in `apps/web`.
 ## This repo
 
 ```bash
-pnpm --filter @vue-nestjs-admin-template/web format
+pnpm --filter @maghami-system/web format
 # → oxfmt src/
 ```
 
