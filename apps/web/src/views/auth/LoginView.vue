@@ -134,7 +134,7 @@ watch(() => route.query.reason, applyReasonFromQuery)
         <Card class="w-full max-w-md">
           <Flex vertical align="center" :gap="4" class="mb-6">
             <TypographyTitle :level="3" class="m-0!">
-              Monitoring
+              Maghami System
             </TypographyTitle>
             <TypographyText type="secondary">
               ورود به پنل مدیریت
