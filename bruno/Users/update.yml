@@ -1,0 +1,41 @@
+info:
+  name: Update user
+  type: http
+  seq: 4
+  tags:
+    - users
+    - crud
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/users/:id"
+  params:
+    - name: id
+      value: "{{userId}}"
+      type: path
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Operator (updated)",
+        "isActive": true
+      }
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Cannot update your own account. Use `userId` from Users → Create, not the admin.

@@ -1,0 +1,52 @@
+info:
+  name: Create permission
+  type: http
+  seq: 3
+  tags:
+    - permissions
+    - crud
+
+http:
+  method: POST
+  url: "{{baseUrl}}/permissions"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "code": "reports:read",
+        "resource": "reports",
+        "action": "read",
+        "name": "Read reports",
+        "description": "Bruno sample permission"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const data = res.body && res.body.data;
+        const id = data && data.id;
+        if (typeof id === "string" && id.length > 0) {
+          bru.setEnvVar("permissionId", id);
+        }
+    - type: tests
+      code: |-
+        test("creates a permission", function () {
+          expect(res.status).to.equal(200);
+          expect(res.body.isSuccess).to.equal(true);
+          expect(res.body.data.id).to.be.a("string");
+          expect(res.body.data.code).to.equal("reports:read");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Saves `permissionId` from `data.id`. Re-running with the same `code` returns 409.

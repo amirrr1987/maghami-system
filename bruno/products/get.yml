@@ -1,0 +1,28 @@
+info:
+  name: Get product
+  type: http
+  seq: 2
+  tags:
+    - products
+    - crud
+
+http:
+  method: GET
+  url: "{{baseUrl}}/products/:id"
+  params:
+    - name: id
+      value: "{{productId}}"
+      type: path
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

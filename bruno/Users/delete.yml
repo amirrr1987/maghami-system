@@ -1,0 +1,34 @@
+info:
+  name: Delete user
+  type: http
+  seq: 6
+  tags:
+    - users
+    - crud
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/users/:id"
+  params:
+    - name: id
+      value: "{{userId}}"
+      type: path
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body.isSuccess
+      operator: eq
+      value: "true"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Cannot delete your own account. Returns 200 ApiResult without data.

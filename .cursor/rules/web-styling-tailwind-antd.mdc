@@ -1,0 +1,45 @@
+---
+description: Web styling — Tailwind utilities only; colors from antdv / @ant-design/colors; no style blocks
+globs: apps/web/**/*.{vue,ts,css}
+alwaysApply: false
+---
+
+# Web styling: Tailwind + antdv colors
+
+## Do
+
+- Layout, spacing, typography, and one-off chrome: **Tailwind utility classes** on the template (`class` / `:class`)
+- **Colors** from Ant Design — not ad-hoc hex/rgb in Vue:
+  - Runtime tokens: `theme.useToken()` from `ant-design-vue/es` (`token.colorPrimary`, `colorText`, …)
+  - Palettes: exports from `@ant-design/colors` (typed package exports only)
+  - Wire shared brand colors into Tailwind via `@theme` in `apps/web/src/assets/main.css` using those same antd values when needed
+- Prefer antdv components for forms, tables, modals, feedback; Tailwind for page/layout around them
+
+## Do not
+
+- `<style>`, `<style scoped>`, or extra `.vue` CSS modules for app UI
+- Inline `style="..."` / `:style` object maps for colors/layout (exception: values that **must** come from `token` at runtime — prefer CSS variables / class bindings when possible)
+- Hand-rolled custom CSS class names (`.my-card`, `.page-title`, …) in SFCs or side CSS files
+- Random hex/palette outside antdv / `@ant-design/colors`
+
+## Allowed CSS files
+
+- `apps/web/src/assets/main.css` — Tailwind entry (`@import 'tailwindcss'`, optional `@theme` bridging antd colors)
+- `ant-design-vue/dist/reset.css` (or ConfigProvider theme) — not a place for feature styles
+
+## Example
+
+```vue
+<script setup lang="ts">
+import { blue } from '@ant-design/colors';
+// Prefer token in app shell; palette import when mapping into @theme / constants
+</script>
+
+<template>
+  <div class="flex min-h-screen flex-col gap-4 p-6">
+    <h1 class="text-2xl font-semibold text-[var(--ant-color-text)]">Roles</h1>
+  </div>
+</template>
+```
+
+If a visual cannot be expressed with Tailwind + antd tokens, extend `@theme` / ConfigProvider — do not add a `<style>` block.

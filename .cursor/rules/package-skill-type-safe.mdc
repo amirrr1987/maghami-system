@@ -1,0 +1,37 @@
+---
+description: After installing any package, create a fully type-safe Cursor skill that uses that package's own exported interfaces/types
+alwaysApply: true
+---
+
+# Package install → type-safe skill
+
+Whenever a dependency is **added or upgraded** (`pnpm` install/add only, or edits to `package.json` dependencies), **create or update a Cursor skill** for that package before treating the install as done. Use **pnpm only** — never npm/yarn/bun.
+
+## Where
+
+- Prefer **project** skills: `.cursor/skills/<package-name>/SKILL.md`
+- Follow the create-skill format (YAML frontmatter `name` + `description`, concise body)
+- One skill per package (or tightly coupled pair, e.g. `antdv` + icons)
+
+## Type-safety requirements (mandatory)
+
+1. **Full safe types** — guide all usage with TypeScript; forbid `any` / untyped props / loose casts in examples and guidance.
+2. **Source of truth = the package** — types must come from **that package's public exports** (`import type { … } from '<pkg>'` / subpaths). Do **not** invent parallel interfaces that duplicate or drift from the library.
+3. **Verify against the package** before writing the skill:
+   - Read installed typings (`node_modules/<pkg>/**/*.d.ts`, `exports` in its `package.json`)
+   - Prefer exported `*Props`, `*Options`, `*Config`, generics, and named `interface`/`type` from the package
+   - Pin guidance to the **installed major version** from this repo's `package.json`
+4. Show concrete snippets that use those exported types (props, events, return types, generics).
+5. If the package has **no** usable types, say so explicitly and still document the safest typed wrappers (e.g. narrow `unknown`, zod/schemas) — never silently use `any`.
+
+## Skill content checklist
+
+- When to apply (triggers: package name, common APIs)
+- Correct imports for this version (tree-shake / subpath if recommended)
+- Type-safe patterns using **package interfaces only**
+- Anti-patterns: `any`, hand-rolled duplicate props, wrong major-version APIs
+- Link to official docs when helpful
+
+## Do not skip
+
+Installing/upgrading a package without creating/updating its type-safe skill is incomplete work — finish the skill in the same turn unless the user explicitly opts out.

@@ -1,0 +1,33 @@
+---
+description: RBAC only — permissions attach via roles, never directly to users
+globs: apps/api/src/{users,roles,permissions}/**/*
+alwaysApply: true
+---
+
+# Access control: roles mediate permissions
+
+This app uses **classic RBAC**:
+
+`User` → `Role` → `Permission`
+
+## Do
+
+- Assign **roles** to users (`user_roles`)
+- Assign **permissions** to roles (`role_permissions`)
+- Compute effective permissions as the union of permissions from the user's roles
+- Prefer a new/narrow role (or adjusting an existing role) when one user needs different access
+
+## Do not
+
+- Add `user_permissions` / direct `User` ↔ `Permission` relations for global capability codes (e.g. `users:read`)
+- Mix per-user ACL grants with role-based grants for the same permission catalog (two sources of truth)
+- Use “just this one exception for this user” as a reason to bypass roles — that creates unauditable snowflakes
+
+## Why
+
+Direct user→permission breaks the point of roles: auditability, least-privilege review, and predictable bulk changes. Role edits should fully describe access.
+
+## Out of scope (do not confuse with this rule)
+
+- **Resource-level ACL** (e.g. access to one dashboard/document) is a different layer later if needed — not the same as attaching catalog permissions to a user
+- Temporary overrides, if ever required, need explicit expiry + audit — still prefer a short-lived role over ad-hoc grants

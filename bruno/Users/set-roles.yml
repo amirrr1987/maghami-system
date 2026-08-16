@@ -1,0 +1,39 @@
+info:
+  name: Set user roles
+  type: http
+  seq: 5
+  tags:
+    - users
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/users/:id/roles"
+  params:
+    - name: id
+      value: "{{userId}}"
+      type: path
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "roleIds": ["{{roleValue}}"]
+      }
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Replaces the full role set. `roleIds` are slugs. Cannot change your own roles.

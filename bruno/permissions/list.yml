@@ -1,0 +1,31 @@
+info:
+  name: List permissions
+  type: http
+  seq: 1
+  tags:
+    - permissions
+    - crud
+
+http:
+  method: GET
+  url: "{{baseUrl}}/permissions"
+  params:
+    - name: page
+      value: "{{page}}"
+      type: query
+    - name: pageSize
+      value: "{{pageSize}}"
+      type: query
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

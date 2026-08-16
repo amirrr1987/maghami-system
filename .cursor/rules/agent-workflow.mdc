@@ -1,0 +1,46 @@
+---
+description: Use pnpm only; never run terminal commands for the user; always propose a git commit message after work
+alwaysApply: true
+---
+
+# Agent workflow: pnpm, no shell, commit message
+
+## Package manager: pnpm only
+
+- Install, add, remove, and upgrade packages **only with `pnpm`**.
+- Never suggest or use `npm`, `yarn`, or `bun` for dependency management in this repo.
+- Prefer workspace-aware commands when relevant, e.g. `pnpm add <pkg> --filter <app>`, `pnpm install`.
+
+## Terminal: instruct, do not execute
+
+See **`no-terminal.mdc`** (hard ban). Summary:
+
+- **Never** run Shell / terminal for the user (installs, builds, tests, git, docker, verify, etc.).
+- Give the exact command(s); they run them.
+- Non-shell file read/edit is allowed.
+- Exception **only** if the **same message** explicitly names the command to execute (e.g. “run `pnpm --filter @vue-nestjs-admin-template/schemas build`”). “Verify/fix/check” is **not** permission.
+
+## Git commit message after every change (good commits)
+
+After any work that changes the repo (code, rules, skills, config, docs):
+
+1. Do **not** create the commit yourself unless the user explicitly asks to commit.
+2. Always end with a **Conventional Commits** message the user can paste:
+
+```
+Suggested commit message:
+<type>(<optional-scope>): <imperative subject>
+
+<optional body: why, not how>
+```
+
+### Good commit rules
+
+- **One concern per suggested commit** when changes are separable; otherwise one accurate message for the whole change set
+- **type**: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `build` | `ci` | `chore` | `revert`
+- **subject**: imperative mood, lowercase start preferred, no trailing period, ≤72 chars, focuses on **why/what outcome**
+- **body** (when needed): explain motivation / trade-offs; wrap ~72 cols; no dump of file lists
+- Prefer `feat(api): …` / `chore(rules): …` scopes that match the repo (`api`, `web`, `rules`, …)
+- Never invent secrets or put credentials in the message
+
+3. If there were no file changes, skip the commit message.

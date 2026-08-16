@@ -1,0 +1,31 @@
+info:
+  name: Get role
+  type: http
+  seq: 2
+  tags:
+    - roles
+    - crud
+
+http:
+  method: GET
+  url: "{{baseUrl}}/roles/:id"
+  params:
+    - name: id
+      value: "{{roleValue}}"
+      type: path
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  `:id` is the role slug (`value`), not a UUID.

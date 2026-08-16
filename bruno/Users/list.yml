@@ -1,0 +1,42 @@
+info:
+  name: List users
+  type: http
+  seq: 1
+  tags:
+    - users
+    - crud
+
+http:
+  method: GET
+  url: "{{baseUrl}}/users"
+  params:
+    - name: page
+      value: "{{page}}"
+      type: query
+    - name: pageSize
+      value: "{{pageSize}}"
+      type: query
+  headers:
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        const token = bru.getEnvVar("accessToken") || bru.getVar("accessToken");
+        if (!token) {
+          throw new Error("accessToken empty — run Auth → Login first (Local env)");
+        }
+        req.setHeader("Authorization", "Bearer " + token);
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

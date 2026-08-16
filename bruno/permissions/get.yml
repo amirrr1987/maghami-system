@@ -1,0 +1,28 @@
+info:
+  name: Get permission
+  type: http
+  seq: 2
+  tags:
+    - permissions
+    - crud
+
+http:
+  method: GET
+  url: "{{baseUrl}}/permissions/:id"
+  params:
+    - name: id
+      value: "{{permissionId}}"
+      type: path
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

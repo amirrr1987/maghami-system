@@ -1,0 +1,18 @@
+{
+  "name": "vue-nestjs-admin-template",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm --filter @vue-nestjs-admin-template/schemas build && pnpm -r --parallel --filter @vue-nestjs-admin-template/api --filter @vue-nestjs-admin-template/web run dev",
+    "dev:api": "pnpm --filter @vue-nestjs-admin-template/api dev",
+    "dev:web": "pnpm --filter @vue-nestjs-admin-template/web dev",
+    "build": "pnpm --filter @vue-nestjs-admin-template/schemas build && pnpm -r --filter !@vue-nestjs-admin-template/schemas run build",
+    "build:schemas": "pnpm --filter @vue-nestjs-admin-template/schemas build",
+    "build:api": "pnpm --filter @vue-nestjs-admin-template/schemas build && pnpm --filter @vue-nestjs-admin-template/api build",
+    "build:web": "pnpm --filter @vue-nestjs-admin-template/schemas build && pnpm --filter @vue-nestjs-admin-template/web build"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

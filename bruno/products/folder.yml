@@ -1,0 +1,16 @@
+info:
+  name: Products
+  type: folder
+  seq: 6
+
+http:
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        const token = bru.getEnvVar("accessToken") || bru.getVar("accessToken");
+        if (token) {
+          req.setHeader("Authorization", "Bearer " + token);
+        }

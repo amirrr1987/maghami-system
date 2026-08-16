@@ -1,0 +1,21 @@
+info:
+  name: Monitoring API
+
+http:
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  auth:
+    type: bearer
+    token: "{{accessToken}}"
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        const token = bru.getEnvVar("accessToken") || bru.getVar("accessToken");
+        if (token) {
+          req.setHeader("Authorization", "Bearer " + token);
+        }

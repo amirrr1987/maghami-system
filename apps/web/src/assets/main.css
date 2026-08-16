@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
+@import 'tailwindcss';
+@theme {
+  --font-family: 'Vazirmatn', sans-serif;
+  --color-primary: var(--ant-color-primary);
+  --color-success: var(--ant-color-success);
+  --color-warning: var(--ant-color-warning);
+  --color-error: var(--ant-color-error);
+  --color-info: var(--ant-color-info);
+}
+*{
+  font-family: var(--font-family);
+}

@@ -1,0 +1,16 @@
+info:
+  name: Permissions
+  type: folder
+  seq: 3
+
+http:
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        const token = bru.getEnvVar("accessToken") || bru.getVar("accessToken");
+        if (token) {
+          req.setHeader("Authorization", "Bearer " + token);
+        }

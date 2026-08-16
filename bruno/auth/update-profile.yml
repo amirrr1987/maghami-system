@@ -1,0 +1,37 @@
+info:
+  name: Update profile
+  type: http
+  seq: 5
+  tags:
+    - auth
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/auth/me"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{adminEmail}}",
+        "name": "{{adminName}}"
+      }
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Self-service profile. Omit `password` unless you intend to change it.
+  Does not accept `roleIds` or `isActive` (admin user APIs only).

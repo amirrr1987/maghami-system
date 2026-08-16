@@ -1,0 +1,8 @@
+info:
+  name: Health
+  type: folder
+  seq: 1
+
+http:
+  auth:
+    type: none

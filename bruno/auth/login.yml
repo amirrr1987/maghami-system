@@ -1,0 +1,65 @@
+info:
+  name: Login
+  type: http
+  seq: 1
+  tags:
+    - auth
+    - public
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/login"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Authorization
+      value: ""
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{adminEmail}}",
+        "password": "{{process.env.ADMIN_PASSWORD}}"
+      }
+  auth:
+    type: none
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        // Ensure stale Authorization from collection is not sent.
+        try {
+          req.setHeader("Authorization", "");
+        } catch (e) {}
+    - type: after-response
+      code: |-
+        const data = res.body && res.body.data;
+        if (!data) return;
+        if (typeof data.accessToken === "string" && data.accessToken.length > 0) {
+          bru.setEnvVar("accessToken", data.accessToken, { persist: true });
+          bru.setVar("accessToken", data.accessToken);
+        }
+    - type: tests
+      code: |-
+        test("login stores accessToken; refresh is cookie", function () {
+          expect(res.status).to.equal(200);
+          expect(res.body.isSuccess).to.equal(true);
+          expect(res.body.data.accessToken).to.be.a("string").and.not.empty;
+          expect(res.body.data.refreshToken).to.equal(undefined);
+          const stored =
+            bru.getEnvVar("accessToken") || bru.getVar("accessToken");
+          expect(stored).to.equal(res.body.data.accessToken);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  Auth = None. Saves accessToken to env. Refresh token is Set-Cookie (HttpOnly).
+  Keep Bruno cookie jar enabled so Refresh / Logout work after Login.
+  Then Users → List (Authorization is set by collection before-request).

@@ -1,0 +1,51 @@
+info:
+  name: Create role
+  type: http
+  seq: 3
+  tags:
+    - roles
+    - crud
+
+http:
+  method: POST
+  url: "{{baseUrl}}/roles"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "label": "Operator",
+        "value": "{{roleValue}}",
+        "description": "Bruno sample role",
+        "permissionIds": []
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const data = res.body && res.body.data;
+        const value = data && data.value;
+        if (typeof value === "string" && value.length > 0) {
+          bru.setEnvVar("roleValue", value);
+        }
+    - type: tests
+      code: |-
+        test("creates a role", function () {
+          expect(res.status).to.equal(200);
+          expect(res.body.isSuccess).to.equal(true);
+          expect(res.body.data.value).to.be.a("string");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  `value` is a lowercase slug. `super-admin` is reserved.
+  Assign permissions with **Set role permissions** after Permissions → Create.

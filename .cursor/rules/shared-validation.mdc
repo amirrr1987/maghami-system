@@ -1,0 +1,37 @@
+---
+description: Shared Zod schemas are the API contract; antdv may add extra UX rules only
+globs: "{apps,packages}/**/*.{ts,vue}"
+alwaysApply: true
+---
+
+# Shared validation (Zod ↔ antdv)
+
+## Source of truth
+
+Contract fields for users / roles / permissions live in **`@vue-nestjs-admin-template/schemas`** (Zod). Nest pipes and Vue forms must not invent parallel min/max/email/uuid rules.
+
+## Layers
+
+1. **Shared Zod** (`packages/schemas`) — API request body contract (`.strict()`, lengths, formats)
+2. **API** — `ZodValidationPipe` + thin re-exports under `apps/api/src/**/**.schemas.ts`
+3. **Web antdv** — `RuleObject[]` built from shared schemas via `zodRule(...)` in `apps/web/src/validation/`
+
+## Frontend may add more rules
+
+antdv **may** add UX-only rules (required timing, whitespace, confirm-password, async uniqueness messages) **in addition to** shared Zod — never instead of it, and never looser than the shared schema (e.g. do not set `max: 200` if Zod says `max(128)`).
+
+```ts
+import { createRoleSchema } from '@vue-nestjs-admin-template/schemas';
+import { zodRule } from '@/validation/zod-rule';
+
+name: [
+  { required: true, message: 'Name is required' }, // UX OK
+  zodRule(createRoleSchema.shape.name),            // contract required
+]
+```
+
+## Do not
+
+- Duplicate the same constraints only in antdv `rules` without Zod
+- Put antdv / Vue imports into `@vue-nestjs-admin-template/schemas` (keep that package Zod-only)
+- Drift API-local Zod copies — change `packages/schemas` only

@@ -1,0 +1,22 @@
+name: Local
+variables:
+  - name: baseUrl
+    value: http://localhost:3000/v1
+  - name: adminEmail
+    value: super-admin@localhost.ir
+  - name: adminName
+    value: super-admin
+  - secret: true
+    name: accessToken
+  - name: page
+    value: "1"
+  - name: pageSize
+    value: "10"
+  - name: permissionId
+    value: ""
+  - name: roleValue
+    value: operator
+  - name: userId
+    value: ""
+  - name: productId
+    value: ""

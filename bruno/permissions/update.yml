@@ -1,0 +1,38 @@
+info:
+  name: Update permission
+  type: http
+  seq: 4
+  tags:
+    - permissions
+    - crud
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/permissions/:id"
+  params:
+    - name: id
+      value: "{{permissionId}}"
+      type: path
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Read reports (updated)",
+        "description": "Updated from Bruno"
+      }
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

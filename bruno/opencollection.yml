@@ -1,0 +1,39 @@
+opencollection: 1.0.0
+
+info:
+  name: Monitoring API
+
+request:
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Authorization
+      value: Bearer {{accessToken}}
+  auth:
+    type: bearer
+    token: "{{accessToken}}"
+  scripts:
+    - type: before-request
+      code: |-
+        // Force Authorization from env/runtime so Inherit/Secrets cannot drop it.
+        const token = bru.getEnvVar("accessToken") || bru.getVar("accessToken");
+        if (token) {
+          req.setHeader("Authorization", "Bearer " + token);
+        }
+
+docs:
+  type: text/markdown
+  content: |-
+    1. Environment **Local**
+    2. `bruno/.env` with `ADMIN_PASSWORD=...`
+    3. Run **Auth → Login** (saves `accessToken` secret)
+    4. Call `/users` — collection before-request sets `Authorization: Bearer …`
+
+    If 401: check Environments → Local → Secrets → `accessToken` is non-empty
+    after Login. Re-run Login, then retry.
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git
