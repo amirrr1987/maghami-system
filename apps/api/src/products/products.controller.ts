@@ -54,8 +54,8 @@ export class ProductsController {
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'pageSize', required: false, type: Number, example: 10 })
   @ApiQuery({ name: 'q', required: false, type: String })
-  @ApiQuery({ name: 'categoryId', required: false, type: String, format: 'uuid' })
-  @ApiQuery({ name: 'brandId', required: false, type: String, format: 'uuid' })
+  @ApiQuery({ name: 'categoryId', required: false, type: String })
+  @ApiQuery({ name: 'brandId', required: false, type: String })
   @ApiQuery({ name: 'isActive', required: false, type: Boolean })
   @ApiOkResponse({ type: ApiResultPaginatedProductsResponse })
   findAll(
@@ -70,7 +70,7 @@ export class ProductsController {
   @ApiOperation({
     summary: 'Preview next SKU for a category (does not allocate)',
   })
-  @ApiQuery({ name: 'categoryId', required: true, type: String, format: 'uuid' })
+  @ApiQuery({ name: 'categoryId', required: true, type: String })
   @ApiOkResponse({ type: ApiResultSkuPreviewResponse })
   previewSku(@Query('categoryId', ParseUUIDPipe) categoryId: string) {
     return this.productsService.previewSku(categoryId);
