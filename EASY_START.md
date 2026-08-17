@@ -64,7 +64,7 @@ Optional pgAdmin (login with `PGADMIN_DEFAULT_EMAIL` / `PGADMIN_DEFAULT_PASSWORD
 docker compose up db pgadmin -d
 ```
 
-Then open http://localhost:5050/pgadmin4 . The preloaded server **maghami-system** uses host `db`. Postgres password is `DATABASE_PASSWORD` (default `postgres`).
+Then open http://localhost:5050/pgadmin4 . The preloaded server **maghami-system** uses host `maghami-system-db`. Postgres password is `DATABASE_PASSWORD` (default `postgres`).
 
 ### 2. Install and configure
 
