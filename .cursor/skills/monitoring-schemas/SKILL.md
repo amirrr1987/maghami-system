@@ -1,5 +1,5 @@
 ---
-name: monitoring-schemas
+name: maghami-system-schemas
 description: DEPRECATED — use maghami-system-schemas skill instead.
 ---
 

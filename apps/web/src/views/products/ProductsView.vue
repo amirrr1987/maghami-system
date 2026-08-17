@@ -76,6 +76,19 @@ const skuPreviewLoading = ref(false)
 let searchTimer: ReturnType<typeof setTimeout> | undefined
 let previewTimer: ReturnType<typeof setTimeout> | undefined
 
+let attributeRowKey = 0
+
+type AttributeRow = {
+  key: string
+  attributeId: string | undefined
+  value: string
+}
+
+function nextAttributeRowKey(): string {
+  attributeRowKey += 1
+  return `attr-row-${attributeRowKey}`
+}
+
 const model = reactive({
   sku: '',
   name: '',
@@ -86,7 +99,7 @@ const model = reactive({
   description: '',
   price: 0 as number | undefined,
   isActive: true,
-  attributeValues: {} as Record<string, string>,
+  attributeRows: [] as AttributeRow[],
 })
 
 const categoryOptions = computed(() =>
@@ -129,8 +142,54 @@ function resetModel(): void {
   model.description = ''
   model.price = 0
   model.isActive = true
-  model.attributeValues = {}
+  model.attributeRows = []
   skuPreview.value = ''
+}
+
+function addAttributeRow(): void {
+  model.attributeRows.push({
+    key: nextAttributeRowKey(),
+    attributeId: undefined,
+    value: '',
+  })
+}
+
+function removeAttributeRow(key: string): void {
+  model.attributeRows = model.attributeRows.filter((row) => row.key !== key)
+}
+
+function attributeById(id: string | undefined): ProductAttribute | undefined {
+  if (!id) return undefined
+  return activeAttributes.value.find((row) => row.id === id)
+}
+
+function attributeSelectOptions(
+  rowKey: string,
+): { label: string; value: string }[] {
+  const usedIds = new Set(
+    model.attributeRows
+      .filter((row) => row.key !== rowKey && row.attributeId)
+      .map((row) => row.attributeId as string),
+  )
+  return activeAttributes.value
+    .filter((attr) => !usedIds.has(attr.id))
+    .map((attr) => ({
+      label: `${attr.name} (${attr.code})`,
+      value: attr.id,
+    }))
+}
+
+function onAttributeRowAttributeChange(row: AttributeRow): void {
+  row.value = ''
+}
+
+function buildAttributeValues(): NonNullable<CreateProductDto['attributeValues']> {
+  return model.attributeRows
+    .filter((row) => row.attributeId && row.value.trim() !== '')
+    .map((row) => ({
+      attributeId: row.attributeId as string,
+      value: row.value.trim(),
+    }))
 }
 
 function openCreate(): void {
@@ -152,11 +211,11 @@ function openEdit(product: Product): void {
   model.description = product.description ?? ''
   model.price = product.price
   model.isActive = product.isActive
-  const values: Record<string, string> = {}
-  for (const row of product.attributeValues ?? []) {
-    values[row.attributeId] = row.value
-  }
-  model.attributeValues = values
+  model.attributeRows = (product.attributeValues ?? []).map((row) => ({
+    key: nextAttributeRowKey(),
+    attributeId: row.attributeId,
+    value: row.value,
+  }))
   skuPreview.value = product.sku
   open.value = true
 }
@@ -206,6 +265,12 @@ function selectOptionsFor(attr: ProductAttribute): { label: string; value: strin
   return (attr.options ?? []).map((value) => ({ label: value, value }))
 }
 
+function selectOptionsForRow(row: AttributeRow): { label: string; value: string }[] {
+  const attr = attributeById(row.attributeId)
+  if (!attr) return []
+  return selectOptionsFor(attr)
+}
+
 async function onSubmit(): Promise<void> {
   if (editing.value) {
     if (!can(PermissionAction.Update, PermissionResource.Products)) {
@@ -225,9 +290,7 @@ async function onSubmit(): Promise<void> {
     model.description.trim() !== '' ? model.description.trim() : null
   const barcode = model.barcode.trim() !== '' ? model.barcode.trim() : null
   const sku = model.sku.trim() !== '' ? model.sku.trim() : undefined
-  const attributeValues = Object.entries(model.attributeValues)
-    .filter(([, value]) => value.trim() !== '')
-    .map(([attributeId, value]) => ({ attributeId, value: value.trim() }))
+  const attributeValues = buildAttributeValues()
 
   if (editing.value) {
     const dto: UpdateProductDto = {
@@ -475,47 +538,95 @@ onMounted(async () => {
           <Textarea v-model:value="model.description" :rows="3" allow-clear />
         </FormItem>
 
-        <template v-if="activeAttributes.length > 0">
-          <TypographyText strong class="mb-2 block">ویژگی‌ها</TypographyText>
-          <FormItem
-            v-for="attr in activeAttributes"
-            :key="attr.id"
-            :label="`${attr.name} (${attr.code})`"
+        <FormItem label="ویژگی‌ها">
+          <TypographyText
+            v-if="activeAttributes.length === 0"
+            type="secondary"
+            class="mb-2 block"
           >
-            <Select
-              v-if="attr.type === 'SELECT'"
-              v-model:value="model.attributeValues[attr.id]"
-              allow-clear
-              :options="selectOptionsFor(attr)"
-            />
-            <Select
-              v-else-if="attr.type === 'BOOLEAN'"
-              v-model:value="model.attributeValues[attr.id]"
-              allow-clear
-              :options="booleanOptions()"
-            />
-            <InputNumber
-              v-else-if="attr.type === 'NUMBER'"
+            ابتدا از منوی «ویژگی‌های محصول» ویژگی فعال تعریف کنید.
+          </TypographyText>
+          <Space v-else direction="vertical" class="w-full" size="middle">
+            <Space
+              v-for="row in model.attributeRows"
+              :key="row.key"
+              align="start"
               class="w-full"
-              :value="
-                model.attributeValues[attr.id]
-                  ? Number(model.attributeValues[attr.id])
-                  : undefined
-              "
-              @update:value="
-                (value) => {
-                  model.attributeValues[attr.id] =
-                    value === null || value === undefined ? '' : String(value)
-                }
-              "
-            />
-            <Input
-              v-else
-              v-model:value="model.attributeValues[attr.id]"
-              allow-clear
-            />
-          </FormItem>
-        </template>
+            >
+              <Select
+                v-model:value="row.attributeId"
+                show-search
+                option-filter-prop="label"
+                :options="attributeSelectOptions(row.key)"
+                placeholder="انتخاب ویژگی"
+                class="min-w-48"
+                @change="onAttributeRowAttributeChange(row)"
+              />
+              <Select
+                v-if="attributeById(row.attributeId)?.type === 'SELECT'"
+                v-model:value="row.value"
+                allow-clear
+                class="min-w-48 flex-1"
+                placeholder="مقدار"
+                :options="selectOptionsForRow(row)"
+              />
+              <Select
+                v-else-if="attributeById(row.attributeId)?.type === 'BOOLEAN'"
+                v-model:value="row.value"
+                allow-clear
+                class="min-w-48 flex-1"
+                placeholder="مقدار"
+                :options="booleanOptions()"
+              />
+              <InputNumber
+                v-else-if="attributeById(row.attributeId)?.type === 'NUMBER'"
+                class="min-w-48 flex-1"
+                placeholder="مقدار"
+                :value="row.value ? Number(row.value) : undefined"
+                @update:value="
+                  (value) => {
+                    row.value =
+                      value === null || value === undefined ? '' : String(value)
+                  }
+                "
+              />
+              <Input
+                v-else-if="row.attributeId"
+                v-model:value="row.value"
+                allow-clear
+                class="min-w-48 flex-1"
+                placeholder="مقدار"
+              />
+              <Input
+                v-else
+                disabled
+                class="min-w-48 flex-1"
+                placeholder="ابتدا ویژگی را انتخاب کنید"
+              />
+              <Button
+                type="text"
+                danger
+                aria-label="حذف ویژگی"
+                @click="removeAttributeRow(row.key)"
+              >
+                <template #icon>
+                  <DeleteOutlined />
+                </template>
+              </Button>
+            </Space>
+            <Button
+              type="dashed"
+              block
+              :disabled="model.attributeRows.length >= activeAttributes.length"
+              @click="addAttributeRow"
+            >
+              <template #icon>
+                <PlusOutlined />
+              </template>
+              افزودن ویژگی
+            </Button>
+          </Space>
+        </FormItem>
 
         <FormItem label="فعال" name="isActive">
           <Switch v-model:checked="model.isActive" />
