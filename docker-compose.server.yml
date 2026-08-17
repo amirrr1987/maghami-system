@@ -57,6 +57,23 @@ services:
       db:
         condition: service_healthy
 
+  pgadmin:
+    image: dpage/pgadmin4:9
+    container_name: maghami-system-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:?Set PGADMIN_DEFAULT_EMAIL in .env}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?Set PGADMIN_DEFAULT_PASSWORD in .env}
+      PGADMIN_DISABLE_POSTFIX: "true"
+      SCRIPT_NAME: /pgadmin4
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
   web:
     build:
       context: .
@@ -68,7 +85,9 @@ services:
       - "${WEB_PORT:-80}:80"
     depends_on:
       - api
+      - pgadmin
 
 volumes:
   vue_nestjs_admin_template_pgdata:
   api_uploads:
+  pgadmin_data:

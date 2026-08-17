@@ -4,9 +4,9 @@ Three ways to run the stack. Pick one.
 
 | Mode | Best for | What runs in Docker |
 |------|----------|---------------------|
-| **A — Full stack** | Quick try / demo | Postgres + API + Web |
-| **B — DB only** | Day-to-day coding | Postgres only (API/Web on your machine) |
-| **C — VPS / IP** | Test on a server with no domain | Postgres + API + Web on port 80 |
+| **A — Full stack** | Quick try / demo | Postgres + API + Web + pgAdmin |
+| **B — DB only** | Day-to-day coding | Postgres (+ optional pgAdmin) |
+| **C — VPS / IP** | Test on a server with no domain | Postgres + API + Web + pgAdmin on port 80 |
 
 **Need:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Compose v2) for A/B. Mode C: Docker Engine + Compose v2 on Linux. For mode B also **Node ≥ 20** and **pnpm 9**.
 
@@ -28,6 +28,7 @@ Open:
 | API (via nginx) | http://localhost:5173/api |
 | API (direct) | http://localhost:3000/v1 |
 | Swagger | http://localhost:5173/docs |
+| pgAdmin | http://localhost:5173/pgadmin4 |
 
 Smoke check:
 
@@ -56,6 +57,14 @@ docker compose down -v
 ```bash
 docker compose up db -d
 ```
+
+Optional pgAdmin (login with `PGADMIN_DEFAULT_EMAIL` / `PGADMIN_DEFAULT_PASSWORD`, defaults `admin@localhost.ir` / `admin`):
+
+```bash
+docker compose up db pgadmin -d
+```
+
+Then open http://localhost:5050/pgadmin4 . The preloaded server **maghami-system** uses host `db`. Postgres password is `DATABASE_PASSWORD` (default `postgres`).
 
 ### 2. Install and configure
 
@@ -100,7 +109,7 @@ pnpm dev:web
 
 ## C) VPS by IP only (no domain)
 
-Linux VPS (Ubuntu). Do **not** use Windows Server. Build needs about **6–8 GB RAM**.
+Linux VPS: **Ubuntu 24.04 LTS** (not 20.04; 22.04 is a fine fallback). Do **not** use Windows Server. Build needs about **6–8 GB RAM**.
 
 On the server, from the repo root:
 
@@ -111,7 +120,7 @@ cp .env.example .env
 Edit `.env`:
 
 - `PUBLIC_ORIGIN=http://YOUR.SERVER.IP` — exactly what you type in the browser (no trailing slash; add `:port` if `WEB_PORT` is not 80)
-- Set `DATABASE_PASSWORD`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `BOOTSTRAP_ADMIN_PASSWORD`
+- Set `DATABASE_PASSWORD`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `BOOTSTRAP_ADMIN_PASSWORD`, `PGADMIN_DEFAULT_EMAIL`, `PGADMIN_DEFAULT_PASSWORD`
 
 Then:
 
@@ -126,8 +135,11 @@ Open:
 | Web | http://YOUR.SERVER.IP/ |
 | API (via nginx) | http://YOUR.SERVER.IP/api |
 | Swagger | http://YOUR.SERVER.IP/docs |
+| pgAdmin | http://YOUR.SERVER.IP/pgadmin4 |
 
 Postgres and Nest are **not** published on the host. Only port **80**.
+
+pgAdmin login is `PGADMIN_DEFAULT_EMAIL` / `PGADMIN_DEFAULT_PASSWORD`. Connect with the preloaded **maghami-system** server (host `db`, password = `DATABASE_PASSWORD`).
 
 Logs / stop:
 
@@ -163,6 +175,7 @@ docker compose down
 | Web | `5173` (`WEB_PORT`) | `80` (`WEB_PORT`) | `80` |
 | API | `3000` (`PORT`) | not published | `3000` |
 | Postgres | `5432` (`DATABASE_PORT`) | not published | `5432` |
+| pgAdmin | `5050` (`PGADMIN_PORT`) | not published (`/pgadmin4` on 80) | `80` |
 
 Override with a root `.env` next to `docker-compose.yml`, for example:
 
@@ -194,3 +207,5 @@ CORS_ORIGIN=http://localhost:5173
 **Login succeeds but session drops (HTTP)** — keep `COOKIE_SECURE=false` in `.env` for IP testing without HTTPS.
 
 **Compose build killed / out of memory** — use a 6–8 GB plan, or add swap, then retry `docker compose -f docker-compose.server.yml up --build -d`.
+
+**pgAdmin cannot reach Postgres** — use host `db` (Docker DNS), not `localhost`. Password is `DATABASE_PASSWORD` from `.env`.
