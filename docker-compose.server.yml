@@ -12,14 +12,14 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER:-postgres}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
-      POSTGRES_DB: ${DATABASE_NAME:-maghami-system}
+      POSTGRES_DB: ${DATABASE_NAME:-maghami_system}
     volumes:
       - maghami-system_pgdata:/var/lib/postgresql/data
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${DATABASE_USER:-postgres} -d ${DATABASE_NAME:-maghami-system}",
+          "pg_isready -U ${DATABASE_USER:-postgres} -d ${DATABASE_NAME:-maghami_system}",
         ]
       interval: 5s
       timeout: 5s
@@ -38,7 +38,7 @@ services:
       DATABASE_PORT: 5432
       DATABASE_USER: ${DATABASE_USER:-postgres}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
-      DATABASE_NAME: ${DATABASE_NAME:-maghami-system}
+      DATABASE_NAME: ${DATABASE_NAME:-maghami_system}
       TYPEORM_SYNC: ${TYPEORM_SYNC:-true}
       CORS_ORIGIN: ${PUBLIC_ORIGIN:?Set PUBLIC_ORIGIN in .env to http://YOUR_IP}
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}

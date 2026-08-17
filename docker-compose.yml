@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER:-postgres}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      POSTGRES_DB: ${DATABASE_NAME:-maghami-system}
+      POSTGRES_DB: ${DATABASE_NAME:-maghami_system}
     ports:
       - "${DATABASE_PUBLISH_PORT:-5433}:5432"
     volumes:
@@ -15,7 +15,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${DATABASE_USER:-postgres} -d ${DATABASE_NAME:-maghami-system}",
+          "pg_isready -U ${DATABASE_USER:-postgres} -d ${DATABASE_NAME:-maghami_system}",
         ]
       interval: 5s
       timeout: 5s
@@ -36,7 +36,7 @@ services:
       DATABASE_PORT: 5432
       DATABASE_USER: ${DATABASE_USER:-postgres}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      DATABASE_NAME: ${DATABASE_NAME:-maghami-system}
+      DATABASE_NAME: ${DATABASE_NAME:-maghami_system}
       TYPEORM_SYNC: ${TYPEORM_SYNC:-true}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production}

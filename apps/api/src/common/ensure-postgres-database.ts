@@ -2,7 +2,7 @@ import { lookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import { DataSource } from 'typeorm';
 
-const DATABASE_NAME_PATTERN = /^[A-Za-z_][A-Za-z0-9_-]*$/;
+const DATABASE_NAME_PATTERN = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
 const POSTGRES_RETRY_ATTEMPTS = 20;
 const POSTGRES_RETRY_DELAY_MS = 1500;

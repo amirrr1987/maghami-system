@@ -55,7 +55,7 @@ import { UsersModule } from './users/users.module';
           port: Number(config.get<string>('DATABASE_PORT', '5432')),
           username: config.get<string>('DATABASE_USER', 'postgres'),
           password: config.get<string>('DATABASE_PASSWORD', 'postgres'),
-          database: config.get<string>('DATABASE_NAME', 'maghami-system'),
+          database: config.get<string>('DATABASE_NAME', 'maghami_system'),
         };
         await retryPostgres(() => ensurePostgresDatabase(connection));
         await retryPostgres(() =>
