@@ -3,7 +3,7 @@
     "1": {
       "Name": "maghami-system",
       "Group": "Servers",
-      "Host": "db",
+      "Host": "maghami-system-db",
       "Port": 5432,
       "MaintenanceDB": "vue_nestjs_admin_template",
       "Username": "postgres",

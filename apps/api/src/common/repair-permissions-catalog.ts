@@ -1,5 +1,8 @@
 import { DataSource } from 'typeorm';
-import type { EnsurePostgresDatabaseOptions } from './ensure-postgres-database';
+import {
+  postgresSocketOptions,
+  type EnsurePostgresDatabaseOptions,
+} from './ensure-postgres-database';
 
 /**
  * Repair legacy permissions rows before TypeORM synchronize:
@@ -15,6 +18,7 @@ export async function repairPermissionsCatalogBeforeSync(
     username: options.username,
     password: options.password,
     database: options.database,
+    extra: postgresSocketOptions.extra,
   });
 
   await ds.initialize();

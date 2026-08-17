@@ -1,9 +1,12 @@
+import { lookup } from 'node:dns/promises';
+import { isIP } from 'node:net';
 import { DataSource } from 'typeorm';
 
 const DATABASE_NAME_PATTERN = /^[A-Za-z_][A-Za-z0-9_]*$/;
 
 const POSTGRES_RETRY_ATTEMPTS = 20;
 const POSTGRES_RETRY_DELAY_MS = 1500;
+const POSTGRES_CONNECT_TIMEOUT_MS = 4000;
 
 /** Retries DNS / connection failures (common on Docker Desktop). */
 export async function retryPostgres<T>(operation: () => Promise<T>): Promise<T> {
@@ -13,12 +16,27 @@ export async function retryPostgres<T>(operation: () => Promise<T>): Promise<T> 
       return await operation();
     } catch (error) {
       lastError = error;
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn(
+        `Postgres attempt ${attempt}/${POSTGRES_RETRY_ATTEMPTS} failed: ${message}`,
+      );
       if (attempt === POSTGRES_RETRY_ATTEMPTS) break;
       await new Promise((resolve) => setTimeout(resolve, POSTGRES_RETRY_DELAY_MS));
     }
   }
   throw lastError;
 }
+
+/** Force A-record lookup so Node does not hang on Docker AAAA / search domains. */
+export async function resolvePostgresHost(host: string): Promise<string> {
+  if (isIP(host)) return host;
+  const { address } = await lookup(host, { family: 4 });
+  return address;
+}
+
+export const postgresSocketOptions = {
+  extra: { connectionTimeoutMillis: POSTGRES_CONNECT_TIMEOUT_MS },
+};
 
 export type EnsurePostgresDatabaseOptions = {
   host: string;
@@ -52,6 +70,7 @@ export async function ensurePostgresDatabase(
     username: options.username,
     password: options.password,
     database: 'postgres',
+    extra: postgresSocketOptions.extra,
   });
 
   await admin.initialize();

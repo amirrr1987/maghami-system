@@ -198,7 +198,14 @@ CORS_ORIGIN=http://localhost:5173
 
 **API cannot reach DB (mode A)** — wait for healthy Postgres (`docker compose ps`); `DATABASE_HOST` must be `db` inside Compose (already set). If logs show `getaddrinfo EAI_AGAIN db`, recreate: `docker compose up --build`.
 
-**502 on `/api/...`** — the API container is down or still starting. Check `docker compose logs -f api`. Refresh the page after the API is healthy.
+**502 on `/api/...`** — nginx cannot reach Nest. Wait until Compose shows the API healthy (log: `Nest application successfully started`). Then recreate:
+
+```bash
+docker compose down
+docker compose up --build
+```
+
+If a root `.env` changed `DATABASE_PASSWORD` after the first Postgres volume was created, either put the original password back or wipe the volume (`docker compose down -v`) and start again.
 
 **API cannot reach DB (mode B)** — ensure `docker compose up db -d` is running and `DATABASE_HOST=localhost` in `apps/api/.env`.
 

@@ -34,7 +34,7 @@ services:
     restart: unless-stopped
     environment:
       PORT: 3000
-      DATABASE_HOST: db
+      DATABASE_HOST: maghami-system-db
       DATABASE_PORT: 5432
       DATABASE_USER: ${DATABASE_USER:-postgres}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
@@ -52,6 +52,8 @@ services:
       BOOTSTRAP_ADMIN_NAME: ${BOOTSTRAP_ADMIN_NAME:-super-admin}
       UPLOAD_DIR: ${UPLOAD_DIR:-uploads}
       NODE_OPTIONS: "--dns-result-order=ipv4first"
+    dns_opt:
+      - ndots:0
     volumes:
       - api_uploads:/app/apps/api/uploads
     depends_on:
@@ -63,7 +65,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "fetch('http://127.0.0.1:3000/v1').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+          "require('http').get('http://127.0.0.1:3000/v1',(r)=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))",
         ]
       interval: 5s
       timeout: 5s
@@ -101,6 +103,10 @@ services:
         condition: service_healthy
       pgadmin:
         condition: service_started
+
+networks:
+  default:
+    enable_ipv6: false
 
 volumes:
   vue_nestjs_admin_template_pgdata:

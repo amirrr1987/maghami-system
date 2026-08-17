@@ -32,6 +32,7 @@ RUN pnpm --filter @maghami-system/schemas build \
 # Copy the built workspace so pnpm's linked node_modules keep working.
 FROM base AS api
 ENV NODE_ENV=production
+ENV NODE_OPTIONS=--dns-result-order=ipv4first
 COPY --from=build /app /app
 WORKDIR /app/apps/api
 EXPOSE 3000

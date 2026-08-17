@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { ResultInterceptor } from './common/interceptors/result.interceptor';
 import {
   ensurePostgresDatabase,
+  postgresSocketOptions,
+  resolvePostgresHost,
   retryPostgres,
 } from './common/ensure-postgres-database';
 import { repairPermissionsCatalogBeforeSync } from './common/repair-permissions-catalog';
@@ -42,8 +44,10 @@ import { UsersModule } from './users/users.module';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
+        const hostName = config.get<string>('DATABASE_HOST', 'localhost');
+        const host = await retryPostgres(() => resolvePostgresHost(hostName));
         const connection = {
-          host: config.get<string>('DATABASE_HOST', 'localhost'),
+          host,
           port: Number(config.get<string>('DATABASE_PORT', '5432')),
           username: config.get<string>('DATABASE_USER', 'postgres'),
           password: config.get<string>('DATABASE_PASSWORD', 'postgres'),
@@ -53,10 +57,13 @@ import { UsersModule } from './users/users.module';
           ),
         };
         await retryPostgres(() => ensurePostgresDatabase(connection));
-        await retryPostgres(() => repairPermissionsCatalogBeforeSync(connection));
+        await retryPostgres(() =>
+          repairPermissionsCatalogBeforeSync(connection),
+        );
         return {
           type: 'postgres' as const,
           ...connection,
+          ...postgresSocketOptions,
           retryAttempts: 10,
           retryDelay: 3000,
           entities: [
