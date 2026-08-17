@@ -64,7 +64,7 @@ Optional pgAdmin (login with `PGADMIN_DEFAULT_EMAIL` / `PGADMIN_DEFAULT_PASSWORD
 docker compose up db pgadmin -d
 ```
 
-Then open http://localhost:5050/pgadmin4 . The preloaded server **maghami-system** uses host `maghami-system-db`. Postgres password is `DATABASE_PASSWORD` (default `postgres`).
+Then open http://localhost:5050/pgadmin4 . The preloaded server **maghami-system** uses host `maghami-system-db`. From the host machine, Docker Postgres is on **5433**. The in-container port stays 5432.
 
 ### 2. Install and configure
 
@@ -163,7 +163,7 @@ docker compose down
 |---------|-------------------|---------------|------------------|
 | Web | `5173` (`WEB_PORT`) | `80` (`WEB_PORT`) | `80` |
 | API | `3000` (`PORT`) | not published | `3000` |
-| Postgres | `5432` (`DATABASE_PORT`) | not published | `5432` |
+| Postgres | `5433` (`DATABASE_PUBLISH_PORT`) | not published | `5432` |
 | pgAdmin | `5050` (`PGADMIN_PORT`) | not published (`/pgadmin4` on 80) | `80` |
 
 Override with a root `.env` (copy `.env.example`). Compose interpolates those keys; the API container still gets `DATABASE_HOST` from `docker-compose.yml`.
@@ -172,7 +172,7 @@ Override with a root `.env` (copy `.env.example`). Compose interpolates those ke
 
 ## Troubleshooting
 
-**Port already in use** — change `PORT`, `WEB_PORT`, or `DATABASE_PORT` in a root `.env`, or stop the other process.
+**Port already in use** — change `PORT`, `WEB_PORT`, or `DATABASE_PUBLISH_PORT` in a root `.env`. Docker Postgres defaults to host **5433** so it does not clash with a local PostgreSQL on 5432. Then `docker compose down` and `docker compose up --build`.
 
 **API cannot reach DB (mode A)** — wait for healthy Postgres (`docker compose ps`); `DATABASE_HOST` must be `db` inside Compose (already set). If logs show `getaddrinfo EAI_AGAIN db`, recreate: `docker compose up --build`.
 

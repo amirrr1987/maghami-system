@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
       POSTGRES_DB: ${DATABASE_NAME:-maghami-system}
     ports:
-      - "${DATABASE_PORT:-5432}:5432"
+      - "${DATABASE_PUBLISH_PORT:-5433}:5432"
     volumes:
       - maghami-system_pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -32,7 +32,7 @@ services:
       - "${PORT:-3000}:3000"
     environment:
       PORT: 3000
-      DATABASE_HOST: host.docker.internal
+      DATABASE_HOST: maghami-system-db
       DATABASE_PORT: 5432
       DATABASE_USER: ${DATABASE_USER:-postgres}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
@@ -50,8 +50,6 @@ services:
       BOOTSTRAP_ADMIN_NAME: ${BOOTSTRAP_ADMIN_NAME:-super-admin}
       UPLOAD_DIR: ${UPLOAD_DIR:-uploads}
       NODE_OPTIONS: "--dns-result-order=ipv4first"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     dns_opt:
       - ndots:0
     volumes:
