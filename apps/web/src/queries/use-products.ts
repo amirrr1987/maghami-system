@@ -16,21 +16,24 @@ export function useProducts() {
   const page = ref(1)
   const pageSize = ref(10)
   const q = ref('')
+  const categoryId = ref<string | undefined>(undefined)
+  const brandId = ref<string | undefined>(undefined)
+  const isActive = ref<boolean | undefined>(undefined)
+
+  const listQueryParams = computed(
+    (): ProductListQuery => ({
+      page: page.value,
+      pageSize: pageSize.value,
+      q: q.value || undefined,
+      categoryId: categoryId.value,
+      brandId: brandId.value,
+      isActive: isActive.value,
+    }),
+  )
 
   const listQuery = useQuery({
-    queryKey: computed(() =>
-      queryKeys.products.list({
-        page: page.value,
-        pageSize: pageSize.value,
-        q: q.value || undefined,
-      }),
-    ),
-    queryFn: () =>
-      productsApi.list({
-        page: page.value,
-        pageSize: pageSize.value,
-        q: q.value || undefined,
-      }),
+    queryKey: computed(() => queryKeys.products.list(listQueryParams.value)),
+    queryFn: () => productsApi.list(listQueryParams.value),
     meta: { errorMessage: 'بارگذاری محصولات ناموفق بود' },
   })
 
@@ -77,6 +80,9 @@ export function useProducts() {
     if (query.page !== undefined) page.value = query.page
     if (query.pageSize !== undefined) pageSize.value = query.pageSize
     if (query.q !== undefined) q.value = query.q ?? ''
+    if (query.categoryId !== undefined) categoryId.value = query.categoryId
+    if (query.brandId !== undefined) brandId.value = query.brandId
+    if (query.isActive !== undefined) isActive.value = query.isActive
     return Promise.resolve()
   }
 
