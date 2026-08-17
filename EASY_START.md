@@ -1,13 +1,14 @@
 # Easy start
 
-Two ways to run the stack. Pick one.
+Three ways to run the stack. Pick one.
 
 | Mode | Best for | What runs in Docker |
 |------|----------|---------------------|
 | **A — Full stack** | Quick try / demo | Postgres + API + Web |
 | **B — DB only** | Day-to-day coding | Postgres only (API/Web on your machine) |
+| **C — VPS / IP** | Test on a server with no domain | Postgres + API + Web on port 80 |
 
-**Need:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Compose v2). For mode B also **Node ≥ 20** and **pnpm 9**.
+**Need:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Compose v2) for A/B. Mode C: Docker Engine + Compose v2 on Linux. For mode B also **Node ≥ 20** and **pnpm 9**.
 
 ---
 
@@ -24,8 +25,9 @@ Open:
 | App | URL |
 |-----|-----|
 | Web | http://localhost:5173 |
-| API | http://localhost:3000/v1 |
-| Swagger | http://localhost:3000/docs |
+| API (via nginx) | http://localhost:5173/api |
+| API (direct) | http://localhost:3000/v1 |
+| Swagger | http://localhost:5173/docs |
 
 Smoke check:
 
@@ -96,6 +98,46 @@ pnpm dev:web
 
 ---
 
+## C) VPS by IP only (no domain)
+
+Linux VPS (Ubuntu). Do **not** use Windows Server. Build needs about **6–8 GB RAM**.
+
+On the server, from the repo root:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+- `PUBLIC_ORIGIN=http://YOUR.SERVER.IP` — exactly what you type in the browser (no trailing slash; add `:port` if `WEB_PORT` is not 80)
+- Set `DATABASE_PASSWORD`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `BOOTSTRAP_ADMIN_PASSWORD`
+
+Then:
+
+```bash
+docker compose -f docker-compose.server.yml up --build -d
+```
+
+Open:
+
+| App | URL |
+|-----|-----|
+| Web | http://YOUR.SERVER.IP/ |
+| API (via nginx) | http://YOUR.SERVER.IP/api |
+| Swagger | http://YOUR.SERVER.IP/docs |
+
+Postgres and Nest are **not** published on the host. Only port **80**.
+
+Logs / stop:
+
+```bash
+docker compose -f docker-compose.server.yml logs -f
+docker compose -f docker-compose.server.yml down
+```
+
+---
+
 ## Useful Compose commands
 
 ```bash
@@ -116,11 +158,11 @@ docker compose down
 
 ## Ports
 
-| Service | Host port | Inside container |
-|---------|-----------|------------------|
-| Web | `5173` (`WEB_PORT`) | `80` |
-| API | `3000` (`PORT`) | `3000` |
-| Postgres | `5432` (`DATABASE_PORT`) | `5432` |
+| Service | Host port (A / B) | Host port (C) | Inside container |
+|---------|-------------------|---------------|------------------|
+| Web | `5173` (`WEB_PORT`) | `80` (`WEB_PORT`) | `80` |
+| API | `3000` (`PORT`) | not published | `3000` |
+| Postgres | `5432` (`DATABASE_PORT`) | not published | `5432` |
 
 Override with a root `.env` next to `docker-compose.yml`, for example:
 
@@ -146,3 +188,9 @@ CORS_ORIGIN=http://localhost:5173
 **API cannot reach DB (mode B)** — ensure `docker compose up db -d` is running and `DATABASE_HOST=localhost` in `apps/api/.env`.
 
 **Build fails on bcrypt** — the API image includes build tools; rebuild with `docker compose build --no-cache api`.
+
+**Login fails on VPS (CORS)** — `PUBLIC_ORIGIN` must match the browser address bar exactly (`http://IP`, no trailing slash).
+
+**Login succeeds but session drops (HTTP)** — keep `COOKIE_SECURE=false` in `.env` for IP testing without HTTPS.
+
+**Compose build killed / out of memory** — use a 6–8 GB plan, or add swap, then retry `docker compose -f docker-compose.server.yml up --build -d`.

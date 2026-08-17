@@ -43,9 +43,11 @@ export function refreshCookieOptions(config: ConfigService): {
     config.get<string>('JWT_REFRESH_EXPIRES_IN'),
     7 * 24 * 60 * 60,
   );
+  const cookieSecure = config.get<string>('COOKIE_SECURE');
   const secure =
-    config.get<string>('COOKIE_SECURE') === 'true' ||
-    config.get<string>('NODE_ENV') === 'production';
+    cookieSecure === 'true' ||
+    (cookieSecure !== 'false' &&
+      config.get<string>('NODE_ENV') === 'production');
   return {
     httpOnly: true,
     secure,

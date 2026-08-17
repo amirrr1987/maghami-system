@@ -1,3 +1,9 @@
+# VPS / IP test stack: one public port (80). Postgres and API stay on the
+# Docker network. Copy .env.example → .env and set PUBLIC_ORIGIN to
+# http://YOUR_IP (include :port if WEB_PORT is not 80).
+#
+#   docker compose -f docker-compose.server.yml up --build -d
+
 services:
   db:
     image: postgres:16-alpine
@@ -5,10 +11,8 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DATABASE_USER:-postgres}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
       POSTGRES_DB: ${DATABASE_NAME:-vue_nestjs_admin_template}
-    ports:
-      - "${DATABASE_PORT:-5432}:5432"
     volumes:
       - vue_nestjs_admin_template_pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -28,25 +32,23 @@ services:
       target: api
     container_name: maghami-system-api
     restart: unless-stopped
-    ports:
-      - "${PORT:-3000}:3000"
     environment:
       PORT: 3000
       DATABASE_HOST: db
       DATABASE_PORT: 5432
       DATABASE_USER: ${DATABASE_USER:-postgres}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
       DATABASE_NAME: ${DATABASE_NAME:-vue_nestjs_admin_template}
       TYPEORM_SYNC: ${TYPEORM_SYNC:-true}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
-      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      CORS_ORIGIN: ${PUBLIC_ORIGIN:?Set PUBLIC_ORIGIN in .env to http://YOUR_IP}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1d}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh-in-production}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?Set JWT_REFRESH_SECRET in .env}
       JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
       REFRESH_COOKIE_PATH: ${REFRESH_COOKIE_PATH:-/}
       BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-super-admin@localhost.ir}
-      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-UTMwBgi6vcpsXZc}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:?Set BOOTSTRAP_ADMIN_PASSWORD in .env}
       BOOTSTRAP_ADMIN_NAME: ${BOOTSTRAP_ADMIN_NAME:-super-admin}
       UPLOAD_DIR: ${UPLOAD_DIR:-uploads}
     volumes:
@@ -63,7 +65,7 @@ services:
     container_name: maghami-system-web
     restart: unless-stopped
     ports:
-      - "${WEB_PORT:-5173}:80"
+      - "${WEB_PORT:-80}:80"
     depends_on:
       - api
 
