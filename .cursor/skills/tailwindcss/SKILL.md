@@ -28,8 +28,8 @@ No `tailwind.config.js` / PostCSS required for the default v4 Vite setup.
 - Plugin types come from `@tailwindcss/vite` (`import tailwindcss from '@tailwindcss/vite'`) — no hand-rolled Vite plugin types
 
 ```ts
-import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'vite';
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [tailwindcss()],
@@ -38,17 +38,17 @@ export default defineConfig({
 
 ```css
 /* apps/web/src/assets/main.css */
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
-  --font-sans: 'IranSans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "IranSans", ui-sans-serif, system-ui, sans-serif;
 }
 ```
 
 ```vue
 <template>
   <div class="flex min-h-screen items-center justify-center p-6">
-    <h1 class="text-2xl font-semibold tracking-tight">Monitoring</h1>
+    <h1 class="text-2xl font-semibold tracking-tight">Maghami system</h1>
   </div>
 </template>
 ```
@@ -63,8 +63,8 @@ If Preflight fights antdv `reset.css`, drop base and keep theme + utilities:
 
 ```css
 @layer theme, base, components, utilities;
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
 ```
 
 Do not reintroduce Tailwind v3 `tailwind.config.js` + `content` globs unless migrating deliberately.

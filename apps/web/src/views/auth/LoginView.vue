@@ -130,11 +130,23 @@ watch(() => route.query.reason, applyReasonFromQuery)
 <template>
   <Layout class="min-h-screen">
     <LayoutContent>
-      <Flex align="center" justify="center" class="min-h-screen p-6">
+      <Flex
+        align="center"
+        justify="center"
+        class="min-h-screen p-6"
+      >
         <Card class="w-full max-w-md">
-          <Flex vertical align="center" :gap="4" class="mb-6">
-            <TypographyTitle :level="3" class="m-0!">
-              Monitoring
+          <Flex
+            vertical
+            align="center"
+            :gap="4"
+            class="mb-6"
+          >
+            <TypographyTitle
+              :level="3"
+              class="m-0!"
+            >
+              Maghami system
             </TypographyTitle>
             <TypographyText type="secondary">
               ورود به پنل مدیریت
@@ -156,7 +168,10 @@ watch(() => route.query.reason, applyReasonFromQuery)
             :rules="loginFormRules"
             @finish="onSubmit"
           >
-            <FormItem label="ایمیل" name="email">
+            <FormItem
+              label="ایمیل"
+              name="email"
+            >
               <Input
                 v-model:value="model.email"
                 size="large"
@@ -169,7 +184,10 @@ watch(() => route.query.reason, applyReasonFromQuery)
                 </template>
               </Input>
             </FormItem>
-            <FormItem label="رمز عبور" name="password">
+            <FormItem
+              label="رمز عبور"
+              name="password"
+            >
               <InputPassword
                 v-model:value="model.password"
                 size="large"

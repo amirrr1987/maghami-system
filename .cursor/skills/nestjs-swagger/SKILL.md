@@ -42,7 +42,7 @@ UI path: **`/docs`**. Wired in `apps/api/src/main.ts`:
 
 ```ts
 const swaggerConfig = new DocumentBuilder()
-  .setTitle('Monitoring API')
+  .setTitle('Maghami system API')
   .setDescription('…')
   .setVersion('0.0.0')
   .addBearerAuth()

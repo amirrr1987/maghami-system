@@ -1,5 +1,5 @@
 info:
-  name: Monitoring API
+  name: Maghami system API
 
 http:
   headers:

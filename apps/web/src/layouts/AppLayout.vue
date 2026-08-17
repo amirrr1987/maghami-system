@@ -242,7 +242,7 @@ async function onLogout(): Promise<void> {
             :level="5"
             class="m-0! truncate text-primary!"
           >
-            Monitoring
+            Maghami system
           </TypographyTitle>
         </RouterLink>
         <Space :size="8">
