@@ -196,7 +196,9 @@ CORS_ORIGIN=http://localhost:5173
 
 **Port already in use** — change `PORT`, `WEB_PORT`, or `DATABASE_PORT` in a root `.env`, or stop the other process.
 
-**API cannot reach DB (mode A)** — wait for healthy Postgres (`docker compose ps`); `DATABASE_HOST` must be `db` inside Compose (already set).
+**API cannot reach DB (mode A)** — wait for healthy Postgres (`docker compose ps`); `DATABASE_HOST` must be `db` inside Compose (already set). If logs show `getaddrinfo EAI_AGAIN db`, recreate: `docker compose up --build`.
+
+**502 on `/api/...`** — the API container is down or still starting. Check `docker compose logs -f api`. Refresh the page after the API is healthy.
 
 **API cannot reach DB (mode B)** — ensure `docker compose up db -d` is running and `DATABASE_HOST=localhost` in `apps/api/.env`.
 

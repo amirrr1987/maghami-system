@@ -1,8 +1,12 @@
+import { setDefaultResultOrder } from 'node:dns';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ResultExceptionFilter } from './common/filters/result-exception.filter';
 import { registerOpenApiIdSchemas } from './common/swagger/openapi.ids';
+
+// Node 17+ prefers AAAA; Docker embedded DNS often fails that with EAI_AGAIN.
+setDefaultResultOrder('ipv4first');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,7 +40,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   const port = Number(process.env.PORT ?? 3000);
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 }
 
 void bootstrap();

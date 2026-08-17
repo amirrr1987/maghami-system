@@ -5,7 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { ResultInterceptor } from './common/interceptors/result.interceptor';
-import { ensurePostgresDatabase } from './common/ensure-postgres-database';
+import {
+  ensurePostgresDatabase,
+  retryPostgres,
+} from './common/ensure-postgres-database';
 import { repairPermissionsCatalogBeforeSync } from './common/repair-permissions-catalog';
 import { FilesModule } from './files/files.module';
 import { FileFolder } from './files/file-folder.entity';
@@ -49,11 +52,13 @@ import { UsersModule } from './users/users.module';
             'vue_nestjs_admin_template',
           ),
         };
-        await ensurePostgresDatabase(connection);
-        await repairPermissionsCatalogBeforeSync(connection);
+        await retryPostgres(() => ensurePostgresDatabase(connection));
+        await retryPostgres(() => repairPermissionsCatalogBeforeSync(connection));
         return {
           type: 'postgres' as const,
           ...connection,
+          retryAttempts: 10,
+          retryDelay: 3000,
           entities: [
             User,
             Role,

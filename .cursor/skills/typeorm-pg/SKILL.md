@@ -35,7 +35,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 ## Nest wiring (this repo)
 
-`ensurePostgresDatabase` runs in `TypeOrmModule.forRootAsync` before connect, so a missing `DATABASE_NAME` is created. Postgres itself must already be running.
+`ensurePostgresDatabase` / `repairPermissionsCatalogBeforeSync` run in `TypeOrmModule.forRootAsync` (with `retryPostgres`) before connect, so a missing `DATABASE_NAME` is created. Postgres itself must already be running. TypeORM also uses `retryAttempts` / `retryDelay`.
 
 `repairPermissionsCatalogBeforeSync` also runs before synchronize: backfills empty `resource`/`action` from `code`, drops legacy PG enums, and removes invalid rows (`full` / `write` / blank) so NOT NULL columns can sync.
 

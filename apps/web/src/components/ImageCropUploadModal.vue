@@ -106,12 +106,12 @@ const meta = reactive({
 
 const cropMode = ref<CropMode>('free')
 const aspectRatioKey = ref<AspectRatioKey>('1:1')
-const outputWidth = ref<number | null>(null)
-const outputHeight = ref<number | null>(null)
-const minWidth = ref<number | null>(null)
-const minHeight = ref<number | null>(null)
-const maxWidth = ref<number | null>(null)
-const maxHeight = ref<number | null>(null)
+const outputWidth = ref<number>()
+const outputHeight = ref<number>()
+const minWidth = ref<number>()
+const minHeight = ref<number>()
+const maxWidth = ref<number>()
+const maxHeight = ref<number>()
 
 const cropperKey = computed(
   () => `${cropMode.value}:${aspectRatioKey.value}`,
@@ -160,12 +160,12 @@ function resetForm(fileName: string): void {
   meta.alt = ''
   cropMode.value = 'free'
   aspectRatioKey.value = '1:1'
-  outputWidth.value = null
-  outputHeight.value = null
-  minWidth.value = null
-  minHeight.value = null
-  maxWidth.value = null
-  maxHeight.value = null
+  outputWidth.value = undefined
+  outputHeight.value = undefined
+  minWidth.value = undefined
+  minHeight.value = undefined
+  maxWidth.value = undefined
+  maxHeight.value = undefined
 }
 
 watch(open, (value) => {

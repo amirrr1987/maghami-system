@@ -22,6 +22,12 @@ const RESOURCE_LABELS_FA: Record<PermissionResource, string> = {
   [PermissionResource.Roles]: 'نقش‌ها',
   [PermissionResource.Permissions]: 'مجوزها',
   [PermissionResource.Files]: 'فایل‌ها',
+  [PermissionResource.Products]: 'محصولات',
+  [PermissionResource.ProductCategories]: 'دسته‌بندی کالا',
+  [PermissionResource.ProductBrands]: 'برند کالا',
+  [PermissionResource.ProductUnits]: 'واحد کالا',
+  [PermissionResource.ProductAttributes]: 'ویژگی کالا',
+  [PermissionResource.ProductCodePatterns]: 'الگوی کدینگ کالا',
 }
 
 const ACTION_LABELS_FA: Record<PermissionAction, string> = {
