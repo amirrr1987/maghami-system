@@ -10,13 +10,9 @@ import type { ProductCategory, ProductCategoryTreeNode } from './types'
 
 export const productCategoriesApi = {
   list: (query: PaginationQuery) =>
-    apiRequest<PaginatedResult<ProductCategory>>(
-      `/product-categories${toListQuery(query)}`,
-    ),
-  tree: () =>
-    apiRequest<ProductCategoryTreeNode[]>('/product-categories/tree'),
-  get: (id: string) =>
-    apiRequest<ProductCategory>(`/product-categories/${id}`),
+    apiRequest<PaginatedResult<ProductCategory>>(`/product-categories${toListQuery(query)}`),
+  tree: () => apiRequest<ProductCategoryTreeNode[]>('/product-categories/tree'),
+  get: (id: string) => apiRequest<ProductCategory>(`/product-categories/${id}`),
   create: (dto: CreateProductCategoryDto) =>
     apiRequest<ProductCategory>('/product-categories', {
       method: 'POST',
@@ -27,6 +23,5 @@ export const productCategoriesApi = {
       method: 'PATCH',
       body: jsonBody(dto),
     }),
-  remove: (id: string) =>
-    apiRequest<void>(`/product-categories/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => apiRequest<void>(`/product-categories/${id}`, { method: 'DELETE' }),
 }

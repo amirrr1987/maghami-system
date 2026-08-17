@@ -18,20 +18,14 @@ function nestMessage(body: unknown): string | undefined {
   const record = body as Record<string, unknown>
   if (typeof record.message === 'string') return record.message
   if (Array.isArray(record.message)) {
-    return record.message
-      .filter((m): m is string => typeof m === 'string')
-      .join(', ')
+    return record.message.filter((m): m is string => typeof m === 'string').join(', ')
   }
   return undefined
 }
 
 function unwrapApiResult<T>(body: unknown, httpStatus: number): T {
   if (!isApiResult(body)) {
-    throw new ApiError(
-      'Invalid API response envelope',
-      httpStatus,
-      body,
-    )
+    throw new ApiError('Invalid API response envelope', httpStatus, body)
   }
   const result = body as ApiResult<T>
   if (!result.isSuccess) {
@@ -84,16 +78,8 @@ async function tryRefreshSession(): Promise<boolean> {
   return refreshInFlight
 }
 
-export async function apiRequest<T>(
-  path: string,
-  init: ApiRequestInit = {},
-): Promise<T> {
-  const {
-    skipAuth,
-    skipUnauthorizedHandler,
-    _retriedAfterRefresh,
-    ...fetchInit
-  } = init
+export async function apiRequest<T>(path: string, init: ApiRequestInit = {}): Promise<T> {
+  const { skipAuth, skipUnauthorizedHandler, _retriedAfterRefresh, ...fetchInit } = init
   const headers = new Headers(fetchInit.headers)
   if (
     fetchInit.body !== undefined &&
@@ -144,11 +130,7 @@ export async function apiRequest<T>(
         clearTokens()
         unauthorizedHandler?.()
       }
-    } else if (
-      response.status === 401 &&
-      !skipAuth &&
-      !skipUnauthorizedHandler
-    ) {
+    } else if (response.status === 401 && !skipAuth && !skipUnauthorizedHandler) {
       clearTokens()
       unauthorizedHandler?.()
     }

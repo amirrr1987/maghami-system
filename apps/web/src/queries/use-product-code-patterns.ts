@@ -32,8 +32,7 @@ export function useProductCodePatterns() {
   })
 
   const createMutation = useMutation({
-    mutationFn: (dto: CreateProductCodePatternDto) =>
-      productCodePatternsApi.create(dto),
+    mutationFn: (dto: CreateProductCodePatternDto) => productCodePatternsApi.create(dto),
     onSuccess: async () => {
       message.success('الگوی کدینگ ایجاد شد')
       page.value = 1
@@ -45,21 +44,15 @@ export function useProductCodePatterns() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({
-      id,
-      dto,
-    }: {
-      id: string
-      dto: UpdateProductCodePatternDto
-    }) => productCodePatternsApi.update(id, dto),
+    mutationFn: ({ id, dto }: { id: string; dto: UpdateProductCodePatternDto }) =>
+      productCodePatternsApi.update(id, dto),
     onSuccess: async () => {
       message.success('الگوی کدینگ به‌روزرسانی شد')
       await queryClient.invalidateQueries({
         queryKey: queryKeys.productCodePatterns.all,
       })
     },
-    onError: (error) =>
-      notifyApiError(error, 'به‌روزرسانی الگوی کدینگ ناموفق بود'),
+    onError: (error) => notifyApiError(error, 'به‌روزرسانی الگوی کدینگ ناموفق بود'),
   })
 
   const removeMutation = useMutation({
@@ -97,8 +90,7 @@ export function useProductCodePatterns() {
     loading,
     saving,
     fetchPage,
-    create: (dto: CreateProductCodePatternDto) =>
-      tryMutate(createMutation.mutateAsync(dto)),
+    create: (dto: CreateProductCodePatternDto) => tryMutate(createMutation.mutateAsync(dto)),
     update: (id: string, dto: UpdateProductCodePatternDto) =>
       tryMutate(updateMutation.mutateAsync({ id, dto })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),

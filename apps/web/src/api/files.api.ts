@@ -49,13 +49,10 @@ export const filesApi = {
       body: jsonBody(dto),
     }),
 
-  removeFolder: (id: string) =>
-    apiRequest<void>(`/files/folders/${id}`, { method: 'DELETE' }),
+  removeFolder: (id: string) => apiRequest<void>(`/files/folders/${id}`, { method: 'DELETE' }),
 
   list: (query: FilesListQuery) =>
-    apiRequest<PaginatedResult<StoredFile>>(
-      `/files${toFilesListQuery(query)}`,
-    ),
+    apiRequest<PaginatedResult<StoredFile>>(`/files${toFilesListQuery(query)}`),
 
   upload(
     file: File,
@@ -117,11 +114,7 @@ export const filesApi = {
       if (response.status === 401) {
         clearTokens()
       }
-      throw new ApiError(
-        `Failed to load file (${response.status})`,
-        response.status,
-        null,
-      )
+      throw new ApiError(`Failed to load file (${response.status})`, response.status, null)
     }
     return response.blob()
   },

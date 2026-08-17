@@ -2,14 +2,16 @@ import { lookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import { DataSource } from 'typeorm';
 
-const DATABASE_NAME_PATTERN = /^[A-Za-z_][A-Za-z0-9_]*$/;
+const DATABASE_NAME_PATTERN = /^[A-Za-z_][A-Za-z0-9_-]*$/;
 
 const POSTGRES_RETRY_ATTEMPTS = 20;
 const POSTGRES_RETRY_DELAY_MS = 1500;
 const POSTGRES_CONNECT_TIMEOUT_MS = 4000;
 
 /** Retries DNS / connection failures (common on Docker Desktop). */
-export async function retryPostgres<T>(operation: () => Promise<T>): Promise<T> {
+export async function retryPostgres<T>(
+  operation: () => Promise<T>,
+): Promise<T> {
   let lastError: unknown;
   for (let attempt = 1; attempt <= POSTGRES_RETRY_ATTEMPTS; attempt++) {
     try {
@@ -21,7 +23,9 @@ export async function retryPostgres<T>(operation: () => Promise<T>): Promise<T> 
         `Postgres attempt ${attempt}/${POSTGRES_RETRY_ATTEMPTS} failed: ${message}`,
       );
       if (attempt === POSTGRES_RETRY_ATTEMPTS) break;
-      await new Promise((resolve) => setTimeout(resolve, POSTGRES_RETRY_DELAY_MS));
+      await new Promise((resolve) =>
+        setTimeout(resolve, POSTGRES_RETRY_DELAY_MS),
+      );
     }
   }
   throw lastError;

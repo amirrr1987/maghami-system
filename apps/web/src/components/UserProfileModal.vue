@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import {
-  Form,
-  FormItem,
-  Input,
-  InputPassword,
-  Modal,
-} from 'ant-design-vue'
+import { Form, FormItem, Input, InputPassword, Modal } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { UpdateProfileDto } from '@maghami-system/schemas'
 import { computed, reactive, ref, watch } from 'vue'
 import ImageUploader from '@/components/ImageUploader.vue'
 import { useAuthStore } from '@/stores/auth.store'
-import {
-  profileFormRules,
-  type ProfileFormModel,
-} from '@/validation/profile.form-rules'
+import { profileFormRules, type ProfileFormModel } from '@/validation/profile.form-rules'
 
 const props = defineProps<{
   open: boolean
@@ -99,12 +90,7 @@ async function onSubmit(): Promise<void> {
     @ok="onSubmit"
     @cancel="close"
   >
-    <Form
-      ref="formRef"
-      layout="vertical"
-      :model="model"
-      :rules="rules"
-    >
+    <Form ref="formRef" layout="vertical" :model="model" :rules="rules">
       <FormItem label="آواتار">
         <ImageUploader
           v-model:file-ids="avatarFileIds"
@@ -120,16 +106,10 @@ async function onSubmit(): Promise<void> {
         <Input v-model:value="model.email" autocomplete="off" allow-clear />
       </FormItem>
       <FormItem label="رمز عبور جدید (اختیاری)" name="password">
-        <InputPassword
-          v-model:value="model.password"
-          autocomplete="new-password"
-        />
+        <InputPassword v-model:value="model.password" autocomplete="new-password" />
       </FormItem>
       <FormItem label="تکرار رمز عبور" name="confirmPassword">
-        <InputPassword
-          v-model:value="model.confirmPassword"
-          autocomplete="new-password"
-        />
+        <InputPassword v-model:value="model.confirmPassword" autocomplete="new-password" />
       </FormItem>
     </Form>
   </Modal>

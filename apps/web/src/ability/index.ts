@@ -5,11 +5,7 @@ import {
   type MongoAbility,
 } from '@casl/ability'
 import { useAbility } from '@casl/vue'
-import type {
-  AbilityAction,
-  AbilityRule,
-  AbilitySubject,
-} from '@maghami-system/schemas'
+import type { AbilityAction, AbilityRule, AbilitySubject } from '@maghami-system/schemas'
 
 /**
  * Dynamic CASL: rules come from session `abilities` (permission.resource +
@@ -23,9 +19,7 @@ export const createAppAbility = createMongoAbility as CreateAbility<AppAbility>
 export const ability = createAppAbility()
 
 export function buildAbilityRules(rules: readonly AbilityRule[]) {
-  const { can, rules: caslRules } = new AbilityBuilder<AppAbility>(
-    createAppAbility,
-  )
+  const { can, rules: caslRules } = new AbilityBuilder<AppAbility>(createAppAbility)
   for (const rule of rules) {
     can(rule.action, rule.subject)
   }

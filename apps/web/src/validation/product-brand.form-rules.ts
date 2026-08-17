@@ -18,12 +18,9 @@ export const productBrandFormRules: Record<
     {
       async validator(_rule, value: unknown) {
         if (value === undefined || value === null || value === '') return
-        const parsed =
-          await createProductBrandSchema.shape.logoUrl.safeParseAsync(value)
+        const parsed = await createProductBrandSchema.shape.logoUrl.safeParseAsync(value)
         if (parsed.success) return
-        return Promise.reject(
-          parsed.error.issues[0]?.message ?? 'آدرس لوگو نامعتبر است',
-        )
+        return Promise.reject(parsed.error.issues[0]?.message ?? 'آدرس لوگو نامعتبر است')
       },
     },
   ],

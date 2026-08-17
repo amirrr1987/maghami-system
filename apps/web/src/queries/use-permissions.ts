@@ -24,8 +24,7 @@ export function usePermissions() {
         pageSize: pageSize.value,
       }),
     ),
-    queryFn: () =>
-      permissionsApi.list({ page: page.value, pageSize: pageSize.value }),
+    queryFn: () => permissionsApi.list({ page: page.value, pageSize: pageSize.value }),
     meta: { errorMessage: 'بارگذاری مجوزها ناموفق بود' },
   })
 
@@ -88,8 +87,7 @@ export function usePermissions() {
     loading,
     saving,
     fetchPage,
-    create: (dto: CreatePermissionDto) =>
-      tryMutate(createMutation.mutateAsync(dto)),
+    create: (dto: CreatePermissionDto) => tryMutate(createMutation.mutateAsync(dto)),
     update: (id: string, dto: UpdatePermissionDto) =>
       tryMutate(updateMutation.mutateAsync({ id, dto })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),
@@ -105,9 +103,7 @@ export function usePermissionOptions() {
 
   const permissionOptions = computed(() =>
     toSelectOptions(
-      (optionsQuery.data.value?.items ?? []).map((permission) =>
-        permissionToOption(permission),
-      ),
+      (optionsQuery.data.value?.items ?? []).map((permission) => permissionToOption(permission)),
     ),
   )
 

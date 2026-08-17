@@ -9,10 +9,7 @@ import type {
   PaginationQuery,
   ProductBrand as ProductBrandDto,
 } from '@maghami-system/schemas';
-import {
-  paginationSkipTake,
-  toPaginatedResult,
-} from '@maghami-system/schemas';
+import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ProductBrand } from './product-brand.entity';
 import type {

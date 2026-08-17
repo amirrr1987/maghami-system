@@ -1,8 +1,4 @@
-import {
-  PermissionAction,
-  PermissionResource,
-  type AbilityRule,
-} from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource, type AbilityRule } from '@maghami-system/schemas'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 import { firstAllowedRouteName, routeAllowed } from './access'
@@ -95,8 +91,7 @@ const router = createRouter({
         {
           path: 'product-categories',
           name: 'product-categories',
-          component: () =>
-            import('@/views/product-categories/ProductCategoriesView.vue'),
+          component: () => import('@/views/product-categories/ProductCategoriesView.vue'),
           meta: {
             title: 'دسته‌بندی کالا',
             ability: {
@@ -108,8 +103,7 @@ const router = createRouter({
         {
           path: 'product-brands',
           name: 'product-brands',
-          component: () =>
-            import('@/views/product-brands/ProductBrandsView.vue'),
+          component: () => import('@/views/product-brands/ProductBrandsView.vue'),
           meta: {
             title: 'برند کالا',
             ability: {
@@ -133,8 +127,7 @@ const router = createRouter({
         {
           path: 'product-attributes',
           name: 'product-attributes',
-          component: () =>
-            import('@/views/product-attributes/ProductAttributesView.vue'),
+          component: () => import('@/views/product-attributes/ProductAttributesView.vue'),
           meta: {
             title: 'ویژگی کالا',
             ability: {
@@ -146,10 +139,7 @@ const router = createRouter({
         {
           path: 'product-code-patterns',
           name: 'product-code-patterns',
-          component: () =>
-            import(
-              '@/views/product-code-patterns/ProductCodePatternsView.vue'
-            ),
+          component: () => import('@/views/product-code-patterns/ProductCodePatternsView.vue'),
           meta: {
             title: 'الگوی کدینگ',
             ability: {

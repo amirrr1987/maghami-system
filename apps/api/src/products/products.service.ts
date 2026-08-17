@@ -12,10 +12,7 @@ import type {
   ProductAttributeValueInputDto,
   ProductListQuery,
 } from '@maghami-system/schemas';
-import {
-  paginationSkipTake,
-  toPaginatedResult,
-} from '@maghami-system/schemas';
+import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { In, QueryFailedError, Repository } from 'typeorm';
 import { ProductAttribute } from '../product-attributes/product-attribute.entity';
 import { ProductBrandsService } from '../product-brands/product-brands.service';
@@ -41,9 +38,7 @@ export class ProductsService {
     private readonly skuGenerator: SkuGeneratorService,
   ) {}
 
-  async findAll(
-    query: ProductListQuery,
-  ): Promise<PaginatedResult<ProductDto>> {
+  async findAll(query: ProductListQuery): Promise<PaginatedResult<ProductDto>> {
     const { skip, take } = paginationSkipTake(query);
     const qb = this.products
       .createQueryBuilder('product')
@@ -198,10 +193,7 @@ export class ProductsService {
     await this.attributeValues.save(entities);
   }
 
-  private assertAttributeValue(
-    attribute: ProductAttribute,
-    raw: string,
-  ): void {
+  private assertAttributeValue(attribute: ProductAttribute, raw: string): void {
     const value = raw.trim();
     switch (attribute.type) {
       case 'TEXT':

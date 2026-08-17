@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import {
   Button,
   Card,
@@ -24,10 +20,7 @@ import {
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { TableColumnType } from 'ant-design-vue'
 import type { CreateUserDto, UpdateUserDto } from '@maghami-system/schemas'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs } from 'vue'
 import type { PublicUser } from '@/api/types'
 import { useAppAbility } from '@/ability'
@@ -140,10 +133,7 @@ async function onSubmit(): Promise<void> {
   open.value = false
 }
 
-async function onToggleActive(
-  user: PublicUser,
-  checked: boolean | string | number,
-): Promise<void> {
+async function onToggleActive(user: PublicUser, checked: boolean | string | number): Promise<void> {
   const next = Boolean(checked)
   if (auth.isSelf(user.id) || !can(PermissionAction.Update, PermissionResource.Users)) return
   if (user.isActive === next) return
@@ -166,10 +156,7 @@ function asUser(record: unknown): PublicUser {
 }
 
 function canToggleActive(user: PublicUser): boolean {
-  return (
-    can(PermissionAction.Update, PermissionResource.Users) &&
-    !auth.isSelf(user.id)
-  )
+  return can(PermissionAction.Update, PermissionResource.Users) && !auth.isSelf(user.id)
 }
 </script>
 
@@ -188,9 +175,7 @@ function canToggleActive(user: PublicUser): boolean {
       </Button>
     </template>
 
-    <TypographyParagraph type="secondary">
-      مدیریت کاربران و تخصیص نقش (RBAC)
-    </TypographyParagraph>
+    <TypographyParagraph type="secondary"> مدیریت کاربران و تخصیص نقش (RBAC) </TypographyParagraph>
 
     <Table
       row-key="id"
@@ -202,16 +187,12 @@ function canToggleActive(user: PublicUser): boolean {
       @change="onTableChange"
     >
       <template #bodyCell="{ column, record }">
-
         <template v-if="column.key === 'roles'">
           <Space wrap>
             <Tag v-for="role in asUser(record).roles" :key="role.value">
               {{ role.label }}
             </Tag>
-            <TypographyText
-              v-if="asUser(record).roles.length === 0"
-              type="secondary"
-            >
+            <TypographyText v-if="asUser(record).roles.length === 0" type="secondary">
               —
             </TypographyText>
           </Space>
@@ -269,32 +250,18 @@ function canToggleActive(user: PublicUser): boolean {
       cancel-text="انصراف"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="rules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="rules">
         <FormItem label="نام" name="name">
           <Input v-model:value="model.name" allow-clear />
         </FormItem>
         <FormItem v-if="!editing" label="ایمیل" name="email">
           <Input v-model:value="model.email" autocomplete="off" allow-clear />
         </FormItem>
-        <FormItem
-          :label="editing ? 'رمز عبور (اختیاری)' : 'رمز عبور'"
-          name="password"
-        >
-          <InputPassword
-            v-model:value="model.password"
-            autocomplete="new-password"
-          />
+        <FormItem :label="editing ? 'رمز عبور (اختیاری)' : 'رمز عبور'" name="password">
+          <InputPassword v-model:value="model.password" autocomplete="new-password" />
         </FormItem>
         <FormItem label="تکرار رمز عبور" name="confirmPassword">
-          <InputPassword
-            v-model:value="model.confirmPassword"
-            autocomplete="new-password"
-          />
+          <InputPassword v-model:value="model.confirmPassword" autocomplete="new-password" />
         </FormItem>
         <FormItem label="نقش‌ها" name="roleIds">
           <Select

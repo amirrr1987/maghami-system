@@ -14,10 +14,7 @@ export function createUserFormRules(
   model: UserFormModel,
 ): Record<keyof UserFormModel, RuleObject | RuleObject[]> {
   return {
-    email: [
-      { required: true, message: 'ایمیل الزامی است' },
-      zodRule(createUserSchema.shape.email),
-    ],
+    email: [{ required: true, message: 'ایمیل الزامی است' }, zodRule(createUserSchema.shape.email)],
     name: [
       { required: true, whitespace: true, message: 'نام الزامی است' },
       zodRule(createUserSchema.shape.name),
@@ -42,10 +39,7 @@ export function createUserFormRules(
 
 export function updateUserFormRules(
   model: UserFormModel,
-): Record<
-  Exclude<keyof UserFormModel, 'email'>,
-  RuleObject | RuleObject[]
-> {
+): Record<Exclude<keyof UserFormModel, 'email'>, RuleObject | RuleObject[]> {
   return {
     name: [
       { required: true, whitespace: true, message: 'نام الزامی است' },
@@ -57,13 +51,9 @@ export function updateUserFormRules(
           if (value === undefined || value === null || value === '') {
             return
           }
-          const parsed = await createUserSchema.shape.password.safeParseAsync(
-            value,
-          )
+          const parsed = await createUserSchema.shape.password.safeParseAsync(value)
           if (!parsed.success) {
-            return Promise.reject(
-              parsed.error.issues[0]?.message ?? 'رمز نامعتبر',
-            )
+            return Promise.reject(parsed.error.issues[0]?.message ?? 'رمز نامعتبر')
           }
         },
       },

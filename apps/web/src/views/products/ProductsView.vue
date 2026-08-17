@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  SearchOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons-vue'
 import { Can } from '@casl/vue'
 import {
   Button,
@@ -26,15 +21,8 @@ import {
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { TableColumnType } from 'ant-design-vue'
-import type {
-  CreateProductDto,
-  ProductAttribute,
-  UpdateProductDto,
-} from '@maghami-system/schemas'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
+import type { CreateProductDto, ProductAttribute, UpdateProductDto } from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs, watch } from 'vue'
 import { productsApi } from '@/api/products.api'
 import type { Product } from '@/api/types'
@@ -51,8 +39,7 @@ const { can } = useAppAbility()
 const productStore = useProducts()
 const categoryStore = useProductCategories({
   pageSize: 100,
-  enabled: () =>
-    can(PermissionAction.Read, PermissionResource.ProductCategories),
+  enabled: () => can(PermissionAction.Read, PermissionResource.ProductCategories),
 })
 const brandStore = useProductBrands({
   pageSize: 100,
@@ -64,8 +51,7 @@ const unitStore = useProductUnits({
 })
 const attributeStore = useProductAttributes({
   pageSize: 100,
-  enabled: () =>
-    can(PermissionAction.Read, PermissionResource.ProductAttributes),
+  enabled: () => can(PermissionAction.Read, PermissionResource.ProductAttributes),
 })
 const { page, pageSize, total } = toRefs(productStore)
 
@@ -133,9 +119,7 @@ const unitOptions = computed(() =>
     value: row.id,
   })),
 )
-const activeAttributes = computed(() =>
-  attributeStore.attributeList.filter((row) => row.isActive),
-)
+const activeAttributes = computed(() => attributeStore.attributeList.filter((row) => row.isActive))
 
 const columns: TableColumnType<Product>[] = [
   { title: 'SKU', dataIndex: 'sku', key: 'sku' },
@@ -176,9 +160,7 @@ function attributeById(id: string | undefined): ProductAttribute | undefined {
   return activeAttributes.value.find((row) => row.id === id)
 }
 
-function attributeSelectOptions(
-  rowKey: string,
-): { label: string; value: string }[] {
+function attributeSelectOptions(rowKey: string): { label: string; value: string }[] {
   const usedIds = new Set(
     model.attributeRows
       .filter((row) => row.key !== rowKey && row.attributeId)
@@ -299,8 +281,7 @@ async function onSubmit(): Promise<void> {
   }
   if (!model.categoryId) return Promise.reject(new Error('category'))
 
-  const description =
-    model.description.trim() !== '' ? model.description.trim() : null
+  const description = model.description.trim() !== '' ? model.description.trim() : null
   const barcode = model.barcode.trim() !== '' ? model.barcode.trim() : null
   const sku = model.sku.trim() !== '' ? model.sku.trim() : undefined
   const attributeValues = buildAttributeValues()
@@ -448,12 +429,7 @@ function asProduct(record: unknown): Product {
       width="720px"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="createProductFormRules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="createProductFormRules">
         <FormItem label="دسته‌بندی" name="categoryId">
           <Select
             v-model:value="model.categoryId"
@@ -468,22 +444,14 @@ function asProduct(record: unknown): Product {
           <Input
             v-model:value="model.sku"
             allow-clear
-            :placeholder="
-              editing
-                ? 'SKU'
-                : skuPreview || 'خالی بگذارید تا خودکار تولید شود'
-            "
+            :placeholder="editing ? 'SKU' : skuPreview || 'خالی بگذارید تا خودکار تولید شود'"
           />
           <TypographyText
             v-if="!editing && (skuPreview || skuPreviewLoading)"
             type="secondary"
             class="mt-1 block"
           >
-            {{
-              skuPreviewLoading
-                ? 'در حال پیش‌نمایش SKU…'
-                : `پیش‌نمایش: ${skuPreview}`
-            }}
+            {{ skuPreviewLoading ? 'در حال پیش‌نمایش SKU…' : `پیش‌نمایش: ${skuPreview}` }}
           </TypographyText>
         </FormItem>
 
@@ -532,20 +500,11 @@ function asProduct(record: unknown): Product {
         </FormItem>
 
         <FormItem label="ویژگی‌ها">
-          <TypographyText
-            v-if="activeAttributes.length === 0"
-            type="secondary"
-            class="mb-2 block"
-          >
+          <TypographyText v-if="activeAttributes.length === 0" type="secondary" class="mb-2 block">
             ابتدا از منوی «ویژگی‌های محصول» ویژگی فعال تعریف کنید.
           </TypographyText>
           <Space v-else direction="vertical" class="w-full" size="middle">
-            <Space
-              v-for="row in model.attributeRows"
-              :key="row.key"
-              align="start"
-              class="w-full"
-            >
+            <Space v-for="row in model.attributeRows" :key="row.key" align="start" class="w-full">
               <Select
                 v-model:value="row.attributeId"
                 show-search
@@ -578,8 +537,7 @@ function asProduct(record: unknown): Product {
                 :value="row.value ? Number(row.value) : undefined"
                 @update:value="
                   (value) => {
-                    row.value =
-                      value === null || value === undefined ? '' : String(value)
+                    row.value = value === null || value === undefined ? '' : String(value)
                   }
                 "
               />

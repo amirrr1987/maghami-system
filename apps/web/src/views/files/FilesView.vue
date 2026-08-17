@@ -63,10 +63,7 @@ import ImageCropUploadModal from '@/components/ImageCropUploadModal.vue'
 import { useAppAbility } from '@/ability'
 import { useAuthFileUrl } from '@/composables/useAuthFileUrl'
 import { useFiles } from '@/queries/use-files'
-import {
-  fileFolderFormRules,
-  fileMetaFormRules,
-} from '@/validation/file.form-rules'
+import { fileFolderFormRules, fileMetaFormRules } from '@/validation/file.form-rules'
 
 const { can } = useAppAbility()
 const fileStore = useFiles()
@@ -106,19 +103,11 @@ const metaEditingFile = ref<StoredFile | null>(null)
 
 const expandedKeys = ref<string[]>(['root'])
 
-const canCreate = computed(() =>
-  can(PermissionAction.Create, PermissionResource.Files),
-)
-const canUpdate = computed(() =>
-  can(PermissionAction.Update, PermissionResource.Files),
-)
-const canDelete = computed(() =>
-  can(PermissionAction.Delete, PermissionResource.Files),
-)
+const canCreate = computed(() => can(PermissionAction.Create, PermissionResource.Files))
+const canUpdate = computed(() => can(PermissionAction.Update, PermissionResource.Files))
+const canDelete = computed(() => can(PermissionAction.Delete, PermissionResource.Files))
 
-const selectedFolderKeys = computed(() => [
-  currentFolderId.value ?? 'root',
-])
+const selectedFolderKeys = computed(() => [currentFolderId.value ?? 'root'])
 
 const folderById = computed(() => {
   const map = new Map<string, FileFolderDto>()
@@ -146,9 +135,7 @@ const childFolders = computed(() => {
   const q = search.value.trim().toLowerCase()
   return folders.value
     .filter((folder) => folder.parentId === parentId)
-    .filter((folder) =>
-      q ? folder.name.toLowerCase().includes(q) : true,
-    )
+    .filter((folder) => (q ? folder.name.toLowerCase().includes(q) : true))
     .sort((a, b) => a.name.localeCompare(b.name, 'fa'))
 })
 
@@ -160,8 +147,7 @@ const canGoUp = computed(() => currentFolderId.value !== null)
 
 function goUp(): void {
   if (!currentFolderId.value) return
-  const parent =
-    folderById.value.get(currentFolderId.value)?.parentId ?? null
+  const parent = folderById.value.get(currentFolderId.value)?.parentId ?? null
   void fileStore.selectFolder(parent)
 }
 
@@ -369,10 +355,7 @@ function folderContextItems(key: string): MenuProps['items'] {
   return items
 }
 
-function onFolderContextAction(
-  key: string,
-  info: { key: string | number },
-): void {
+function onFolderContextAction(key: string, info: { key: string | number }): void {
   const action = String(info.key)
   if (action === 'create') {
     if (key !== 'root') void fileStore.selectFolder(key)
@@ -403,9 +386,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (file) => {
     return false
   }
   if (raw.size > IMAGE_UPLOAD.maxBytes) {
-    message.error(
-      `حداکثر حجم ${Math.round(IMAGE_UPLOAD.maxBytes / (1024 * 1024))}MB`,
-    )
+    message.error(`حداکثر حجم ${Math.round(IMAGE_UPLOAD.maxBytes / (1024 * 1024))}MB`)
     return false
   }
   revokeCropSrc()
@@ -499,10 +480,7 @@ function fileActionItems(file: StoredFile): MenuProps['items'] {
   return items
 }
 
-async function onFileAction(
-  file: StoredFile,
-  info: { key: string | number },
-): Promise<void> {
+async function onFileAction(file: StoredFile, info: { key: string | number }): Promise<void> {
   const key = String(info.key)
   if (key === 'preview') {
     openPreview(file)
@@ -565,8 +543,8 @@ onBeforeUnmount(() => {
           پوشه بالاتر
         </Button>
         <Can :I="PermissionAction.Create" :a="PermissionResource.Files">
-         <Space>
-           <Button @click="openCreateFolder(currentFolderId)">
+          <Space>
+            <Button @click="openCreateFolder(currentFolderId)">
               <template #icon>
                 <FolderAddOutlined />
               </template>
@@ -578,25 +556,19 @@ onBeforeUnmount(() => {
               :accept="IMAGE_UPLOAD.mimeTypes.join(',')"
               :disabled="saving"
             >
-              <Button
-                type="primary"
-                :loading="saving"
-                :disabled="saving"
-              >
+              <Button type="primary" :loading="saving" :disabled="saving">
                 <template #icon>
                   <CloudUploadOutlined />
                 </template>
                 آپلود تصویر
               </Button>
             </Upload>
-         </Space>
+          </Space>
         </Can>
       </Space>
     </template>
 
-    <TypographyParagraph type="secondary">
-      کتابخانه رسانه — پوشه‌ها و تصاویر
-    </TypographyParagraph>
+    <TypographyParagraph type="secondary"> کتابخانه رسانه — پوشه‌ها و تصاویر </TypographyParagraph>
 
     <Row v-if="stats" :gutter="[16, 16]" class="mb-4">
       <Col :xs="24" :sm="8">
@@ -637,16 +609,9 @@ onBeforeUnmount(() => {
     >
       <template #action>
         <Space>
-          <Button size="small" @click="fileStore.clearSelection()">
-            لغو انتخاب
-          </Button>
+          <Button size="small" @click="fileStore.clearSelection()"> لغو انتخاب </Button>
           <Can :I="PermissionAction.Delete" :a="PermissionResource.Files">
-            <Button
-              size="small"
-              danger
-              :loading="saving"
-              @click="confirmBulkDelete"
-            >
+            <Button size="small" danger :loading="saving" @click="confirmBulkDelete">
               <template #icon>
                 <DeleteOutlined />
               </template>
@@ -673,23 +638,12 @@ onBeforeUnmount(() => {
       </Col>
 
       <Col :xs="24" :lg="18">
-        <Flex
-          align="center"
-          justify="space-between"
-          wrap="wrap"
-          gap="middle"
-          class="mb-3"
-        >
+        <Flex align="center" justify="space-between" wrap="wrap" gap="middle" class="mb-3">
           <Breadcrumb>
             <BreadcrumbItem>
-              <a href="#" @click.prevent="fileStore.selectFolder(null)">
-                همه فایل‌ها
-              </a>
+              <a href="#" @click.prevent="fileStore.selectFolder(null)"> همه فایل‌ها </a>
             </BreadcrumbItem>
-            <BreadcrumbItem
-              v-for="(crumb, index) in breadcrumbTrail"
-              :key="crumb.id"
-            >
+            <BreadcrumbItem v-for="(crumb, index) in breadcrumbTrail" :key="crumb.id">
               <a
                 v-if="index < breadcrumbTrail.length - 1"
                 href="#"
@@ -701,9 +655,7 @@ onBeforeUnmount(() => {
             </BreadcrumbItem>
           </Breadcrumb>
           <TypographyText type="secondary">
-            <template v-if="childFolders.length > 0">
-              {{ childFolders.length }} پوشه ·
-            </template>
+            <template v-if="childFolders.length > 0"> {{ childFolders.length }} پوشه · </template>
             {{ total }} فایل
           </TypographyText>
         </Flex>
@@ -721,15 +673,9 @@ onBeforeUnmount(() => {
 
         <Can :I="PermissionAction.Read" :a="PermissionResource.Files">
           <Spin :spinning="loading">
-            <Empty
-              v-if="!loading && contentIsEmpty"
-              description="این پوشه خالی است"
-            />
+            <Empty v-if="!loading && contentIsEmpty" description="این پوشه خالی است" />
 
-            <div
-              v-else
-              class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5"
-            >
+            <div v-else class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
               <Card
                 v-for="folder in childFolders"
                 :key="`folder-${folder.id}`"
@@ -746,22 +692,13 @@ onBeforeUnmount(() => {
                     </Avatar>
                   </Flex>
                 </template>
-                <template
-                  v-if="folderContextItems(folder.id)?.length"
-                  #actions
-                >
-                  <Dropdown
-                    :trigger="['click']"
-                    destroy-popup-on-hide
-                    placement="bottomLeft"
-                  >
+                <template v-if="folderContextItems(folder.id)?.length" #actions>
+                  <Dropdown :trigger="['click']" destroy-popup-on-hide placement="bottomLeft">
                     <MoreOutlined @click.stop />
                     <template #overlay>
                       <Menu
                         :items="folderContextItems(folder.id)"
-                        @click="
-                          (info) => onFolderContextAction(folder.id, info)
-                        "
+                        @click="(info) => onFolderContextAction(folder.id, info)"
                       />
                     </template>
                   </Dropdown>
@@ -778,11 +715,7 @@ onBeforeUnmount(() => {
               >
                 <template #cover>
                   <Flex justify="center" class="p-6">
-                    <FileThumb
-                      :file-id="element.id"
-                      :size="72"
-                      :alt="element.alt"
-                    />
+                    <FileThumb :file-id="element.id" :size="72" :alt="element.alt" />
                   </Flex>
                 </template>
                 <template #actions>
@@ -791,11 +724,7 @@ onBeforeUnmount(() => {
                     :checked="selectedIds.includes(element.id)"
                     @click.stop.prevent="fileStore.toggleSelected(element.id)"
                   />
-                  <Dropdown
-                    :trigger="['click']"
-                    destroy-popup-on-hide
-                    placement="bottomLeft"
-                  >
+                  <Dropdown :trigger="['click']" destroy-popup-on-hide placement="bottomLeft">
                     <MoreOutlined @click.stop />
                     <template #overlay>
                       <Menu
@@ -836,17 +765,10 @@ onBeforeUnmount(() => {
       @ok="submitFolder"
     >
       <TypographyParagraph v-if="!editingFolderId" type="secondary">
-        <template v-if="createParentId">
-          داخل: {{ folderPathLabel(createParentId) }}
-        </template>
+        <template v-if="createParentId"> داخل: {{ folderPathLabel(createParentId) }} </template>
         <template v-else>در ریشه کتابخانه</template>
       </TypographyParagraph>
-      <Form
-        ref="folderFormRef"
-        layout="vertical"
-        :model="folderForm"
-        :rules="fileFolderFormRules"
-      >
+      <Form ref="folderFormRef" layout="vertical" :model="folderForm" :rules="fileFolderFormRules">
         <FormItem label="نام پوشه" name="name">
           <Input v-model:value="folderForm.name" allow-clear />
         </FormItem>
@@ -864,12 +786,7 @@ onBeforeUnmount(() => {
       <TypographyParagraph v-if="metaEditingFile" type="secondary">
         {{ metaEditingFile.originalName }}
       </TypographyParagraph>
-      <Form
-        ref="metaFormRef"
-        layout="vertical"
-        :model="metaForm"
-        :rules="fileMetaFormRules"
-      >
+      <Form ref="metaFormRef" layout="vertical" :model="metaForm" :rules="fileMetaFormRules">
         <FormItem label="عنوان" name="title">
           <Input v-model:value="metaForm.title" allow-clear />
         </FormItem>
@@ -901,9 +818,7 @@ onBeforeUnmount(() => {
           :alt="previewFile?.alt || previewFile?.title || ''"
           width="100%"
         />
-        <TypographyParagraph v-else type="secondary">
-          در حال بارگذاری…
-        </TypographyParagraph>
+        <TypographyParagraph v-else type="secondary"> در حال بارگذاری… </TypographyParagraph>
         <Descriptions v-if="previewFile" size="small" :column="1">
           <DescriptionsItem label="نام فایل">
             {{ previewFile.originalName }}

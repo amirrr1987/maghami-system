@@ -10,9 +10,7 @@ import type { Permission } from './types'
 
 export const permissionsApi = {
   list: (query: PaginationQuery) =>
-    apiRequest<PaginatedResult<Permission>>(
-      `/permissions${toListQuery(query)}`,
-    ),
+    apiRequest<PaginatedResult<Permission>>(`/permissions${toListQuery(query)}`),
   get: (id: string) => apiRequest<Permission>(`/permissions/${id}`),
   create: (dto: CreatePermissionDto) =>
     apiRequest<Permission>('/permissions', {
@@ -24,6 +22,5 @@ export const permissionsApi = {
       method: 'PATCH',
       body: jsonBody(dto),
     }),
-  remove: (id: string) =>
-    apiRequest<void>(`/permissions/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => apiRequest<void>(`/permissions/${id}`, { method: 'DELETE' }),
 }

@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  LockOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, LockOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import {
   Button,
   Card,
@@ -107,9 +102,7 @@ async function onSubmit(): Promise<void> {
   }
 
   const description =
-    model.description && model.description.trim()
-      ? model.description.trim()
-      : null
+    model.description && model.description.trim() ? model.description.trim() : null
 
   if (editing.value) {
     const dto: UpdateRoleDto = {
@@ -180,29 +173,18 @@ function asRole(record: unknown): Role {
           </TypographyText>
         </template>
         <template v-else-if="column.key === 'permissions'">
-          <Tag v-if="isSuperAdminRoleValue(asRole(record).value)" color="gold">
-            همه دسترسی‌ها
-          </Tag>
+          <Tag v-if="isSuperAdminRoleValue(asRole(record).value)" color="gold"> همه دسترسی‌ها </Tag>
           <Space v-else wrap>
-            <Tag
-              v-for="permission in asRole(record).permissions"
-              :key="permission.value"
-            >
+            <Tag v-for="permission in asRole(record).permissions" :key="permission.value">
               {{ permission.label }}
             </Tag>
-            <TypographyText
-              v-if="asRole(record).permissions.length === 0"
-              type="secondary"
-            >
+            <TypographyText v-if="asRole(record).permissions.length === 0" type="secondary">
               —
             </TypographyText>
           </Space>
         </template>
         <template v-else-if="column.key === 'actions'">
-          <TypographyText
-            v-if="isSuperAdminRoleValue(asRole(record).value)"
-            type="secondary"
-          >
+          <TypographyText v-if="isSuperAdminRoleValue(asRole(record).value)" type="secondary">
             <LockOutlined /> سیستمی
           </TypographyText>
           <Space v-else>
@@ -246,25 +228,12 @@ function asRole(record: unknown): Role {
       cancel-text="انصراف"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="createRoleFormRules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="createRoleFormRules">
         <FormItem label="عنوان" name="label">
-          <Input
-            v-model:value="model.label"
-            allow-clear
-            placeholder="مثلاً مدیر کل"
-          />
+          <Input v-model:value="model.label" allow-clear placeholder="مثلاً مدیر کل" />
         </FormItem>
         <FormItem label="مقدار یکتا" name="value">
-          <Input
-            v-model:value="model.value"
-            allow-clear
-            placeholder="مثلاً editor"
-          />
+          <Input v-model:value="model.value" allow-clear placeholder="مثلاً editor" />
         </FormItem>
         <FormItem label="توضیح" name="description">
           <Textarea

@@ -1,8 +1,5 @@
 import type { RuleObject } from 'ant-design-vue/es/form'
-import {
-  updateFileFolderSchema,
-  updateFileMetaSchema,
-} from '@maghami-system/schemas'
+import { updateFileFolderSchema, updateFileMetaSchema } from '@maghami-system/schemas'
 import { zodRule } from './zod-rule'
 
 export const fileFolderFormRules: Record<'name', RuleObject | RuleObject[]> = {
@@ -12,10 +9,7 @@ export const fileFolderFormRules: Record<'name', RuleObject | RuleObject[]> = {
   ],
 }
 
-export const fileMetaFormRules: Record<
-  'title' | 'alt',
-  RuleObject | RuleObject[]
-> = {
+export const fileMetaFormRules: Record<'title' | 'alt', RuleObject | RuleObject[]> = {
   title: [
     { required: true, whitespace: true, message: 'عنوان الزامی است' },
     zodRule(updateFileMetaSchema.shape.title),

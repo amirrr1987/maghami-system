@@ -26,11 +26,7 @@ describe('App', () => {
 
     const wrapper = mount(App, {
       global: {
-        plugins: [
-          createPinia(),
-          [VueQueryPlugin, { queryClient }],
-          router,
-        ],
+        plugins: [createPinia(), [VueQueryPlugin, { queryClient }], router],
       },
     })
 

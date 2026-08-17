@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Can } from '@casl/vue'
 import {
   Button,
@@ -22,14 +18,8 @@ import {
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { TableColumnType } from 'ant-design-vue'
-import type {
-  CreateProductBrandDto,
-  UpdateProductBrandDto,
-} from '@maghami-system/schemas'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
+import type { CreateProductBrandDto, UpdateProductBrandDto } from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { reactive, ref, toRefs } from 'vue'
 import type { ProductBrand } from '@/api/types'
 import { useAppAbility } from '@/ability'
@@ -100,8 +90,7 @@ async function onSubmit(): Promise<void> {
     return Promise.reject(new Error('validation'))
   }
 
-  const description =
-    model.description.trim() !== '' ? model.description.trim() : null
+  const description = model.description.trim() !== '' ? model.description.trim() : null
   const logoUrl = model.logoUrl.trim() !== '' ? model.logoUrl.trim() : null
 
   if (editing.value) {
@@ -173,10 +162,7 @@ function asRow(record: unknown): ProductBrand {
           </template>
           <template v-else-if="column.key === 'actions'">
             <Space>
-              <Can
-                :I="PermissionAction.Update"
-                :a="PermissionResource.ProductBrands"
-              >
+              <Can :I="PermissionAction.Update" :a="PermissionResource.ProductBrands">
                 <Button type="link" @click="openEdit(asRow(record))">
                   <template #icon>
                     <EditOutlined />
@@ -184,10 +170,7 @@ function asRow(record: unknown): ProductBrand {
                   ویرایش
                 </Button>
               </Can>
-              <Can
-                :I="PermissionAction.Delete"
-                :a="PermissionResource.ProductBrands"
-              >
+              <Can :I="PermissionAction.Delete" :a="PermissionResource.ProductBrands">
                 <Popconfirm
                   title="حذف برند"
                   :description="`«${asRow(record).name}» حذف شود؟`"
@@ -223,12 +206,7 @@ function asRow(record: unknown): ProductBrand {
       cancel-text="انصراف"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="productBrandFormRules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="productBrandFormRules">
         <FormItem label="نام" name="name">
           <Input v-model:value="model.name" allow-clear />
         </FormItem>

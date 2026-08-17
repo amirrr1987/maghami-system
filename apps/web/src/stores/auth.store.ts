@@ -25,10 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => Boolean(accessToken.value))
 
-  function applySession(
-    session: AuthSession,
-    token?: LoginResult['accessToken'],
-  ): void {
+  function applySession(session: AuthSession, token?: LoginResult['accessToken']): void {
     if (token !== undefined) {
       accessToken.value = token
       setAccessToken(token)

@@ -26,8 +26,7 @@ export function useProductUnits(options?: {
         pageSize: pageSize.value,
       }),
     ),
-    queryFn: () =>
-      productUnitsApi.list({ page: page.value, pageSize: pageSize.value }),
+    queryFn: () => productUnitsApi.list({ page: page.value, pageSize: pageSize.value }),
     enabled: () => toValue(options?.enabled) ?? true,
     meta: { errorMessage: 'بارگذاری واحدها ناموفق بود' },
   })
@@ -91,8 +90,7 @@ export function useProductUnits(options?: {
     loading,
     saving,
     fetchPage,
-    create: (dto: CreateProductUnitDto) =>
-      tryMutate(createMutation.mutateAsync(dto)),
+    create: (dto: CreateProductUnitDto) => tryMutate(createMutation.mutateAsync(dto)),
     update: (id: string, dto: UpdateProductUnitDto) =>
       tryMutate(updateMutation.mutateAsync({ id, dto })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),

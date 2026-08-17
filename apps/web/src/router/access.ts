@@ -2,12 +2,7 @@ import type { AbilityRule } from '@maghami-system/schemas'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 import { ability } from '@/ability'
 
-export const APP_ROUTE_NAMES = [
-  'users',
-  'roles',
-  'permissions',
-  'files',
-] as const
+export const APP_ROUTE_NAMES = ['users', 'roles', 'permissions', 'files'] as const
 
 export type AppRouteName = (typeof APP_ROUTE_NAMES)[number]
 
@@ -19,9 +14,7 @@ export function routeAllowed(meta: { ability?: AbilityRule }): boolean {
   return true
 }
 
-export function firstAllowedRouteName(
-  router: Router,
-): AppRouteName | undefined {
+export function firstAllowedRouteName(router: Router): AppRouteName | undefined {
   return APP_ROUTE_NAMES.find((name) => {
     const route = router.getRoutes().find((r) => r.name === name)
     return route ? routeAllowed(route.meta) : false

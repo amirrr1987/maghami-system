@@ -26,7 +26,7 @@ import {
   Space,
   TypographyText,
   TypographyTitle,
-  Divider
+  Divider,
 } from 'ant-design-vue'
 import type { MenuProps } from 'ant-design-vue'
 import { computed, h, ref, watch } from 'vue'
@@ -35,10 +35,7 @@ import { useAppAbility } from '@/ability'
 import SettingDrawer from '@/components/SettingDrawer.vue'
 import UserProfileModal from '@/components/UserProfileModal.vue'
 import { useAuthStore } from '@/stores/auth.store'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 
 const route = useRoute()
 const router = useRouter()
@@ -51,9 +48,7 @@ const profileOpen = ref(false)
 
 const settingsAriaLabel = 'باز کردن تنظیمات'
 
-const selectedKeys = computed(() => [
-  route.name ? String(route.name) : 'users',
-])
+const selectedKeys = computed(() => [route.name ? String(route.name) : 'users'])
 
 const USER_MANAGEMENT_KEY = 'user-management'
 const PRODUCT_CODING_KEY = 'product-coding'
@@ -75,16 +70,10 @@ watch(
     if (!name) return
     const key = String(name)
     const next = [...openKeys.value]
-    if (
-      userManagementChildKeys.has(key) &&
-      !next.includes(USER_MANAGEMENT_KEY)
-    ) {
+    if (userManagementChildKeys.has(key) && !next.includes(USER_MANAGEMENT_KEY)) {
       next.push(USER_MANAGEMENT_KEY)
     }
-    if (
-      productCodingChildKeys.has(key) &&
-      !next.includes(PRODUCT_CODING_KEY)
-    ) {
+    if (productCodingChildKeys.has(key) && !next.includes(PRODUCT_CODING_KEY)) {
       next.push(PRODUCT_CODING_KEY)
     }
     openKeys.value = next
@@ -232,21 +221,13 @@ async function onLogout(): Promise<void> {
 <template>
   <Layout class="h-screen">
     <LayoutHeader>
-      <Flex
-        align="center"
-        justify="space-between"
-        class="h-full w-full"
-      >
+      <Flex align="center" justify="space-between" class="h-full w-full">
         <RouterLink to="/">
-          <TypographyTitle
-            :level="5"
-            class="m-0! truncate text-primary!"
-          >
+          <TypographyTitle :level="5" class="m-0! truncate text-primary!">
             Maghami system
           </TypographyTitle>
         </RouterLink>
         <Space :size="8">
-
           <Dropdown :trigger="['click']">
             <Space class="cursor-pointer">
               <Avatar :size="32">
@@ -257,10 +238,7 @@ async function onLogout(): Promise<void> {
               <TypographyText>{{ auth.user?.name }}</TypographyText>
             </Space>
             <template #overlay>
-              <Menu
-                :items="userMenuItems"
-                @click="onUserMenuClick"
-              />
+              <Menu :items="userMenuItems" @click="onUserMenuClick" />
             </template>
           </Dropdown>
 
@@ -280,12 +258,7 @@ async function onLogout(): Promise<void> {
     </LayoutHeader>
 
     <Layout>
-      <LayoutSider
-        v-model:collapsed="collapsed"
-        collapsible
-        breakpoint="lg"
-        :width="270"
-      >
+      <LayoutSider v-model:collapsed="collapsed" collapsible breakpoint="lg" :width="270">
         <Menu
           mode="inline"
           v-model:openKeys="openKeys"

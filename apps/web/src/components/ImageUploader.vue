@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  PictureOutlined,
-  StarFilled,
-  StarOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, PictureOutlined, StarFilled, StarOutlined } from '@ant-design/icons-vue'
 import { Button, Flex, TypographyText } from 'ant-design-vue'
 import { onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -149,9 +144,7 @@ function setCover(fileId: string): void {
           alt=""
           class="h-full w-full object-cover"
         />
-        <div
-          class="absolute inset-x-0 bottom-0 flex justify-between bg-black/50 p-1"
-        >
+        <div class="absolute inset-x-0 bottom-0 flex justify-between bg-black/50 p-1">
           <Button
             v-if="multiple"
             type="text"

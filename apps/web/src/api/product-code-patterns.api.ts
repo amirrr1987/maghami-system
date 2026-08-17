@@ -10,11 +10,8 @@ import type { ProductCodePattern } from './types'
 
 export const productCodePatternsApi = {
   list: (query: PaginationQuery) =>
-    apiRequest<PaginatedResult<ProductCodePattern>>(
-      `/product-code-patterns${toListQuery(query)}`,
-    ),
-  get: (id: string) =>
-    apiRequest<ProductCodePattern>(`/product-code-patterns/${id}`),
+    apiRequest<PaginatedResult<ProductCodePattern>>(`/product-code-patterns${toListQuery(query)}`),
+  get: (id: string) => apiRequest<ProductCodePattern>(`/product-code-patterns/${id}`),
   create: (dto: CreateProductCodePatternDto) =>
     apiRequest<ProductCodePattern>('/product-code-patterns', {
       method: 'POST',
@@ -25,6 +22,5 @@ export const productCodePatternsApi = {
       method: 'PATCH',
       body: jsonBody(dto),
     }),
-  remove: (id: string) =>
-    apiRequest<void>(`/product-code-patterns/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => apiRequest<void>(`/product-code-patterns/${id}`, { method: 'DELETE' }),
 }

@@ -8,9 +8,7 @@ import {
 import type { DefaultOptionType } from 'ant-design-vue/es/select'
 
 /** Map domain rows to antdv Select `:options` (`label` + `value`). */
-export function toSelectOptions(
-  items: readonly LabelValue[],
-): DefaultOptionType[] {
+export function toSelectOptions(items: readonly LabelValue[]): DefaultOptionType[] {
   return items.map((item) => ({
     label: item.label,
     value: item.value,
@@ -37,21 +35,17 @@ const ACTION_LABELS_FA: Record<PermissionAction, string> = {
   [PermissionAction.Delete]: 'حذف',
 }
 
-export const permissionResourceOptions: DefaultOptionType[] =
-  PERMISSION_RESOURCES.map((value) => ({
-    label: RESOURCE_LABELS_FA[value],
-    value,
-  }))
+export const permissionResourceOptions: DefaultOptionType[] = PERMISSION_RESOURCES.map((value) => ({
+  label: RESOURCE_LABELS_FA[value],
+  value,
+}))
 
-export const permissionActionOptions: DefaultOptionType[] =
-  PERMISSION_ACTIONS.map((value) => ({
-    label: ACTION_LABELS_FA[value],
-    value,
-  }))
+export const permissionActionOptions: DefaultOptionType[] = PERMISSION_ACTIONS.map((value) => ({
+  label: ACTION_LABELS_FA[value],
+  value,
+}))
 
-export function permissionToOption(
-  permission: Pick<Permission, 'id' | 'name'>,
-): LabelValue {
+export function permissionToOption(permission: Pick<Permission, 'id' | 'name'>): LabelValue {
   return {
     label: permission.name,
     value: permission.id,

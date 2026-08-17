@@ -26,8 +26,7 @@ export function useProductBrands(options?: {
         pageSize: pageSize.value,
       }),
     ),
-    queryFn: () =>
-      productBrandsApi.list({ page: page.value, pageSize: pageSize.value }),
+    queryFn: () => productBrandsApi.list({ page: page.value, pageSize: pageSize.value }),
     enabled: () => toValue(options?.enabled) ?? true,
     meta: { errorMessage: 'بارگذاری برندها ناموفق بود' },
   })
@@ -91,8 +90,7 @@ export function useProductBrands(options?: {
     loading,
     saving,
     fetchPage,
-    create: (dto: CreateProductBrandDto) =>
-      tryMutate(createMutation.mutateAsync(dto)),
+    create: (dto: CreateProductBrandDto) => tryMutate(createMutation.mutateAsync(dto)),
     update: (id: string, dto: UpdateProductBrandDto) =>
       tryMutate(updateMutation.mutateAsync({ id, dto })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),

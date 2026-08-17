@@ -11,10 +11,7 @@ import type {
   ProductCategory as ProductCategoryDto,
   ProductCategoryTreeNode,
 } from '@maghami-system/schemas';
-import {
-  paginationSkipTake,
-  toPaginatedResult,
-} from '@maghami-system/schemas';
+import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ProductCategory } from './product-category.entity';
 import type {
@@ -142,9 +139,7 @@ export class ProductCategoriesService {
     }
   }
 
-  private buildTree(
-    flat: ProductCategoryDto[],
-  ): ProductCategoryTreeNode[] {
+  private buildTree(flat: ProductCategoryDto[]): ProductCategoryTreeNode[] {
     const byId = new Map<string, ProductCategoryTreeNode>();
     for (const row of flat) {
       byId.set(row.id, { ...row, children: [] });

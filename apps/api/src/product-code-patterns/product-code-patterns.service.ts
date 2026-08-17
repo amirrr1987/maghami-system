@@ -9,10 +9,7 @@ import type {
   PaginationQuery,
   ProductCodePattern as ProductCodePatternDto,
 } from '@maghami-system/schemas';
-import {
-  paginationSkipTake,
-  toPaginatedResult,
-} from '@maghami-system/schemas';
+import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ProductCategoriesService } from '../product-categories/product-categories.service';
 import { ProductCodePattern } from './product-code-pattern.entity';

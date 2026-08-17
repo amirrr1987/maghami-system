@@ -20,9 +20,7 @@ export const createRoleFormRules: Record<
     {
       async validator(_rule, value: unknown) {
         if (value === SUPER_ADMIN_ROLE_VALUE) {
-          return Promise.reject(
-            new Error('این مقدار برای نقش سیستمی رزرو شده است'),
-          )
+          return Promise.reject(new Error('این مقدار برای نقش سیستمی رزرو شده است'))
         }
       },
     },

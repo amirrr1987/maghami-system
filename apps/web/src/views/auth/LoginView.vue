@@ -130,36 +130,14 @@ watch(() => route.query.reason, applyReasonFromQuery)
 <template>
   <Layout class="min-h-screen">
     <LayoutContent>
-      <Flex
-        align="center"
-        justify="center"
-        class="min-h-screen p-6"
-      >
+      <Flex align="center" justify="center" class="min-h-screen p-6">
         <Card class="w-full max-w-md">
-          <Flex
-            vertical
-            align="center"
-            :gap="4"
-            class="mb-6"
-          >
-            <TypographyTitle
-              :level="3"
-              class="m-0!"
-            >
-              Maghami system
-            </TypographyTitle>
-            <TypographyText type="secondary">
-              ورود به پنل مدیریت
-            </TypographyText>
+          <Flex vertical align="center" :gap="4" class="mb-6">
+            <TypographyTitle :level="3" class="m-0!"> Maghami system </TypographyTitle>
+            <TypographyText type="secondary"> ورود به پنل مدیریت </TypographyText>
           </Flex>
 
-          <Alert
-            v-if="errorMessage"
-            class="mb-4"
-            type="error"
-            show-icon
-            :message="errorMessage"
-          />
+          <Alert v-if="errorMessage" class="mb-4" type="error" show-icon :message="errorMessage" />
 
           <Form
             ref="formRef"
@@ -168,10 +146,7 @@ watch(() => route.query.reason, applyReasonFromQuery)
             :rules="loginFormRules"
             @finish="onSubmit"
           >
-            <FormItem
-              label="ایمیل"
-              name="email"
-            >
+            <FormItem label="ایمیل" name="email">
               <Input
                 v-model:value="model.email"
                 size="large"
@@ -184,10 +159,7 @@ watch(() => route.query.reason, applyReasonFromQuery)
                 </template>
               </Input>
             </FormItem>
-            <FormItem
-              label="رمز عبور"
-              name="password"
-            >
+            <FormItem label="رمز عبور" name="password">
               <InputPassword
                 v-model:value="model.password"
                 size="large"
@@ -200,13 +172,7 @@ watch(() => route.query.reason, applyReasonFromQuery)
               </InputPassword>
             </FormItem>
             <FormItem class="mb-0!">
-              <Button
-                type="primary"
-                html-type="submit"
-                size="large"
-                block
-                :loading="loading"
-              >
+              <Button type="primary" html-type="submit" size="large" block :loading="loading">
                 ورود
               </Button>
             </FormItem>

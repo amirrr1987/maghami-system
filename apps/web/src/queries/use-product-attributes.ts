@@ -36,8 +36,7 @@ export function useProductAttributes(options?: {
   })
 
   const createMutation = useMutation({
-    mutationFn: (dto: CreateProductAttributeDto) =>
-      productAttributesApi.create(dto),
+    mutationFn: (dto: CreateProductAttributeDto) => productAttributesApi.create(dto),
     onSuccess: async () => {
       message.success('ویژگی ایجاد شد')
       page.value = 1
@@ -49,13 +48,8 @@ export function useProductAttributes(options?: {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({
-      id,
-      dto,
-    }: {
-      id: string
-      dto: UpdateProductAttributeDto
-    }) => productAttributesApi.update(id, dto),
+    mutationFn: ({ id, dto }: { id: string; dto: UpdateProductAttributeDto }) =>
+      productAttributesApi.update(id, dto),
     onSuccess: async () => {
       message.success('ویژگی به‌روزرسانی شد')
       await queryClient.invalidateQueries({
@@ -100,8 +94,7 @@ export function useProductAttributes(options?: {
     loading,
     saving,
     fetchPage,
-    create: (dto: CreateProductAttributeDto) =>
-      tryMutate(createMutation.mutateAsync(dto)),
+    create: (dto: CreateProductAttributeDto) => tryMutate(createMutation.mutateAsync(dto)),
     update: (id: string, dto: UpdateProductAttributeDto) =>
       tryMutate(updateMutation.mutateAsync({ id, dto })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),

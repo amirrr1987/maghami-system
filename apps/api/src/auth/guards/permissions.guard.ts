@@ -5,10 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import {
-  abilityCovers,
-  type AbilityRule,
-} from '@maghami-system/schemas';
+import { abilityCovers, type AbilityRule } from '@maghami-system/schemas';
 import { UsersService } from '../../users/users.service';
 import type { AuthRequest } from '../decorators/current-user.decorator';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';

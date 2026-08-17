@@ -1,20 +1,8 @@
 <script setup lang="ts">
 import { FolderOpenOutlined, HomeOutlined } from '@ant-design/icons-vue'
-import {
-  Empty,
-  Flex,
-  Input,
-  Modal,
-  Spin,
-  Tree,
-  TypographyText,
-  message,
-} from 'ant-design-vue'
+import { Empty, Flex, Input, Modal, Spin, Tree, TypographyText, message } from 'ant-design-vue'
 import type { DataNode } from 'ant-design-vue/es/tree'
-import type {
-  FileFolderDto,
-  StoredFile,
-} from '@maghami-system/schemas'
+import type { FileFolderDto, StoredFile } from '@maghami-system/schemas'
 import { computed, h, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { filesApi } from '@/api/files.api'
 import { ApiError } from '@/api/types'
@@ -53,9 +41,7 @@ const title = computed(() =>
   props.multiple ? 'انتخاب تصاویر از کتابخانه' : 'انتخاب تصویر از کتابخانه',
 )
 
-const selectedFolderKeys = computed(() => [
-  currentFolderId.value ?? 'root',
-])
+const selectedFolderKeys = computed(() => [currentFolderId.value ?? 'root'])
 
 const folderTreeData = computed((): DataNode[] => {
   const byParent = new Map<string | null, FileFolderDto[]>()
@@ -105,9 +91,7 @@ async function loadFolders(): Promise<void> {
   try {
     folders.value = await filesApi.listFolders()
   } catch (error) {
-    message.error(
-      error instanceof ApiError ? error.message : 'بارگذاری پوشه‌ها ناموفق بود',
-    )
+    message.error(error instanceof ApiError ? error.message : 'بارگذاری پوشه‌ها ناموفق بود')
   }
 }
 
@@ -124,9 +108,7 @@ async function loadFiles(): Promise<void> {
     total.value = result.total
     await loadMissingPreviews(result.items)
   } catch (error) {
-    message.error(
-      error instanceof ApiError ? error.message : 'بارگذاری فایل‌ها ناموفق بود',
-    )
+    message.error(error instanceof ApiError ? error.message : 'بارگذاری فایل‌ها ناموفق بود')
   } finally {
     loading.value = false
   }
@@ -246,22 +228,14 @@ function onOk(): void {
       </div>
 
       <div class="min-w-0 flex-1">
-        <Flex
-          class="mb-3"
-          wrap="wrap"
-          gap="12"
-          align="center"
-          justify="space-between"
-        >
+        <Flex class="mb-3" wrap="wrap" gap="12" align="center" justify="space-between">
           <Input.Search
             :value="search"
             placeholder="جستجو در این پوشه"
             allow-clear
             class="max-w-70"
             @search="onSearch"
-            @change="
-              (e: Event) => (search = (e.target as HTMLInputElement).value)
-            "
+            @change="(e: Event) => (search = (e.target as HTMLInputElement).value)"
           />
           <TypographyText type="secondary">
             {{ draftIds.length }}
@@ -275,10 +249,7 @@ function onOk(): void {
             v-if="!loading && files.length === 0"
             description="فایلی در این پوشه نیست — از مدیریت فایل‌ها آپلود کنید"
           />
-          <div
-            v-else
-            class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4"
-          >
+          <div v-else class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
             <button
               v-for="file in files"
               :key="file.id"
@@ -291,18 +262,14 @@ function onOk(): void {
               "
               @click="toggle(file.id)"
             >
-              <div
-                class="flex h-24 items-center justify-center bg-neutral-100 dark:bg-neutral-800"
-              >
+              <div class="flex h-24 items-center justify-center bg-neutral-100 dark:bg-neutral-800">
                 <img
                   v-if="previewById[file.id]"
                   :src="previewById[file.id]"
                   :alt="file.alt || file.title || file.originalName"
                   class="h-full w-full object-cover"
                 />
-                <TypographyText v-else type="secondary" class="text-xs">
-                  …
-                </TypographyText>
+                <TypographyText v-else type="secondary" class="text-xs"> … </TypographyText>
               </div>
               <div class="truncate px-2 py-1 text-xs">
                 {{ file.title || file.originalName }}

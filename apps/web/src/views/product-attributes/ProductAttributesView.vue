@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Can } from '@casl/vue'
 import {
   Button,
@@ -28,10 +24,7 @@ import type {
   ProductAttributeType,
   UpdateProductAttributeDto,
 } from '@maghami-system/schemas'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs } from 'vue'
 import type { ProductAttribute } from '@/api/types'
 import { useAppAbility } from '@/ability'
@@ -160,10 +153,7 @@ function asRow(record: unknown): ProductAttribute {
 <template>
   <Card title="ویژگی کالا">
     <template #extra>
-      <Can
-        :I="PermissionAction.Create"
-        :a="PermissionResource.ProductAttributes"
-      >
+      <Can :I="PermissionAction.Create" :a="PermissionResource.ProductAttributes">
         <Button type="primary" @click="openCreate">
           <template #icon>
             <PlusOutlined />
@@ -195,10 +185,7 @@ function asRow(record: unknown): ProductAttribute {
           </template>
           <template v-else-if="column.key === 'actions'">
             <Space>
-              <Can
-                :I="PermissionAction.Update"
-                :a="PermissionResource.ProductAttributes"
-              >
+              <Can :I="PermissionAction.Update" :a="PermissionResource.ProductAttributes">
                 <Button type="link" @click="openEdit(asRow(record))">
                   <template #icon>
                     <EditOutlined />
@@ -206,10 +193,7 @@ function asRow(record: unknown): ProductAttribute {
                   ویرایش
                 </Button>
               </Can>
-              <Can
-                :I="PermissionAction.Delete"
-                :a="PermissionResource.ProductAttributes"
-              >
+              <Can :I="PermissionAction.Delete" :a="PermissionResource.ProductAttributes">
                 <Popconfirm
                   title="حذف ویژگی"
                   :description="`«${asRow(record).name}» حذف شود؟`"
@@ -245,12 +229,7 @@ function asRow(record: unknown): ProductAttribute {
       cancel-text="انصراف"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="productAttributeFormRules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="productAttributeFormRules">
         <FormItem label="نام" name="name">
           <Input v-model:value="model.name" allow-clear />
         </FormItem>
@@ -258,10 +237,7 @@ function asRow(record: unknown): ProductAttribute {
           <Input v-model:value="model.code" allow-clear />
         </FormItem>
         <FormItem label="نوع" name="type">
-          <Select
-            v-model:value="model.type"
-            :options="PRODUCT_ATTRIBUTE_TYPE_OPTIONS"
-          />
+          <Select v-model:value="model.type" :options="PRODUCT_ATTRIBUTE_TYPE_OPTIONS" />
         </FormItem>
         <FormItem v-if="showOptions" label="گزینه‌ها (هر خط یک گزینه)" name="options">
           <Textarea v-model:value="model.optionsText" :rows="4" allow-clear />

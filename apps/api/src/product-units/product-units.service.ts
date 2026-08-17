@@ -9,10 +9,7 @@ import type {
   PaginationQuery,
   ProductUnit as ProductUnitDto,
 } from '@maghami-system/schemas';
-import {
-  paginationSkipTake,
-  toPaginatedResult,
-} from '@maghami-system/schemas';
+import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ProductUnit } from './product-unit.entity';
 import type {
@@ -61,10 +58,7 @@ export class ProductUnitsService {
     }
   }
 
-  async update(
-    id: string,
-    dto: UpdateProductUnitDto,
-  ): Promise<ProductUnitDto> {
+  async update(id: string, dto: UpdateProductUnitDto): Promise<ProductUnitDto> {
     const unit = await this.findEntity(id);
     if (dto.name !== undefined) unit.name = dto.name.trim();
     if (dto.code !== undefined) unit.code = dto.code.trim();

@@ -229,10 +229,7 @@ export class FilesService {
     return this.toDto(saved);
   }
 
-  async updateMeta(
-    id: string,
-    dto: UpdateFileMetaDto,
-  ): Promise<StoredFileDto> {
+  async updateMeta(id: string, dto: UpdateFileMetaDto): Promise<StoredFileDto> {
     const file = await this.findEntity(id);
     file.title = dto.title;
     file.alt = dto.alt;

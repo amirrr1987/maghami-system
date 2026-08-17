@@ -187,7 +187,11 @@ export class ProductResponse {
   @ApiPropertyOptional({ nullable: true, type: String, format: 'uuid' })
   unitId!: string | null;
 
-  @ApiPropertyOptional({ nullable: true, type: String, example: '6260123456789' })
+  @ApiPropertyOptional({
+    nullable: true,
+    type: String,
+    example: '6260123456789',
+  })
   barcode!: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String })
@@ -493,7 +497,11 @@ export class ProductAttributeResponse {
   @ApiProperty({ enum: ['TEXT', 'NUMBER', 'SELECT', 'BOOLEAN'] })
   type!: 'TEXT' | 'NUMBER' | 'SELECT' | 'BOOLEAN';
 
-  @ApiPropertyOptional({ nullable: true, type: [String], example: ['red', 'blue'] })
+  @ApiPropertyOptional({
+    nullable: true,
+    type: [String],
+    example: ['red', 'blue'],
+  })
   options!: string[] | null;
 
   @ApiProperty()

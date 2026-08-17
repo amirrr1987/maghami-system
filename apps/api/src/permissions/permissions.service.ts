@@ -11,10 +11,7 @@ import type {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas';
-import {
-  paginationSkipTake,
-  toPaginatedResult,
-} from '@maghami-system/schemas';
+import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { In, QueryFailedError, Repository } from 'typeorm';
 import { Permission } from './permission.entity';
 import type {

@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Can } from '@casl/vue'
 import {
   Button,
@@ -23,14 +19,8 @@ import {
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { TableColumnType } from 'ant-design-vue'
-import type {
-  CreateProductCategoryDto,
-  UpdateProductCategoryDto,
-} from '@maghami-system/schemas'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
+import type { CreateProductCategoryDto, UpdateProductCategoryDto } from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs } from 'vue'
 import type { ProductCategory } from '@/api/types'
 import { useAppAbility } from '@/ability'
@@ -108,8 +98,7 @@ async function onSubmit(): Promise<void> {
     return Promise.reject(new Error('validation'))
   }
 
-  const description =
-    model.description.trim() !== '' ? model.description.trim() : null
+  const description = model.description.trim() !== '' ? model.description.trim() : null
   const parentId = model.parentId ?? null
 
   if (editing.value) {
@@ -157,10 +146,7 @@ function parentLabel(parentId: string | null): string {
 <template>
   <Card title="دسته‌بندی کالا">
     <template #extra>
-      <Can
-        :I="PermissionAction.Create"
-        :a="PermissionResource.ProductCategories"
-      >
+      <Can :I="PermissionAction.Create" :a="PermissionResource.ProductCategories">
         <Button type="primary" @click="openCreate">
           <template #icon>
             <PlusOutlined />
@@ -195,10 +181,7 @@ function parentLabel(parentId: string | null): string {
           </template>
           <template v-else-if="column.key === 'actions'">
             <Space>
-              <Can
-                :I="PermissionAction.Update"
-                :a="PermissionResource.ProductCategories"
-              >
+              <Can :I="PermissionAction.Update" :a="PermissionResource.ProductCategories">
                 <Button type="link" @click="openEdit(asRow(record))">
                   <template #icon>
                     <EditOutlined />
@@ -206,10 +189,7 @@ function parentLabel(parentId: string | null): string {
                   ویرایش
                 </Button>
               </Can>
-              <Can
-                :I="PermissionAction.Delete"
-                :a="PermissionResource.ProductCategories"
-              >
+              <Can :I="PermissionAction.Delete" :a="PermissionResource.ProductCategories">
                 <Popconfirm
                   title="حذف دسته‌بندی"
                   :description="`«${asRow(record).name}» حذف شود؟`"
@@ -245,12 +225,7 @@ function parentLabel(parentId: string | null): string {
       cancel-text="انصراف"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="productCategoryFormRules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="productCategoryFormRules">
         <FormItem label="نام" name="name">
           <Input v-model:value="model.name" allow-clear />
         </FormItem>

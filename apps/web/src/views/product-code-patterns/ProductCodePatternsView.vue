@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Can } from '@casl/vue'
 import {
   Button,
@@ -27,10 +23,7 @@ import type {
   CreateProductCodePatternDto,
   UpdateProductCodePatternDto,
 } from '@maghami-system/schemas'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs } from 'vue'
 import type { ProductCodePattern } from '@/api/types'
 import { useAppAbility } from '@/ability'
@@ -43,8 +36,7 @@ const { can } = useAppAbility()
 const patternStore = useProductCodePatterns()
 const categoryStore = useProductCategories({
   pageSize: 100,
-  enabled: () =>
-    can(PermissionAction.Read, PermissionResource.ProductCategories),
+  enabled: () => can(PermissionAction.Read, PermissionResource.ProductCategories),
 })
 const { page, pageSize, total } = toRefs(patternStore)
 
@@ -93,16 +85,14 @@ function resetModel(): void {
 }
 
 function openCreate(): void {
-  if (!can(PermissionAction.Create, PermissionResource.ProductCodePatterns))
-    return
+  if (!can(PermissionAction.Create, PermissionResource.ProductCodePatterns)) return
   editing.value = null
   resetModel()
   open.value = true
 }
 
 function openEdit(row: ProductCodePattern): void {
-  if (!can(PermissionAction.Update, PermissionResource.ProductCodePatterns))
-    return
+  if (!can(PermissionAction.Update, PermissionResource.ProductCodePatterns)) return
   editing.value = row
   model.categoryId = row.categoryId
   model.prefix = row.prefix
@@ -147,8 +137,7 @@ async function onSubmit(): Promise<void> {
 }
 
 async function removeRow(row: ProductCodePattern): Promise<void> {
-  if (!can(PermissionAction.Delete, PermissionResource.ProductCodePatterns))
-    return
+  if (!can(PermissionAction.Delete, PermissionResource.ProductCodePatterns)) return
   await patternStore.remove(row.id)
 }
 
@@ -165,10 +154,7 @@ function categoryLabel(categoryId: string): string {
 <template>
   <Card title="الگوی کدینگ SKU">
     <template #extra>
-      <Can
-        :I="PermissionAction.Create"
-        :a="PermissionResource.ProductCodePatterns"
-      >
+      <Can :I="PermissionAction.Create" :a="PermissionResource.ProductCodePatterns">
         <Button type="primary" @click="openCreate">
           <template #icon>
             <PlusOutlined />
@@ -203,10 +189,7 @@ function categoryLabel(categoryId: string): string {
           </template>
           <template v-else-if="column.key === 'actions'">
             <Space>
-              <Can
-                :I="PermissionAction.Update"
-                :a="PermissionResource.ProductCodePatterns"
-              >
+              <Can :I="PermissionAction.Update" :a="PermissionResource.ProductCodePatterns">
                 <Button type="link" @click="openEdit(asRow(record))">
                   <template #icon>
                     <EditOutlined />
@@ -214,10 +197,7 @@ function categoryLabel(categoryId: string): string {
                   ویرایش
                 </Button>
               </Can>
-              <Can
-                :I="PermissionAction.Delete"
-                :a="PermissionResource.ProductCodePatterns"
-              >
+              <Can :I="PermissionAction.Delete" :a="PermissionResource.ProductCodePatterns">
                 <Popconfirm
                   title="حذف الگو"
                   :description="`الگوی «${asRow(record).prefix}» حذف شود؟`"
@@ -253,12 +233,7 @@ function categoryLabel(categoryId: string): string {
       cancel-text="انصراف"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="productCodePatternFormRules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="productCodePatternFormRules">
         <FormItem label="دسته‌بندی" name="categoryId">
           <Select
             v-model:value="model.categoryId"
@@ -275,12 +250,7 @@ function categoryLabel(categoryId: string): string {
           <Input v-model:value="model.separator" allow-clear />
         </FormItem>
         <FormItem label="طول عدد ترتیبی" name="length">
-          <InputNumber
-            v-model:value="model.length"
-            class="w-full"
-            :min="1"
-            :max="12"
-          />
+          <InputNumber v-model:value="model.length" class="w-full" :min="1" :max="12" />
         </FormItem>
         <FormItem label="فعال" name="isActive">
           <Switch v-model:checked="model.isActive" />

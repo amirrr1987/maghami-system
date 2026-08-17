@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  RotateLeftOutlined,
-  RotateRightOutlined,
-  SwapOutlined,
-} from '@ant-design/icons-vue'
+import { RotateLeftOutlined, RotateRightOutlined, SwapOutlined } from '@ant-design/icons-vue'
 import {
   Button,
   Form,
@@ -21,11 +17,7 @@ import {
   uploadFileMetaSchema,
   type UploadFileMetaDto,
 } from '@maghami-system/schemas'
-import {
-  CircleStencil,
-  Cropper,
-  type CropperResult,
-} from 'vue-advanced-cropper'
+import { CircleStencil, Cropper, type CropperResult } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 import {
   computed,
@@ -95,9 +87,7 @@ const emit = defineEmits<{
   confirm: [payload: { file: File; meta: UploadFileMetaDto }]
 }>()
 
-const cropperRef = ref<(ComponentPublicInstance & CropperExposed) | null>(
-  null,
-)
+const cropperRef = ref<(ComponentPublicInstance & CropperExposed) | null>(null)
 
 const meta = reactive({
   title: '',
@@ -113,9 +103,7 @@ const minHeight = ref<number>()
 const maxWidth = ref<number>()
 const maxHeight = ref<number>()
 
-const cropperKey = computed(
-  () => `${cropMode.value}:${aspectRatioKey.value}`,
-)
+const cropperKey = computed(() => `${cropMode.value}:${aspectRatioKey.value}`)
 
 const stencilComponent = computed((): Component | undefined => {
   if (cropMode.value === 'circle') {
@@ -225,19 +213,11 @@ async function onConfirm(): Promise<void> {
   }
 
   if (cropMode.value === 'bounds') {
-    if (
-      minWidth.value != null &&
-      maxWidth.value != null &&
-      minWidth.value > maxWidth.value
-    ) {
+    if (minWidth.value != null && maxWidth.value != null && minWidth.value > maxWidth.value) {
       message.error('حداقل عرض از حداکثر بیشتر است')
       return
     }
-    if (
-      minHeight.value != null &&
-      maxHeight.value != null &&
-      minHeight.value > maxHeight.value
-    ) {
+    if (minHeight.value != null && maxHeight.value != null && minHeight.value > maxHeight.value) {
       message.error('حداقل ارتفاع از حداکثر بیشتر است')
       return
     }
@@ -250,9 +230,7 @@ async function onConfirm(): Promise<void> {
     return
   }
 
-  const mime = isAllowedImageMime(props.outputMime)
-    ? props.outputMime
-    : 'image/jpeg'
+  const mime = isAllowedImageMime(props.outputMime) ? props.outputMime : 'image/jpeg'
   try {
     const file = await canvasToImageFile(canvas, props.fileName, mime, {
       outputWidth: cropMode.value === 'size' ? outputWidth.value : null,
@@ -329,32 +307,16 @@ async function onConfirm(): Promise<void> {
         </Space>
       </FormItem>
 
-      <div
-        v-else-if="cropMode === 'size'"
-        class="grid grid-cols-1 gap-x-3 sm:grid-cols-2"
-      >
+      <div v-else-if="cropMode === 'size'" class="grid grid-cols-1 gap-x-3 sm:grid-cols-2">
         <FormItem label="عرض خروجی (px)" required>
-          <InputNumber
-            v-model:value="outputWidth"
-            class="w-full"
-            :min="1"
-            :precision="0"
-          />
+          <InputNumber v-model:value="outputWidth" class="w-full" :min="1" :precision="0" />
         </FormItem>
         <FormItem label="ارتفاع خروجی (px)" required>
-          <InputNumber
-            v-model:value="outputHeight"
-            class="w-full"
-            :min="1"
-            :precision="0"
-          />
+          <InputNumber v-model:value="outputHeight" class="w-full" :min="1" :precision="0" />
         </FormItem>
       </div>
 
-      <div
-        v-else-if="cropMode === 'bounds'"
-        class="grid grid-cols-2 gap-x-3 sm:grid-cols-4"
-      >
+      <div v-else-if="cropMode === 'bounds'" class="grid grid-cols-2 gap-x-3 sm:grid-cols-4">
         <FormItem label="حداقل عرض">
           <InputNumber
             v-model:value="minWidth"
@@ -422,9 +384,7 @@ async function onConfirm(): Promise<void> {
     </Space>
     <Space class="w-full justify-end">
       <Button @click="onCancel">انصراف</Button>
-      <Button type="primary" :loading="confirmLoading" @click="onConfirm">
-        آپلود
-      </Button>
+      <Button type="primary" :loading="confirmLoading" @click="onConfirm"> آپلود </Button>
     </Space>
   </Modal>
 </template>

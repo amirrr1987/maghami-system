@@ -9,10 +9,7 @@ import type {
   PaginationQuery,
   ProductAttribute as ProductAttributeDto,
 } from '@maghami-system/schemas';
-import {
-  paginationSkipTake,
-  toPaginatedResult,
-} from '@maghami-system/schemas';
+import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ProductAttribute } from './product-attribute.entity';
 import type {
@@ -73,9 +70,7 @@ export class ProductAttributesService {
     const nextType = dto.type ?? attribute.type;
     if (dto.options !== undefined || dto.type !== undefined) {
       attribute.options =
-        nextType === 'SELECT'
-          ? (dto.options ?? attribute.options ?? [])
-          : null;
+        nextType === 'SELECT' ? (dto.options ?? attribute.options ?? []) : null;
     }
     if (dto.isActive !== undefined) attribute.isActive = dto.isActive;
     try {

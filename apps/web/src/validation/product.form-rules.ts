@@ -38,12 +38,9 @@ export const createProductFormRules: Record<
     {
       async validator(_rule, value: unknown) {
         if (value === undefined || value === null || value === '') return
-        const parsed =
-          await createProductSchema.shape.barcode.safeParseAsync(value)
+        const parsed = await createProductSchema.shape.barcode.safeParseAsync(value)
         if (parsed.success) return
-        return Promise.reject(
-          parsed.error.issues[0]?.message ?? 'بارکد نامعتبر است',
-        )
+        return Promise.reject(parsed.error.issues[0]?.message ?? 'بارکد نامعتبر است')
       },
     },
   ],

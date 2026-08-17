@@ -14,18 +14,12 @@ export const productAttributeFormRules: Record<
   'name' | 'code' | 'type' | 'options' | 'isActive',
   RuleObject | RuleObject[]
 > = {
-  name: [
-    { required: true, whitespace: true, message: 'نام الزامی است' },
-    zodRule(nameSchema),
-  ],
+  name: [{ required: true, whitespace: true, message: 'نام الزامی است' }, zodRule(nameSchema)],
   code: [
     { required: true, whitespace: true, message: 'کد الزامی است' },
     zodRule(catalogCodeSchema),
   ],
-  type: [
-    { required: true, message: 'نوع الزامی است' },
-    zodRule(productAttributeTypeSchema),
-  ],
+  type: [{ required: true, message: 'نوع الزامی است' }, zodRule(productAttributeTypeSchema)],
   options: [],
   isActive: [zodRule(z.boolean().optional())],
 }

@@ -10,10 +10,7 @@ import { FILE_STORAGE } from './storage/file-storage';
 import { LocalDiskStorage } from './storage/local-disk.storage';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([StoredFile, FileFolder]),
-    UsersModule,
-  ],
+  imports: [TypeOrmModule.forFeature([StoredFile, FileFolder]), UsersModule],
   controllers: [FilesController],
   providers: [
     {

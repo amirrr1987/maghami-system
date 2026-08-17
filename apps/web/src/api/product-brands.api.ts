@@ -10,9 +10,7 @@ import type { ProductBrand } from './types'
 
 export const productBrandsApi = {
   list: (query: PaginationQuery) =>
-    apiRequest<PaginatedResult<ProductBrand>>(
-      `/product-brands${toListQuery(query)}`,
-    ),
+    apiRequest<PaginatedResult<ProductBrand>>(`/product-brands${toListQuery(query)}`),
   get: (id: string) => apiRequest<ProductBrand>(`/product-brands/${id}`),
   create: (dto: CreateProductBrandDto) =>
     apiRequest<ProductBrand>('/product-brands', {
@@ -24,6 +22,5 @@ export const productBrandsApi = {
       method: 'PATCH',
       body: jsonBody(dto),
     }),
-  remove: (id: string) =>
-    apiRequest<void>(`/product-brands/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => apiRequest<void>(`/product-brands/${id}`, { method: 'DELETE' }),
 }

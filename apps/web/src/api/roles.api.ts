@@ -22,6 +22,5 @@ export const rolesApi = {
       method: 'PUT',
       body: jsonBody(dto),
     }),
-  remove: (id: Role['value']) =>
-    apiRequest<void>(`/roles/${id}`, { method: 'DELETE' }),
+  remove: (id: Role['value']) => apiRequest<void>(`/roles/${id}`, { method: 'DELETE' }),
 }

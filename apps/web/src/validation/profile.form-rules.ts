@@ -27,13 +27,9 @@ export function profileFormRules(
           if (value === undefined || value === null || value === '') {
             return
           }
-          const parsed = await updateProfileSchema.shape.password.safeParseAsync(
-            value,
-          )
+          const parsed = await updateProfileSchema.shape.password.safeParseAsync(value)
           if (!parsed.success) {
-            return Promise.reject(
-              parsed.error.issues[0]?.message ?? 'رمز نامعتبر',
-            )
+            return Promise.reject(parsed.error.issues[0]?.message ?? 'رمز نامعتبر')
           }
         },
       },

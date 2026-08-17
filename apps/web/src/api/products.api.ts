@@ -26,6 +26,5 @@ export const productsApi = {
       method: 'PATCH',
       body: jsonBody(dto),
     }),
-  remove: (id: string) =>
-    apiRequest<void>(`/products/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => apiRequest<void>(`/products/${id}`, { method: 'DELETE' }),
 }

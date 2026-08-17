@@ -7,10 +7,7 @@ import {
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas';
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas';
 import { Role } from '../roles/role.entity';
 
 @Entity({ name: 'permissions' })

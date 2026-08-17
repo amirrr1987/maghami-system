@@ -10,9 +10,7 @@ import type { ProductUnit } from './types'
 
 export const productUnitsApi = {
   list: (query: PaginationQuery) =>
-    apiRequest<PaginatedResult<ProductUnit>>(
-      `/product-units${toListQuery(query)}`,
-    ),
+    apiRequest<PaginatedResult<ProductUnit>>(`/product-units${toListQuery(query)}`),
   get: (id: string) => apiRequest<ProductUnit>(`/product-units/${id}`),
   create: (dto: CreateProductUnitDto) =>
     apiRequest<ProductUnit>('/product-units', {
@@ -24,6 +22,5 @@ export const productUnitsApi = {
       method: 'PATCH',
       body: jsonBody(dto),
     }),
-  remove: (id: string) =>
-    apiRequest<void>(`/product-units/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => apiRequest<void>(`/product-units/${id}`, { method: 'DELETE' }),
 }

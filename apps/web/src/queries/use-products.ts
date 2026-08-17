@@ -1,9 +1,5 @@
 import { message } from 'ant-design-vue'
-import type {
-  CreateProductDto,
-  ProductListQuery,
-  UpdateProductDto,
-} from '@maghami-system/schemas'
+import type { CreateProductDto, ProductListQuery, UpdateProductDto } from '@maghami-system/schemas'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, reactive, ref } from 'vue'
 import { productsApi } from '@/api/products.api'
@@ -48,8 +44,7 @@ export function useProducts() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, dto }: { id: string; dto: UpdateProductDto }) =>
-      productsApi.update(id, dto),
+    mutationFn: ({ id, dto }: { id: string; dto: UpdateProductDto }) => productsApi.update(id, dto),
     onSuccess: async () => {
       message.success('محصول به‌روزرسانی شد')
       await queryClient.invalidateQueries({ queryKey: queryKeys.products.all })
@@ -95,8 +90,7 @@ export function useProducts() {
     loading,
     saving,
     fetchPage,
-    create: (dto: CreateProductDto) =>
-      tryMutate(createMutation.mutateAsync(dto)),
+    create: (dto: CreateProductDto) => tryMutate(createMutation.mutateAsync(dto)),
     update: (id: string, dto: UpdateProductDto) =>
       tryMutate(updateMutation.mutateAsync({ id, dto })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),

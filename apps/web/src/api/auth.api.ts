@@ -1,9 +1,4 @@
-import type {
-  AuthSession,
-  LoginDto,
-  LoginResult,
-  UpdateProfileDto,
-} from '@maghami-system/schemas'
+import type { AuthSession, LoginDto, LoginResult, UpdateProfileDto } from '@maghami-system/schemas'
 import { apiRequest, jsonBody } from './client'
 
 function meRequestInit(): RequestInit & {

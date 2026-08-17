@@ -25,6 +25,5 @@ export const usersApi = {
       method: 'PUT',
       body: jsonBody(dto),
     }),
-  remove: (id: string) =>
-    apiRequest<void>(`/users/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => apiRequest<void>(`/users/${id}`, { method: 'DELETE' }),
 }

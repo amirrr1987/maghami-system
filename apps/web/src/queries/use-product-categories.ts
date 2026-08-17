@@ -36,8 +36,7 @@ export function useProductCategories(options?: {
   })
 
   const createMutation = useMutation({
-    mutationFn: (dto: CreateProductCategoryDto) =>
-      productCategoriesApi.create(dto),
+    mutationFn: (dto: CreateProductCategoryDto) => productCategoriesApi.create(dto),
     onSuccess: async () => {
       message.success('دسته‌بندی ایجاد شد')
       page.value = 1
@@ -49,21 +48,15 @@ export function useProductCategories(options?: {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({
-      id,
-      dto,
-    }: {
-      id: string
-      dto: UpdateProductCategoryDto
-    }) => productCategoriesApi.update(id, dto),
+    mutationFn: ({ id, dto }: { id: string; dto: UpdateProductCategoryDto }) =>
+      productCategoriesApi.update(id, dto),
     onSuccess: async () => {
       message.success('دسته‌بندی به‌روزرسانی شد')
       await queryClient.invalidateQueries({
         queryKey: queryKeys.productCategories.all,
       })
     },
-    onError: (error) =>
-      notifyApiError(error, 'به‌روزرسانی دسته‌بندی ناموفق بود'),
+    onError: (error) => notifyApiError(error, 'به‌روزرسانی دسته‌بندی ناموفق بود'),
   })
 
   const removeMutation = useMutation({
@@ -101,8 +94,7 @@ export function useProductCategories(options?: {
     loading,
     saving,
     fetchPage,
-    create: (dto: CreateProductCategoryDto) =>
-      tryMutate(createMutation.mutateAsync(dto)),
+    create: (dto: CreateProductCategoryDto) => tryMutate(createMutation.mutateAsync(dto)),
     update: (id: string, dto: UpdateProductCategoryDto) =>
       tryMutate(updateMutation.mutateAsync({ id, dto })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),

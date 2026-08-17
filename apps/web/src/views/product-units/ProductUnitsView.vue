@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Can } from '@casl/vue'
 import {
   Button,
@@ -21,14 +17,8 @@ import {
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { TableColumnType } from 'ant-design-vue'
-import type {
-  CreateProductUnitDto,
-  UpdateProductUnitDto,
-} from '@maghami-system/schemas'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
+import type { CreateProductUnitDto, UpdateProductUnitDto } from '@maghami-system/schemas'
+import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { reactive, ref, toRefs } from 'vue'
 import type { ProductUnit } from '@/api/types'
 import { useAppAbility } from '@/ability'
@@ -166,10 +156,7 @@ function asRow(record: unknown): ProductUnit {
           </template>
           <template v-else-if="column.key === 'actions'">
             <Space>
-              <Can
-                :I="PermissionAction.Update"
-                :a="PermissionResource.ProductUnits"
-              >
+              <Can :I="PermissionAction.Update" :a="PermissionResource.ProductUnits">
                 <Button type="link" @click="openEdit(asRow(record))">
                   <template #icon>
                     <EditOutlined />
@@ -177,10 +164,7 @@ function asRow(record: unknown): ProductUnit {
                   ویرایش
                 </Button>
               </Can>
-              <Can
-                :I="PermissionAction.Delete"
-                :a="PermissionResource.ProductUnits"
-              >
+              <Can :I="PermissionAction.Delete" :a="PermissionResource.ProductUnits">
                 <Popconfirm
                   title="حذف واحد"
                   :description="`«${asRow(record).name}» حذف شود؟`"
@@ -216,12 +200,7 @@ function asRow(record: unknown): ProductUnit {
       cancel-text="انصراف"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="productUnitFormRules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="productUnitFormRules">
         <FormItem label="نام" name="name">
           <Input v-model:value="model.name" allow-clear />
         </FormItem>

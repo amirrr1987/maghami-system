@@ -22,7 +22,7 @@ async function bootstrap() {
   });
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Vue NestJS Admin Template API')
+    .setTitle('Maghami System API')
     .setDescription(
       'Dynamic RBAC API — permissions, roles, users, files, and JWT auth (Zod-validated). Uniform ApiResult envelope under /v1.',
     )

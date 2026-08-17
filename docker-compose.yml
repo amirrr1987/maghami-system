@@ -6,16 +6,16 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER:-postgres}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      POSTGRES_DB: ${DATABASE_NAME:-vue_nestjs_admin_template}
+      POSTGRES_DB: ${DATABASE_NAME:-maghami-system}
     ports:
       - "${DATABASE_PORT:-5432}:5432"
     volumes:
-      - vue_nestjs_admin_template_pgdata:/var/lib/postgresql/data
+      - maghami-system_pgdata:/var/lib/postgresql/data
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${DATABASE_USER:-postgres} -d ${DATABASE_NAME:-vue_nestjs_admin_template}",
+          "pg_isready -U ${DATABASE_USER:-postgres} -d ${DATABASE_NAME:-maghami-system}",
         ]
       interval: 5s
       timeout: 5s
@@ -36,7 +36,7 @@ services:
       DATABASE_PORT: 5432
       DATABASE_USER: ${DATABASE_USER:-postgres}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      DATABASE_NAME: ${DATABASE_NAME:-vue_nestjs_admin_template}
+      DATABASE_NAME: ${DATABASE_NAME:-maghami-system}
       TYPEORM_SYNC: ${TYPEORM_SYNC:-true}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
@@ -111,6 +111,6 @@ networks:
     enable_ipv6: false
 
 volumes:
-  vue_nestjs_admin_template_pgdata:
+  maghami-system_pgdata:
   api_uploads:
   pgadmin_data:

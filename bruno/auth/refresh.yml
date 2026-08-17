@@ -48,5 +48,5 @@ settings:
   maxRedirects: 5
 
 docs: |-
-  Public. Uses HttpOnly `vue_nestjs_admin_template_refresh` cookie from Login (no body).
+  Public. Uses HttpOnly `maghami-system_refresh` cookie from Login (no body).
   Run Login first with cookie jar enabled.

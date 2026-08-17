@@ -10,11 +10,8 @@ import type { ProductAttribute } from './types'
 
 export const productAttributesApi = {
   list: (query: PaginationQuery) =>
-    apiRequest<PaginatedResult<ProductAttribute>>(
-      `/product-attributes${toListQuery(query)}`,
-    ),
-  get: (id: string) =>
-    apiRequest<ProductAttribute>(`/product-attributes/${id}`),
+    apiRequest<PaginatedResult<ProductAttribute>>(`/product-attributes${toListQuery(query)}`),
+  get: (id: string) => apiRequest<ProductAttribute>(`/product-attributes/${id}`),
   create: (dto: CreateProductAttributeDto) =>
     apiRequest<ProductAttribute>('/product-attributes', {
       method: 'POST',
@@ -25,6 +22,5 @@ export const productAttributesApi = {
       method: 'PATCH',
       body: jsonBody(dto),
     }),
-  remove: (id: string) =>
-    apiRequest<void>(`/product-attributes/${id}`, { method: 'DELETE' }),
+  remove: (id: string) => apiRequest<void>(`/product-attributes/${id}`, { method: 'DELETE' }),
 }

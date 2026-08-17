@@ -56,16 +56,14 @@ function normalizePrefs(raw: PersistedConfig): PersistedConfig {
   return {
     componentSize:
       raw.componentSize === 'small' ||
-        raw.componentSize === 'middle' ||
-        raw.componentSize === 'large'
+      raw.componentSize === 'middle' ||
+      raw.componentSize === 'large'
         ? raw.componentSize
         : defaults.componentSize,
     appearance: raw.appearance === 'dark' ? 'dark' : 'light',
     compact: raw.compact === 'compact' ? 'compact' : 'default',
     fontSize: isFontSize(raw.fontSize) ? raw.fontSize : defaults.fontSize,
-    borderRadius: isBorderRadius(raw.borderRadius)
-      ? raw.borderRadius
-      : defaults.borderRadius,
+    borderRadius: isBorderRadius(raw.borderRadius) ? raw.borderRadius : defaults.borderRadius,
     colorPrimary:
       typeof raw.colorPrimary === 'string' && raw.colorPrimary.length > 0
         ? raw.colorPrimary

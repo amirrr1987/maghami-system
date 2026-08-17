@@ -1,7 +1,7 @@
 import type { ConfigService } from '@nestjs/config';
 import type { Request, Response } from 'express';
 
-export const REFRESH_COOKIE_NAME = 'vue_nestjs_admin_template_refresh';
+export const REFRESH_COOKIE_NAME = 'maghami-system_refresh';
 
 /** Parse `7d` / `24h` / `30m` / `60s` into seconds. */
 export function durationToSeconds(

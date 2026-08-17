@@ -86,13 +86,8 @@ export function useFiles() {
   })
 
   const uploadMutation = useMutation({
-    mutationFn: ({
-      file,
-      meta,
-    }: {
-      file: File
-      meta: { title: string; alt?: string }
-    }) => filesApi.upload(file, currentFolderId.value, meta),
+    mutationFn: ({ file, meta }: { file: File; meta: { title: string; alt?: string } }) =>
+      filesApi.upload(file, currentFolderId.value, meta),
     onSuccess: async () => {
       message.success('فایل آپلود شد')
       page.value = 1
@@ -116,9 +111,7 @@ export function useFiles() {
       filesApi.move(id, { folderId }),
     onSuccess: async (_data, variables) => {
       message.success('فایل منتقل شد')
-      selectedIds.value = selectedIds.value.filter(
-        (row) => row !== variables.id,
-      )
+      selectedIds.value = selectedIds.value.filter((row) => row !== variables.id)
       await invalidateFiles()
     },
     onError: (error) => notifyApiError(error, 'انتقال فایل ناموفق بود'),
@@ -150,9 +143,7 @@ export function useFiles() {
   const total = computed(() => listQuery.data.value?.total ?? 0)
   const loading = computed(
     () =>
-      listQuery.isFetching.value ||
-      foldersQuery.isFetching.value ||
-      statsQuery.isFetching.value,
+      listQuery.isFetching.value || foldersQuery.isFetching.value || statsQuery.isFetching.value,
   )
   const saving = computed(
     () =>
@@ -219,8 +210,7 @@ export function useFiles() {
     selectFolder,
     toggleSelected,
     clearSelection,
-    createFolder: (dto: CreateFileFolderDto) =>
-      tryMutateOk(createFolderMutation.mutateAsync(dto)),
+    createFolder: (dto: CreateFileFolderDto) => tryMutateOk(createFolderMutation.mutateAsync(dto)),
     renameFolder: (id: string, dto: UpdateFileFolderDto) =>
       tryMutateOk(renameFolderMutation.mutateAsync({ id, dto })),
     removeFolder,
@@ -232,8 +222,6 @@ export function useFiles() {
       tryMutateOk(moveMutation.mutateAsync({ id, folderId })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),
     bulkRemove: (ids: string[]) =>
-      ids.length === 0
-        ? Promise.resolve(false)
-        : tryMutateOk(bulkRemoveMutation.mutateAsync(ids)),
+      ids.length === 0 ? Promise.resolve(false) : tryMutateOk(bulkRemoveMutation.mutateAsync(ids)),
   })
 }

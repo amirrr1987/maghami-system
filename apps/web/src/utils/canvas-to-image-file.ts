@@ -13,11 +13,7 @@ export function canvasToImageFile(
   },
 ): Promise<File> {
   const quality = options?.quality ?? 0.92
-  const source = scaleCanvas(
-    canvas,
-    options?.outputWidth ?? null,
-    options?.outputHeight ?? null,
-  )
+  const source = scaleCanvas(canvas, options?.outputWidth ?? null, options?.outputHeight ?? null)
 
   return new Promise((resolve, reject) => {
     source.toBlob(
@@ -27,12 +23,7 @@ export function canvasToImageFile(
           return
         }
         const base = fileName.replace(/\.[^.]+$/, '') || `image-${Date.now()}`
-        const ext =
-          mimeType === 'image/png'
-            ? '.png'
-            : mimeType === 'image/webp'
-              ? '.webp'
-              : '.jpg'
+        const ext = mimeType === 'image/png' ? '.png' : mimeType === 'image/webp' ? '.webp' : '.jpg'
         resolve(new File([blob], `${base}${ext}`, { type: mimeType }))
       },
       mimeType,

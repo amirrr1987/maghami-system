@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import {
   Button,
   Card,
@@ -32,10 +28,7 @@ import type { Permission } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { usePermissions } from '@/queries/use-permissions'
-import {
-  permissionActionOptions,
-  permissionResourceOptions,
-} from '@/utils/select-options'
+import { permissionActionOptions, permissionResourceOptions } from '@/utils/select-options'
 import { createPermissionFormRules } from '@/validation/permission.form-rules'
 
 const { can } = useAppAbility()
@@ -109,9 +102,7 @@ async function onSubmit(): Promise<void> {
   }
 
   const description =
-    model.description && model.description.trim()
-      ? model.description.trim()
-      : null
+    model.description && model.description.trim() ? model.description.trim() : null
 
   if (editing.value) {
     const dto: UpdatePermissionDto = {
@@ -222,12 +213,7 @@ function asPermission(record: unknown): Permission {
       cancel-text="انصراف"
       @ok="onSubmit"
     >
-      <Form
-        ref="formRef"
-        layout="vertical"
-        :model="model"
-        :rules="createPermissionFormRules"
-      >
+      <Form ref="formRef" layout="vertical" :model="model" :rules="createPermissionFormRules">
         <FormItem label="منبع" name="resource">
           <Select
             v-model:value="model.resource"

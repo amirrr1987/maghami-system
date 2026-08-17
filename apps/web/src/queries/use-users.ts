@@ -1,9 +1,5 @@
 import { message } from 'ant-design-vue'
-import type {
-  CreateUserDto,
-  PaginationQuery,
-  UpdateUserDto,
-} from '@maghami-system/schemas'
+import type { CreateUserDto, PaginationQuery, UpdateUserDto } from '@maghami-system/schemas'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { computed, reactive, ref } from 'vue'
 import { usersApi } from '@/api/users.api'
@@ -17,11 +13,8 @@ export function useUsers() {
   const pageSize = ref(5)
 
   const listQuery = useQuery({
-    queryKey: computed(() =>
-      queryKeys.users.list({ page: page.value, pageSize: pageSize.value }),
-    ),
-    queryFn: () =>
-      usersApi.list({ page: page.value, pageSize: pageSize.value }),
+    queryKey: computed(() => queryKeys.users.list({ page: page.value, pageSize: pageSize.value })),
+    queryFn: () => usersApi.list({ page: page.value, pageSize: pageSize.value }),
     meta: { errorMessage: 'بارگذاری کاربران ناموفق بود' },
   })
 
@@ -36,8 +29,7 @@ export function useUsers() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, dto }: { id: string; dto: UpdateUserDto }) =>
-      usersApi.update(id, dto),
+    mutationFn: ({ id, dto }: { id: string; dto: UpdateUserDto }) => usersApi.update(id, dto),
     onSuccess: async () => {
       message.success('کاربر به‌روزرسانی شد')
       await queryClient.invalidateQueries({ queryKey: queryKeys.users.all })
@@ -79,8 +71,7 @@ export function useUsers() {
     saving,
     fetchPage,
     create: (dto: CreateUserDto) => tryMutate(createMutation.mutateAsync(dto)),
-    update: (id: string, dto: UpdateUserDto) =>
-      tryMutate(updateMutation.mutateAsync({ id, dto })),
+    update: (id: string, dto: UpdateUserDto) => tryMutate(updateMutation.mutateAsync({ id, dto })),
     remove: (id: string) => tryMutateOk(removeMutation.mutateAsync(id)),
   })
 }

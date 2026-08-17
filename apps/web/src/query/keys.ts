@@ -1,8 +1,4 @@
-import type {
-  FilesListQuery,
-  PaginationQuery,
-  ProductListQuery,
-} from '@maghami-system/schemas'
+import type { FilesListQuery, PaginationQuery, ProductListQuery } from '@maghami-system/schemas'
 
 export const queryKeys = {
   users: {
@@ -16,8 +12,7 @@ export const queryKeys = {
   },
   permissions: {
     all: ['permissions'] as const,
-    list: (query: PaginationQuery) =>
-      ['permissions', 'list', query] as const,
+    list: (query: PaginationQuery) => ['permissions', 'list', query] as const,
     options: ['permissions', 'options'] as const,
   },
   products: {
@@ -26,28 +21,23 @@ export const queryKeys = {
   },
   productCategories: {
     all: ['product-categories'] as const,
-    list: (query: PaginationQuery) =>
-      ['product-categories', 'list', query] as const,
+    list: (query: PaginationQuery) => ['product-categories', 'list', query] as const,
   },
   productBrands: {
     all: ['product-brands'] as const,
-    list: (query: PaginationQuery) =>
-      ['product-brands', 'list', query] as const,
+    list: (query: PaginationQuery) => ['product-brands', 'list', query] as const,
   },
   productUnits: {
     all: ['product-units'] as const,
-    list: (query: PaginationQuery) =>
-      ['product-units', 'list', query] as const,
+    list: (query: PaginationQuery) => ['product-units', 'list', query] as const,
   },
   productAttributes: {
     all: ['product-attributes'] as const,
-    list: (query: PaginationQuery) =>
-      ['product-attributes', 'list', query] as const,
+    list: (query: PaginationQuery) => ['product-attributes', 'list', query] as const,
   },
   productCodePatterns: {
     all: ['product-code-patterns'] as const,
-    list: (query: PaginationQuery) =>
-      ['product-code-patterns', 'list', query] as const,
+    list: (query: PaginationQuery) => ['product-code-patterns', 'list', query] as const,
   },
   files: {
     all: ['files'] as const,

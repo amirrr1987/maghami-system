@@ -20,11 +20,8 @@ export function useRoles() {
   const pageSize = ref(5)
 
   const listQuery = useQuery({
-    queryKey: computed(() =>
-      queryKeys.roles.list({ page: page.value, pageSize: pageSize.value }),
-    ),
-    queryFn: () =>
-      rolesApi.list({ page: page.value, pageSize: pageSize.value }),
+    queryKey: computed(() => queryKeys.roles.list({ page: page.value, pageSize: pageSize.value })),
+    queryFn: () => rolesApi.list({ page: page.value, pageSize: pageSize.value }),
     meta: { errorMessage: 'بارگذاری نقش‌ها ناموفق بود' },
   })
 
@@ -39,13 +36,8 @@ export function useRoles() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({
-      id,
-      dto,
-    }: {
-      id: Role['value']
-      dto: UpdateRoleDto
-    }) => rolesApi.update(id, dto),
+    mutationFn: ({ id, dto }: { id: Role['value']; dto: UpdateRoleDto }) =>
+      rolesApi.update(id, dto),
     onSuccess: async () => {
       message.success('نقش به‌روزرسانی شد')
       await queryClient.invalidateQueries({ queryKey: queryKeys.roles.all })
@@ -54,13 +46,8 @@ export function useRoles() {
   })
 
   const permissionsMutation = useMutation({
-    mutationFn: ({
-      id,
-      dto,
-    }: {
-      id: Role['value']
-      dto: SetRolePermissionsDto
-    }) => rolesApi.setPermissions(id, dto),
+    mutationFn: ({ id, dto }: { id: Role['value']; dto: SetRolePermissionsDto }) =>
+      rolesApi.setPermissions(id, dto),
     onSuccess: async () => {
       message.success('مجوزهای نقش ذخیره شد')
       await queryClient.invalidateQueries({ queryKey: queryKeys.roles.all })
@@ -118,9 +105,7 @@ export function useRoleOptions() {
     meta: { errorMessage: 'بارگذاری گزینه‌های نقش ناموفق بود' },
   })
 
-  const roleOptions = computed(() =>
-    toSelectOptions(optionsQuery.data.value?.items ?? []),
-  )
+  const roleOptions = computed(() => toSelectOptions(optionsQuery.data.value?.items ?? []))
 
   return { roleOptions }
 }
