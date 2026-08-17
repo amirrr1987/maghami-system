@@ -82,6 +82,7 @@ services:
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: /pgadmin4
       PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+      PGADMIN_REPLACE_SERVERS_ON_STARTUP: "True"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
       - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
