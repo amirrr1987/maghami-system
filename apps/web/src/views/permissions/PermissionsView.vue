@@ -27,12 +27,11 @@ import {
   type CreatePermissionDto,
   type UpdatePermissionDto,
 } from '@maghami-system/schemas'
-import { onMounted, reactive, ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { reactive, ref, toRefs } from 'vue'
 import type { Permission } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
-import { usePermissionStore } from '@/stores/permission.store'
+import { usePermissions } from '@/queries/use-permissions'
 import {
   permissionActionOptions,
   permissionResourceOptions,
@@ -40,8 +39,8 @@ import {
 import { createPermissionFormRules } from '@/validation/permission.form-rules'
 
 const { can } = useAppAbility()
-const permissionStore = usePermissionStore()
-const { page, pageSize, total } = storeToRefs(permissionStore)
+const permissionStore = usePermissions()
+const { page, pageSize, total } = toRefs(permissionStore)
 
 const { pagination, onChange: onTableChange } = useServerTablePagination({
   page,
@@ -145,10 +144,6 @@ async function removePermission(permission: Permission): Promise<void> {
 function asPermission(record: unknown): Permission {
   return record as Permission
 }
-
-onMounted(async () => {
-  await permissionStore.fetchPage()
-})
 </script>
 
 <template>

@@ -31,17 +31,16 @@ import {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas'
-import { computed, onMounted, reactive, ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { computed, reactive, ref, toRefs } from 'vue'
 import type { ProductCategory } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
-import { useProductCategoryStore } from '@/stores/product-category.store'
+import { useProductCategories } from '@/queries/use-product-categories'
 import { productCategoryFormRules } from '@/validation/product-category.form-rules'
 
 const { can } = useAppAbility()
-const categoryStore = useProductCategoryStore()
-const { page, pageSize, total } = storeToRefs(categoryStore)
+const categoryStore = useProductCategories()
+const { page, pageSize, total } = toRefs(categoryStore)
 
 const { pagination, onChange: onTableChange } = useServerTablePagination({
   page,
@@ -153,12 +152,6 @@ function parentLabel(parentId: string | null): string {
   const parent = categoryStore.categoryList.find((row) => row.id === parentId)
   return parent ? parent.name : parentId
 }
-
-onMounted(async () => {
-  if (can(PermissionAction.Read, PermissionResource.ProductCategories)) {
-    await Promise.all([categoryStore.fetchPage(), categoryStore.fetchTree()])
-  }
-})
 </script>
 
 <template>

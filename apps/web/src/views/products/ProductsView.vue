@@ -35,26 +35,39 @@ import {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
+import { computed, reactive, ref, toRefs, watch } from 'vue'
 import { productsApi } from '@/api/products.api'
 import type { Product } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
-import { useProductAttributeStore } from '@/stores/product-attribute.store'
-import { useProductBrandStore } from '@/stores/product-brand.store'
-import { useProductCategoryStore } from '@/stores/product-category.store'
-import { useProductStore } from '@/stores/product.store'
-import { useProductUnitStore } from '@/stores/product-unit.store'
+import { useProductAttributes } from '@/queries/use-product-attributes'
+import { useProductBrands } from '@/queries/use-product-brands'
+import { useProductCategories } from '@/queries/use-product-categories'
+import { useProducts } from '@/queries/use-products'
+import { useProductUnits } from '@/queries/use-product-units'
 import { createProductFormRules } from '@/validation/product.form-rules'
 
 const { can } = useAppAbility()
-const productStore = useProductStore()
-const categoryStore = useProductCategoryStore()
-const brandStore = useProductBrandStore()
-const unitStore = useProductUnitStore()
-const attributeStore = useProductAttributeStore()
-const { page, pageSize, total } = storeToRefs(productStore)
+const productStore = useProducts()
+const categoryStore = useProductCategories({
+  pageSize: 100,
+  enabled: () =>
+    can(PermissionAction.Read, PermissionResource.ProductCategories),
+})
+const brandStore = useProductBrands({
+  pageSize: 100,
+  enabled: () => can(PermissionAction.Read, PermissionResource.ProductBrands),
+})
+const unitStore = useProductUnits({
+  pageSize: 100,
+  enabled: () => can(PermissionAction.Read, PermissionResource.ProductUnits),
+})
+const attributeStore = useProductAttributes({
+  pageSize: 100,
+  enabled: () =>
+    can(PermissionAction.Read, PermissionResource.ProductAttributes),
+})
+const { page, pageSize, total } = toRefs(productStore)
 
 const { pagination, onChange: onTableChange } = useServerTablePagination({
   page,
@@ -336,26 +349,6 @@ async function removeProduct(product: Product): Promise<void> {
 function asProduct(record: unknown): Product {
   return record as Product
 }
-
-onMounted(async () => {
-  if (can(PermissionAction.Read, PermissionResource.Products)) {
-    await productStore.fetchPage()
-  }
-  const lookups: Promise<void>[] = []
-  if (can(PermissionAction.Read, PermissionResource.ProductCategories)) {
-    lookups.push(categoryStore.fetchPage({ page: 1, pageSize: 100 }))
-  }
-  if (can(PermissionAction.Read, PermissionResource.ProductBrands)) {
-    lookups.push(brandStore.fetchPage({ page: 1, pageSize: 100 }))
-  }
-  if (can(PermissionAction.Read, PermissionResource.ProductUnits)) {
-    lookups.push(unitStore.fetchPage({ page: 1, pageSize: 100 }))
-  }
-  if (can(PermissionAction.Read, PermissionResource.ProductAttributes)) {
-    lookups.push(attributeStore.fetchPage({ page: 1, pageSize: 100 }))
-  }
-  await Promise.all(lookups)
-})
 </script>
 
 <template>

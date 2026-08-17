@@ -30,17 +30,16 @@ import {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas'
-import { onMounted, reactive, ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { reactive, ref, toRefs } from 'vue'
 import type { ProductBrand } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
-import { useProductBrandStore } from '@/stores/product-brand.store'
+import { useProductBrands } from '@/queries/use-product-brands'
 import { productBrandFormRules } from '@/validation/product-brand.form-rules'
 
 const { can } = useAppAbility()
-const brandStore = useProductBrandStore()
-const { page, pageSize, total } = storeToRefs(brandStore)
+const brandStore = useProductBrands()
+const { page, pageSize, total } = toRefs(brandStore)
 
 const { pagination, onChange: onTableChange } = useServerTablePagination({
   page,
@@ -139,12 +138,6 @@ async function removeRow(row: ProductBrand): Promise<void> {
 function asRow(record: unknown): ProductBrand {
   return record as ProductBrand
 }
-
-onMounted(async () => {
-  if (can(PermissionAction.Read, PermissionResource.ProductBrands)) {
-    await brandStore.fetchPage()
-  }
-})
 </script>
 
 <template>

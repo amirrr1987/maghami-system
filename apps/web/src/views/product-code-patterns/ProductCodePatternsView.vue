@@ -31,19 +31,22 @@ import {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas'
-import { computed, onMounted, reactive, ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { computed, reactive, ref, toRefs } from 'vue'
 import type { ProductCodePattern } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
-import { useProductCategoryStore } from '@/stores/product-category.store'
-import { useProductCodePatternStore } from '@/stores/product-code-pattern.store'
+import { useProductCategories } from '@/queries/use-product-categories'
+import { useProductCodePatterns } from '@/queries/use-product-code-patterns'
 import { productCodePatternFormRules } from '@/validation/product-code-pattern.form-rules'
 
 const { can } = useAppAbility()
-const patternStore = useProductCodePatternStore()
-const categoryStore = useProductCategoryStore()
-const { page, pageSize, total } = storeToRefs(patternStore)
+const patternStore = useProductCodePatterns()
+const categoryStore = useProductCategories({
+  pageSize: 100,
+  enabled: () =>
+    can(PermissionAction.Read, PermissionResource.ProductCategories),
+})
+const { page, pageSize, total } = toRefs(patternStore)
 
 const { pagination, onChange: onTableChange } = useServerTablePagination({
   page,
@@ -157,15 +160,6 @@ function categoryLabel(categoryId: string): string {
   const row = categoryStore.categoryList.find((item) => item.id === categoryId)
   return row ? `${row.name} (${row.code})` : categoryId
 }
-
-onMounted(async () => {
-  if (can(PermissionAction.Read, PermissionResource.ProductCodePatterns)) {
-    await patternStore.fetchPage()
-  }
-  if (can(PermissionAction.Read, PermissionResource.ProductCategories)) {
-    await categoryStore.fetchPage({ page: 1, pageSize: 100 })
-  }
-})
 </script>
 
 <template>

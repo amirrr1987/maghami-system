@@ -57,28 +57,19 @@ import {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas'
-import {
-  computed,
-  h,
-  onBeforeUnmount,
-  onMounted,
-  reactive,
-  ref,
-  watch,
-} from 'vue'
-import { storeToRefs } from 'pinia'
+import { computed, h, onBeforeUnmount, reactive, ref, toRefs, watch } from 'vue'
 import FileThumb from '@/components/FileThumb.vue'
 import ImageCropUploadModal from '@/components/ImageCropUploadModal.vue'
 import { useAppAbility } from '@/ability'
 import { useAuthFileUrl } from '@/composables/useAuthFileUrl'
-import { useFileStore } from '@/stores/file.store'
+import { useFiles } from '@/queries/use-files'
 import {
   fileFolderFormRules,
   fileMetaFormRules,
 } from '@/validation/file.form-rules'
 
 const { can } = useAppAbility()
-const fileStore = useFileStore()
+const fileStore = useFiles()
 const {
   fileList,
   folders,
@@ -91,7 +82,7 @@ const {
   saving,
   stats,
   selectedIds,
-} = storeToRefs(fileStore)
+} = toRefs(fileStore)
 
 const cropOpen = ref(false)
 const cropSrc = ref<string | null>(null)
@@ -557,15 +548,6 @@ watch(
   },
   { immediate: true },
 )
-
-onMounted(async () => {
-  if (!can(PermissionAction.Read, PermissionResource.Files)) return
-  await Promise.all([
-    fileStore.fetchFolders(),
-    fileStore.fetchPage(),
-    fileStore.fetchStats(),
-  ])
-})
 
 onBeforeUnmount(() => {
   revokeCropSrc()

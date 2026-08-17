@@ -1,5 +1,5 @@
 import { message } from 'ant-design-vue'
-import { ApiError } from '@/api/types'
+import { ApiError } from './types'
 
 export function notifyApiError(error: unknown, fallback: string): void {
   if (error instanceof ApiError) {

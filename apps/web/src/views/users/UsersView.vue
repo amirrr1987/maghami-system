@@ -28,14 +28,13 @@ import {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas'
-import { computed, onMounted, reactive, ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { computed, reactive, ref, toRefs } from 'vue'
 import type { PublicUser } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
+import { useRoleOptions } from '@/queries/use-roles'
+import { useUsers } from '@/queries/use-users'
 import { useAuthStore } from '@/stores/auth.store'
-import { useRoleStore } from '@/stores/role.store'
-import { useUserStore } from '@/stores/user.store'
 import {
   createUserFormRules,
   updateUserFormRules,
@@ -44,9 +43,9 @@ import {
 
 const auth = useAuthStore()
 const { can } = useAppAbility()
-const userStore = useUserStore()
-const roleStore = useRoleStore()
-const { page, pageSize, total } = storeToRefs(userStore)
+const userStore = useUsers()
+const { roleOptions } = useRoleOptions()
+const { page, pageSize, total } = toRefs(userStore)
 
 const { pagination, onChange: onTableChange } = useServerTablePagination({
   page,
@@ -172,10 +171,6 @@ function canToggleActive(user: PublicUser): boolean {
     !auth.isSelf(user.id)
   )
 }
-
-onMounted(async () => {
-  await Promise.all([userStore.fetchPage(), roleStore.fetchOptions()])
-})
 </script>
 
 <template>
@@ -309,7 +304,7 @@ onMounted(async () => {
             show-search
             option-filter-prop="label"
             max-tag-count="responsive"
-            :options="roleStore.roleOptions"
+            :options="roleOptions"
             placeholder="انتخاب نقش"
           />
         </FormItem>

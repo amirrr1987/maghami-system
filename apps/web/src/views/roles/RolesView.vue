@@ -30,19 +30,18 @@ import {
   type CreateRoleDto,
   type UpdateRoleDto,
 } from '@maghami-system/schemas'
-import { onMounted, reactive, ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { reactive, ref, toRefs } from 'vue'
 import type { Role } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
-import { usePermissionStore } from '@/stores/permission.store'
-import { useRoleStore } from '@/stores/role.store'
+import { usePermissionOptions } from '@/queries/use-permissions'
+import { useRoles } from '@/queries/use-roles'
 import { createRoleFormRules } from '@/validation/role.form-rules'
 
 const { can } = useAppAbility()
-const roleStore = useRoleStore()
-const permissionStore = usePermissionStore()
-const { page, pageSize, total } = storeToRefs(roleStore)
+const roleStore = useRoles()
+const { permissionOptions } = usePermissionOptions()
+const { page, pageSize, total } = toRefs(roleStore)
 
 const { pagination, onChange: onTableChange } = useServerTablePagination({
   page,
@@ -144,10 +143,6 @@ async function removeRole(role: Role): Promise<void> {
 function asRole(record: unknown): Role {
   return record as Role
 }
-
-onMounted(async () => {
-  await Promise.all([roleStore.fetchPage(), permissionStore.fetchOptions()])
-})
 </script>
 
 <template>
@@ -287,7 +282,7 @@ onMounted(async () => {
             show-search
             option-filter-prop="label"
             max-tag-count="responsive"
-            :options="permissionStore.permissionOptions"
+            :options="permissionOptions"
             placeholder="انتخاب مجوز"
           />
         </FormItem>

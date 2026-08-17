@@ -18,48 +18,47 @@ import { computed, ref } from 'vue'
 
 Use package exports only — do not hand-roll a parallel store typing layer or cast store state as `any`.
 
-## Setup store pattern (this repo)
+## This repo
+
+Pinia is for **client state**:
+
+- `auth.store` — session, tokens, abilities
+- `configProvider.store` — theme / locale prefs (`useLocalStorage`)
+
+**Server lists and CRUD** use `@tanstack/vue-query` (`apps/web/src/queries/`). Do not add a new Pinia store that fetches paginated API data.
+
+## Setup store pattern
 
 ```ts
-import type { PaginationQuery } from '@maghami-system/schemas'
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore, storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
 
-export const useUserStore = defineStore('user', () => {
-  const userList = ref<PublicUser[]>([])
-  const total = ref(0)
-  const loading = ref(false)
-
-  async function fetchPage(
-    query: PaginationQuery = { page: 1, pageSize: 10 },
-  ): Promise<void> {
-    loading.value = true
-    try {
-      const result = await usersApi.list(query)
-      userList.value = result.items
-      total.value = result.total
-    } finally {
-      loading.value = false
-    }
+export const useAuthStore = defineStore('auth', () => {
+  const accessToken = ref<string | null>(null)
+  const isAuthenticated = computed(() => Boolean(accessToken.value))
+  function clearSession(): void {
+    accessToken.value = null
   }
-
-  return { userList, total, loading, fetchPage }
+  return { accessToken, isAuthenticated, clearSession }
 })
 ```
 
-In views, destructure reactive state with **`storeToRefs`** from `pinia` (not `vue`):
+In views, destructure reactive Pinia state with **`storeToRefs`** from `pinia` (not `vue`):
 
 ```ts
 import { storeToRefs } from 'pinia'
 
-const userStore = useUserStore()
-const { page, pageSize, total } = storeToRefs(userStore)
+const auth = useAuthStore()
+const { accessToken } = storeToRefs(auth)
 ```
 
-Actions can be destructured directly (`const { fetchPage } = userStore`).
+Actions can be destructured directly (`const { clearSession } = auth`).
+
+Vue Query composables already return `ref` / `computed` — destructure them without `storeToRefs`.
 
 ## Anti-patterns
 
 - `storeToRefs` from `vue`
 - Options-style `state: () => ({})` for new stores unless matching legacy
 - Mutating store state outside actions without clear need
+- Duplicating Vue Query cache in Pinia (`userList`, `loading`, `fetchPage`)

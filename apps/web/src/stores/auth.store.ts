@@ -13,6 +13,7 @@ import { updateAbilityFromRules } from '@/ability'
 import { authApi } from '@/api/auth.api'
 import { ApiError } from '@/api/types'
 import { clearTokens, getAccessToken, setAccessToken } from '@/api/token'
+import { queryClient } from '@/query/client'
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(getAccessToken())
@@ -45,6 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
     permissionCodes.value = []
     clearTokens()
     updateAbilityFromRules([])
+    queryClient.clear()
   }
 
   function isSelf(userId: string): boolean {
