@@ -40,9 +40,7 @@ export class UsersService {
     private readonly rolesService: RolesService,
   ) {}
 
-  async findAll(
-    query: PaginationQuery,
-  ): Promise<PaginatedResult<UserDto>> {
+  async findAll(query: PaginationQuery): Promise<PaginatedResult<UserDto>> {
     const { skip, take } = paginationSkipTake(query);
     const [users, total] = await this.users.findAndCount({
       relations: { roles: true },
@@ -82,9 +80,7 @@ export class UsersService {
 
   /** Role `super-admin` → unlimited access (API + client sentinel `*`). */
   isSuperAdmin(user: User): boolean {
-    return (user.roles ?? []).some(
-      (role) => isSuperAdminRoleValue(role.value),
-    );
+    return (user.roles ?? []).some((role) => isSuperAdminRoleValue(role.value));
   }
 
   /**
@@ -131,6 +127,7 @@ export class UsersService {
       email: user.email,
       name: user.name,
       isActive: user.isActive,
+      avatarFileId: user.avatarFileId ?? null,
     };
   }
 
@@ -140,15 +137,15 @@ export class UsersService {
     }
   }
 
-  async updateOwnProfile(
-    id: string,
-    dto: UpdateProfileDto,
-  ): Promise<User> {
+  async updateOwnProfile(id: string, dto: UpdateProfileDto): Promise<User> {
     const user = await this.findEntityById(id);
     user.email = dto.email.toLowerCase();
     user.name = dto.name;
     if (dto.password !== undefined) {
       user.passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
+    }
+    if (dto.avatarFileId !== undefined) {
+      user.avatarFileId = dto.avatarFileId;
     }
     try {
       await this.users.save(user);
@@ -214,6 +211,7 @@ export class UsersService {
       email: user.email,
       name: user.name,
       isActive: user.isActive,
+      avatarFileId: user.avatarFileId ?? null,
       roles,
       createdAt: user.createdAt as unknown as string,
       updatedAt: user.updatedAt as unknown as string,

@@ -1,7 +1,4 @@
-import {
-  BadRequestException,
-  type PipeTransform,
-} from '@nestjs/common';
+import { BadRequestException, type PipeTransform } from '@nestjs/common';
 import type { ZodType } from 'zod';
 
 function zodIssueMessages(error: {
@@ -16,9 +13,9 @@ function zodIssueMessages(error: {
   });
 }
 
-export class ZodValidationPipe<TSchema extends ZodType>
-  implements PipeTransform<unknown, TSchema['_output']>
-{
+export class ZodValidationPipe<
+  TSchema extends ZodType,
+> implements PipeTransform<unknown, TSchema['_output']> {
   constructor(private readonly schema: TSchema) {}
 
   transform(value: unknown): TSchema['_output'] {

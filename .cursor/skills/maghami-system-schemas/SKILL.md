@@ -26,15 +26,21 @@ import {
 } from '@maghami-system/schemas'
 ```
 
-## Build
+## Build / watch / editor
 
-After editing schemas, rebuild before the API consumes `dist/` (web aliases source in Vite):
+- **Editor / ESLint / vue-tsc** resolve this package to `packages/schemas/src` via `paths` in `apps/api/tsconfig.json` and `apps/web/tsconfig.app.json` (same idea as the Vite alias).
+- **Nest emit / Node** still `require()` CommonJS from `dist/`. `tsconfig.build.json` maps types at `dist` so `nest build` does not compile schemas source into the API.
+- After editing schemas source, rebuild `dist` before API runtime:
 
 ```bash
 pnpm --filter @maghami-system/schemas build
 ```
 
-`pnpm dev` / `pnpm dev:api` build this package first. A missing `packages/schemas/dist` is `TS2307: Cannot find module '@maghami-system/schemas'`.
+`pnpm dev` / `pnpm run dev:api` build once, then run **schemas `tsc --watch` in parallel** with the API. Prefer those scripts over `pnpm --filter api dev` alone.
+
+A missing `packages/schemas/dist` is a runtime/`Cannot find module` failure until the first build. Editor squiggles that contradict a green `nest build` are stale `dist` — not a Nest compile error.
+
+Workspace: `.vscode/settings.json` sets `eslint.workingDirectories` so each app uses its own flat ESLint config. After changing tsconfig paths, **Developer: Reload Window**.
 
 ## Layers
 
@@ -85,27 +91,16 @@ import {
 } from '@maghami-system/schemas'
 ```
 
-- `PermissionResource` — `users` | `roles` | `permissions` | `products` | `product-categories` | `product-brands` | `product-units` | `product-attributes` | `product-code-patterns`
+- `PermissionResource` — `users` | `roles` | `permissions` | `files` | `products` | `product-categories` | `product-brands` | `product-units` | `product-attributes` | `product-code-patterns`
 - `PermissionAction` — `read` | `create` | `update` | `delete` (`write` is not an alias)
 - Catalog row: `{ resource, action, name }` with **unique `(resource, action)`** (no separate `code` column)
-- Bootstrap seeds `SEEDED_PERMISSION_RESOURCES` (RBAC + Product Coding subjects)
+- Bootstrap seeds `SEEDED_PERMISSION_RESOURCES` (same core catalog as `PERMISSION_RESOURCES`)
+- Image uploads: `IMAGE_UPLOAD` / `isAllowedImageMime` in `upload.ts` (API + web)
+- File bytes: local disk via `FileStorage` / `LocalDiskStorage` (`UPLOAD_DIR`)
 - Session `abilities` use `AbilityAction` / `AbilitySubject` (catalog enums + `manage`/`all` for super-admin)
 - Session `permissionCodes` are derived display keys (`resource:action`, plus `*` for super-admin)
 
-### Product Coding contracts
-
-| File | DTOs |
-|------|------|
-| `product-category.ts` | `createProductCategorySchema` / `updateProductCategorySchema` |
-| `product-brand.ts` | brand create/update |
-| `product-unit.ts` | unit create/update |
-| `product-attribute.ts` | attribute create/update (`TEXT` \| `NUMBER` \| `SELECT` \| `BOOLEAN`; SELECT needs `options`) |
-| `product-code-pattern.ts` | SKU pattern per category |
-| `product.ts` | product create/update (`sku` optional → auto), `productListQuerySchema` (`q`, filters) |
-
-Wire shapes: `ProductCategory`, `ProductBrand`, `ProductUnit`, `ProductAttribute`, `ProductCodePattern`, `Product` (+ `attributeValues`) in `entities.ts`.
-
-Self-service profile (`PATCH /auth/me`): `updateProfileSchema` / `UpdateProfileDto` — name, email, optional password. Not `users:update`; cannot change roles or `isActive`.
+Self-service profile (`PATCH /auth/me`): `updateProfileSchema` / `UpdateProfileDto` — name, email, optional password, optional `avatarFileId`. Not `users:update`; cannot change roles or `isActive`.
 
 Auth tokens: `LoginResult` is session + `accessToken` + `tokenType` only. Refresh token is an HttpOnly cookie (API), not part of the shared JSON contract.
 

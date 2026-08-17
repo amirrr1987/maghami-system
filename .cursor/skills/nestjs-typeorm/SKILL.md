@@ -28,7 +28,7 @@ TypeOrmModule.forRootAsync({
     return {
       type: 'postgres' as const,
       ...connection,
-      entities: [User, Role, Permission, Product],
+      entities: [User, Role, Permission, StoredFile],
       synchronize: config.get<string>('TYPEORM_SYNC', 'true') === 'true',
     };
   },

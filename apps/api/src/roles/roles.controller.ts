@@ -69,9 +69,7 @@ export class RolesController {
   @ApiOperation({ summary: 'Get role by unique value' })
   @ApiParam({ name: 'id', type: String, example: 'super-admin' })
   @ApiOkResponse({ type: ApiResultRoleResponse })
-  findOne(
-    @Param('id', new ZodValidationPipe(roleValueSchema)) id: string,
-  ) {
+  findOne(@Param('id', new ZodValidationPipe(roleValueSchema)) id: string) {
     return this.rolesService.findOne(id);
   }
 
@@ -80,9 +78,7 @@ export class RolesController {
   @ApiOperation({ summary: 'Create role' })
   @ApiBody({ type: CreateRoleBody })
   @ApiOkResponse({ type: ApiResultRoleResponse })
-  create(
-    @Body(new ZodValidationPipe(createRoleSchema)) dto: CreateRoleDto,
-  ) {
+  create(@Body(new ZodValidationPipe(createRoleSchema)) dto: CreateRoleDto) {
     return this.rolesService.create(dto);
   }
 

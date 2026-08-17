@@ -34,7 +34,7 @@ const SUBJECT_ALIASES: Readonly<Record<string, PermissionResource>> = {
   user: PermissionResource.Users,
   role: PermissionResource.Roles,
   permission: PermissionResource.Permissions,
-  product: PermissionResource.Products,
+  file: PermissionResource.Files,
 };
 
 export function canonicalizeSubject(
@@ -100,6 +100,7 @@ export const updateProfileSchema = z
     email: createUserSchema.shape.email,
     name: createUserSchema.shape.name,
     password: createUserSchema.shape.password.optional(),
+    avatarFileId: z.string().uuid().nullable().optional(),
   })
   .strict();
 

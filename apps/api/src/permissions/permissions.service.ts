@@ -11,7 +11,10 @@ import type {
   PermissionAction,
   PermissionResource,
 } from '@maghami-system/schemas';
-import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
+import {
+  paginationSkipTake,
+  toPaginatedResult,
+} from '@maghami-system/schemas';
 import { In, QueryFailedError, Repository } from 'typeorm';
 import { Permission } from './permission.entity';
 import type {
@@ -60,10 +63,7 @@ export class PermissionsService {
     }
   }
 
-  async update(
-    id: string,
-    dto: UpdatePermissionDto,
-  ): Promise<PermissionDto> {
+  async update(id: string, dto: UpdatePermissionDto): Promise<PermissionDto> {
     const permission = await this.findEntity(id);
     if (dto.resource !== undefined) permission.resource = dto.resource;
     if (dto.action !== undefined) permission.action = dto.action;

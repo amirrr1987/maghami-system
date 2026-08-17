@@ -10,3 +10,5 @@ Thumbs.db
 *.tsbuildinfo
 .vite/
 apps/web/dist/
+uploads/
+apps/api/uploads/

@@ -80,9 +80,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Create user' })
   @ApiBody({ type: CreateUserBody })
   @ApiOkResponse({ type: ApiResultUserResponse })
-  create(
-    @Body(new ZodValidationPipe(createUserSchema)) dto: CreateUserDto,
-  ) {
+  create(@Body(new ZodValidationPipe(createUserSchema)) dto: CreateUserDto) {
     return this.usersService.create(dto);
   }
 

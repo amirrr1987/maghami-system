@@ -36,9 +36,9 @@ Authz is **resource + action** from shared enums (not free-form strings).
 2. Permission row: enum `resource` + enum `action` (unique together) + `name`
 3. `/auth/me` returns `abilities: AbilityRule[]` (super-admin → `{ action: 'manage', subject: 'all' }`)
 4. `updateAbilityFromRules(abilities)` → CASL `can(action, subject)` with **no** write↔update aliases
-5. UI: `can(PermissionAction.Update, PermissionResource.Products)` / `<Can :I="PermissionAction.Update" :a="PermissionResource.Products">`
-6. Routes: `meta.ability: { action: PermissionAction.Read, subject: PermissionResource.Products }`
-7. API: `@RequireAbility(PermissionAction.Update, PermissionResource.Products)` via `abilityCovers`
+5. UI: `can(PermissionAction.Update, PermissionResource.Files)` / `<Can :I="PermissionAction.Update" :a="PermissionResource.Files">`
+6. Routes: `meta.ability: { action: PermissionAction.Read, subject: PermissionResource.Files }`
+7. API: `@RequireAbility(PermissionAction.Update, PermissionResource.Files)` via `abilityCovers`
 
 A new action or resource requires extending the enums (then seed / UI Select options), not inventing ad-hoc strings.
 
@@ -48,11 +48,11 @@ import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 app.use(abilitiesPlugin, ability, { useGlobalProperties: true });
 
 const { can } = useAppAbility();
-can(PermissionAction.Read, PermissionResource.Products);
-can(PermissionAction.Update, PermissionResource.Products);
+can(PermissionAction.Read, PermissionResource.Files);
+can(PermissionAction.Update, PermissionResource.Files);
 can('manage', 'all'); // super-admin
 
-<Can :I="PermissionAction.Create" :a="PermissionResource.Products">…</Can>
+<Can :I="PermissionAction.Create" :a="PermissionResource.Files">…</Can>
 ```
 
 ## Anti-patterns

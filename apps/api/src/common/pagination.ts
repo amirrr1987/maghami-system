@@ -1,4 +1,7 @@
-import type { PaginatedResult, PaginationQuery } from '@maghami-system/schemas';
+import type {
+  PaginatedResult,
+  PaginationQuery,
+} from '@maghami-system/schemas';
 import {
   paginationSkipTake,
   toPaginatedResult,

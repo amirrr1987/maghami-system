@@ -69,6 +69,18 @@ const router = createRouter({
           },
         },
         {
+          path: 'files',
+          name: 'files',
+          component: () => import('@/views/files/FilesView.vue'),
+          meta: {
+            title: 'مدیریت فایل‌ها',
+            ability: {
+              action: PermissionAction.Read,
+              subject: PermissionResource.Files,
+            },
+          },
+        },
+        {
           path: 'products',
           name: 'products',
           component: () => import('@/views/products/ProductsView.vue'),

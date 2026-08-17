@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { PermissionsModule } from '../permissions/permissions.module';
 import { RolesModule } from '../roles/roles.module';
 import { UsersModule } from '../users/users.module';
+import { FilesModule } from '../files/files.module';
 import { AuthBootstrapService } from './auth-bootstrap.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -16,6 +17,7 @@ import { JwtStrategy } from './jwt.strategy';
 @Module({
   imports: [
     UsersModule,
+    FilesModule,
     RolesModule,
     PermissionsModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),

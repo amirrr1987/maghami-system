@@ -8,6 +8,7 @@ import type {
   LoginResult,
   UpdateProfileDto,
 } from '@maghami-system/schemas';
+import { FilesService } from '../files/files.service';
 import { UsersService } from '../users/users.service';
 import type { User } from '../users/user.entity';
 import type { JwtPayload } from './jwt-payload';
@@ -22,6 +23,7 @@ export interface AuthTokenPair {
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
+    private readonly filesService: FilesService,
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
   ) {}
@@ -66,6 +68,9 @@ export class AuthService {
   }
 
   async updateProfile(user: User, dto: UpdateProfileDto): Promise<AuthSession> {
+    if (dto.avatarFileId) {
+      await this.filesService.assertOwnedBy(user.id, dto.avatarFileId);
+    }
     const updated = await this.usersService.updateOwnProfile(user.id, dto);
     return this.me(updated);
   }

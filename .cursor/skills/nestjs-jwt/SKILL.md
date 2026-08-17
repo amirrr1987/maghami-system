@@ -33,7 +33,7 @@ Prefer a small typed payload interface in-app (e.g. `{ sub: User['id']; email: s
 - `@Public()` skips JWT; `@RequireAbility('read', 'users')` checks session abilities
 - Swagger: `DocumentBuilder.addBearerAuth()` + `@ApiBearerAuth()`
 - Env: `JWT_SECRET` (required), `JWT_EXPIRES_IN`, `JWT_REFRESH_SECRET` (optional fallback to `JWT_SECRET`), `JWT_REFRESH_EXPIRES_IN` (default `7d`), `COOKIE_SECURE`, `REFRESH_COOKIE_PATH`, `CORS_ORIGIN` (with `credentials: true`), `BOOTSTRAP_ADMIN_*`
-- Cookie helpers: `apps/api/src/auth/refresh-cookie.ts` (`maghami_system_refresh`, HttpOnly, SameSite=Lax)
+- Cookie helpers: `apps/api/src/auth/refresh-cookie.ts` (`vue_nestjs_admin_template_refresh`, HttpOnly, SameSite=Lax)
 
 ```ts
 @Public()

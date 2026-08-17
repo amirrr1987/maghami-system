@@ -4,6 +4,7 @@ import {
   BarsOutlined,
   BgColorsOutlined,
   ClusterOutlined,
+  FolderOpenOutlined,
   LogoutOutlined,
   NumberOutlined,
   SafetyCertificateOutlined,
@@ -15,7 +16,6 @@ import {
 import {
   Avatar,
   Button,
-  Divider,
   Dropdown,
   Flex,
   Layout,
@@ -26,18 +26,19 @@ import {
   Space,
   TypographyText,
   TypographyTitle,
+  Divider
 } from 'ant-design-vue'
 import type { MenuProps } from 'ant-design-vue'
-import {
-  PermissionAction,
-  PermissionResource,
-} from '@maghami-system/schemas'
 import { computed, h, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppAbility } from '@/ability'
 import SettingDrawer from '@/components/SettingDrawer.vue'
 import UserProfileModal from '@/components/UserProfileModal.vue'
 import { useAuthStore } from '@/stores/auth.store'
+import {
+  PermissionAction,
+  PermissionResource,
+} from '@maghami-system/schemas'
 
 const route = useRoute()
 const router = useRouter()
@@ -179,6 +180,16 @@ const menuItems = computed<MenuProps['items']>(() => {
       children: productCoding,
     })
   }
+  if (can(PermissionAction.Read, PermissionResource.Files)) {
+    if (items.length > 0) {
+      items.push({ type: 'divider' })
+    }
+    items.push({
+      key: 'files',
+      icon: () => h(FolderOpenOutlined),
+      label: 'مدیریت فایل‌ها',
+    })
+  }
   return items
 })
 
@@ -231,10 +242,11 @@ async function onLogout(): Promise<void> {
             :level="5"
             class="m-0! truncate text-primary!"
           >
-            Maghami System
+            Monitoring
           </TypographyTitle>
         </RouterLink>
         <Space :size="8">
+
           <Dropdown :trigger="['click']">
             <Space class="cursor-pointer">
               <Avatar :size="32">

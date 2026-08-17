@@ -21,7 +21,7 @@ const RESOURCE_LABELS_FA: Record<PermissionResource, string> = {
   [PermissionResource.Users]: 'کاربران',
   [PermissionResource.Roles]: 'نقش‌ها',
   [PermissionResource.Permissions]: 'مجوزها',
-  [PermissionResource.Products]: 'محصولات',
+  [PermissionResource.Files]: 'فایل‌ها',
 }
 
 const ACTION_LABELS_FA: Record<PermissionAction, string> = {

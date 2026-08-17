@@ -18,6 +18,7 @@ http:
       {
         "sku": "BRUNO-SKU-001",
         "name": "Sample product",
+        "categoryId": "{{categoryId}}",
         "description": "Created from Bruno",
         "price": 19.5,
         "isActive": true
@@ -49,4 +50,4 @@ settings:
   maxRedirects: 5
 
 docs: |-
-  Saves `productId` from `data.id`. Duplicate `sku` → 409.
+  Requires `categoryId` (create a category first). Saves `productId` from `data.id`. Duplicate `sku` → 409.

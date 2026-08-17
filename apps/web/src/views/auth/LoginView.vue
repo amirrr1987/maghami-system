@@ -39,7 +39,7 @@ const NO_ACCESS_MESSAGE =
   'این حساب هیچ دسترسی‌ای ندارد. با ادمین وارد شوید و به کاربر یک نقش دارای مجوز بدهید.'
 
 const UNMAPPED_ACCESS_MESSAGE =
-  'مجوز دارید ولی با هیچ صفحه‌ای منطبق نیست. resource باید یکی از enumهای کاتالوگ باشد (مثل products / users).'
+  'مجوز دارید ولی با هیچ صفحه‌ای منطبق نیست. resource باید یکی از enumهای کاتالوگ باشد (مثل users / files).'
 
 function applyReasonFromQuery(): void {
   if (route.query.reason === 'no_access') {
@@ -134,7 +134,7 @@ watch(() => route.query.reason, applyReasonFromQuery)
         <Card class="w-full max-w-md">
           <Flex vertical align="center" :gap="4" class="mb-6">
             <TypographyTitle :level="3" class="m-0!">
-              Maghami System
+              Monitoring
             </TypographyTitle>
             <TypographyText type="secondary">
               ورود به پنل مدیریت

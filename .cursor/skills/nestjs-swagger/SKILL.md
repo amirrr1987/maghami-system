@@ -42,7 +42,7 @@ UI path: **`/docs`**. Wired in `apps/api/src/main.ts`:
 
 ```ts
 const swaggerConfig = new DocumentBuilder()
-  .setTitle('Maghami System API')
+  .setTitle('Monitoring API')
   .setDescription('…')
   .setVersion('0.0.0')
   .addBearerAuth()
@@ -59,7 +59,7 @@ Protected routes: `@ApiBearerAuth()` on the controller; public: `@Public()`.
 
 - **Runtime validation**: Zod schemas + `ZodValidationPipe` (`*.schemas.ts`)
 - **OpenAPI models**: classes with `ApiProperty*` in `common/swagger/openapi.models.ts`
-- **Reusable id schemas**: `PermissionId` / `UserId` / `ProductId` (uuid), `RoleId` (`Role.value` slug) in `openapi.ids.ts` + `registerOpenApiIdSchemas`
+- **Reusable id schemas**: `PermissionId` / `UserId` (uuid), `RoleId` (`Role.value` slug) in `openapi.ids.ts` + `registerOpenApiIdSchemas`
 - **TypeScript types**: still `Permission['id']` / `Role['value']` on model fields (not free-floating string)
 - Controllers keep `CreateXDto = z.infer<…>` for handlers; use `@ApiBody({ type: CreateXBody })` for docs
 

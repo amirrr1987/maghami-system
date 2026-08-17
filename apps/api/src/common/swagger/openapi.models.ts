@@ -128,7 +128,7 @@ export class UserResponse {
 export class CreatePermissionBody {
   @ApiProperty({
     enum: PERMISSION_RESOURCES,
-    example: PermissionResource.Products,
+    example: PermissionResource.Users,
   })
   resource!: PermissionResource;
 
@@ -148,7 +148,7 @@ export class CreatePermissionBody {
 export class UpdatePermissionBody {
   @ApiPropertyOptional({
     enum: PERMISSION_RESOURCES,
-    example: PermissionResource.Products,
+    example: PermissionResource.Users,
   })
   resource?: PermissionResource;
 
@@ -758,6 +758,13 @@ export class UpdateProfileBody {
     description: 'Omit to keep the current password.',
   })
   password?: string;
+
+  @ApiPropertyOptional({
+    nullable: true,
+    format: 'uuid',
+    description: 'Uploaded file id owned by the current user.',
+  })
+  avatarFileId?: string | null;
 }
 
 export class AuthUserResponse {
@@ -772,6 +779,26 @@ export class AuthUserResponse {
 
   @ApiProperty()
   isActive!: boolean;
+
+  @ApiPropertyOptional({ nullable: true, format: 'uuid' })
+  avatarFileId!: string | null;
+}
+
+export class StoredFileResponse {
+  @ApiProperty({ format: 'uuid' })
+  id!: string;
+
+  @ApiProperty()
+  originalName!: string;
+
+  @ApiProperty({ example: 'image/jpeg' })
+  mimeType!: string;
+
+  @ApiProperty({ example: 102400 })
+  sizeBytes!: number;
+
+  @ApiProperty({ type: String, format: 'date-time' })
+  createdAt!: Date;
 }
 
 export class AbilityRuleResponse {
@@ -783,7 +810,7 @@ export class AbilityRuleResponse {
 
   @ApiProperty({
     enum: [...PERMISSION_RESOURCES, 'all'],
-    example: PermissionResource.Products,
+    example: PermissionResource.Users,
   })
   subject!: string;
 }
@@ -804,7 +831,7 @@ export class AuthMeResponse {
 
   @ApiProperty({
     type: [String],
-    example: ['*', 'products:read'],
+    example: ['*', 'users:read'],
     description:
       'Derived resource:action keys (display). UI must gate on abilities, not these strings.',
   })
@@ -913,9 +940,9 @@ export class ApiResultPermissionResponse extends ApiResultBase {
   data?: PermissionResponse;
 }
 
-export class ApiResultProductResponse extends ApiResultBase {
-  @ApiPropertyOptional({ type: () => ProductResponse })
-  data?: ProductResponse;
+export class ApiResultStoredFileResponse extends ApiResultBase {
+  @ApiPropertyOptional({ type: () => StoredFileResponse })
+  data?: StoredFileResponse;
 }
 
 export class ApiResultPaginatedUsersResponse extends ApiResultBase {
@@ -931,6 +958,11 @@ export class ApiResultPaginatedRolesResponse extends ApiResultBase {
 export class ApiResultPaginatedPermissionsResponse extends ApiResultBase {
   @ApiPropertyOptional({ type: () => PaginatedPermissionsResponse })
   data?: PaginatedPermissionsResponse;
+}
+
+export class ApiResultProductResponse extends ApiResultBase {
+  @ApiPropertyOptional({ type: () => ProductResponse })
+  data?: ProductResponse;
 }
 
 export class ApiResultPaginatedProductsResponse extends ApiResultBase {

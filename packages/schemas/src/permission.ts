@@ -5,6 +5,7 @@ export enum PermissionResource {
   Users = 'users',
   Roles = 'roles',
   Permissions = 'permissions',
+  Files = 'files',
   Products = 'products',
   ProductCategories = 'product-categories',
   ProductBrands = 'product-brands',
@@ -25,6 +26,7 @@ export const PERMISSION_RESOURCES = [
   PermissionResource.Users,
   PermissionResource.Roles,
   PermissionResource.Permissions,
+  PermissionResource.Files,
   PermissionResource.Products,
   PermissionResource.ProductCategories,
   PermissionResource.ProductBrands,
@@ -33,21 +35,8 @@ export const PERMISSION_RESOURCES = [
   PermissionResource.ProductCodePatterns,
 ] as const satisfies readonly PermissionResource[];
 
-/**
- * Resources ensured on API bootstrap (`resource:action` catalog rows).
- * Includes Product Coding subjects so RBAC can gate the new module immediately.
- */
-export const SEEDED_PERMISSION_RESOURCES = [
-  PermissionResource.Users,
-  PermissionResource.Roles,
-  PermissionResource.Permissions,
-  PermissionResource.Products,
-  PermissionResource.ProductCategories,
-  PermissionResource.ProductBrands,
-  PermissionResource.ProductUnits,
-  PermissionResource.ProductAttributes,
-  PermissionResource.ProductCodePatterns,
-] as const satisfies readonly PermissionResource[];
+/** Catalog resources created on API bootstrap. */
+export const SEEDED_PERMISSION_RESOURCES = PERMISSION_RESOURCES;
 
 export const PERMISSION_ACTIONS = [
   PermissionAction.Read,

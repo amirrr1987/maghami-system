@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ProductAttribute } from '../product-attributes/product-attribute.entity';
-import { Product } from '../products/product.entity';
+import { Product } from './product.entity';
 
 @Entity({ name: 'product_attribute_values' })
 @Unique(['productId', 'attributeId'])

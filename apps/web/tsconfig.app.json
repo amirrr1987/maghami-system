@@ -8,7 +8,10 @@
 
     // Path mapping for cleaner imports.
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@maghami-system/schemas": [
+        "../../packages/schemas/src/index.ts"
+      ]
     },
 
     // `vue-tsc --build` produces a .tsbuildinfo file for incremental type-checking.

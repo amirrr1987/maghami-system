@@ -9,6 +9,7 @@ import {
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { UpdateProfileDto } from '@maghami-system/schemas'
 import { computed, reactive, ref, watch } from 'vue'
+import ImageUploader from '@/components/ImageUploader.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import {
   profileFormRules,
@@ -33,6 +34,9 @@ const model = reactive<ProfileFormModel>({
   confirmPassword: '',
 })
 
+const avatarFileIds = ref<string[]>([])
+const avatarCoverFileId = ref<string | null>(null)
+
 const rules = computed(() => profileFormRules(model))
 
 function fillFromSession(): void {
@@ -40,6 +44,9 @@ function fillFromSession(): void {
   model.email = auth.user?.email ?? ''
   model.password = ''
   model.confirmPassword = ''
+  const avatarId = auth.user?.avatarFileId ?? null
+  avatarFileIds.value = avatarId ? [avatarId] : []
+  avatarCoverFileId.value = avatarId
 }
 
 watch(
@@ -59,6 +66,7 @@ function toDto(): UpdateProfileDto {
   const dto: UpdateProfileDto = {
     name: model.name,
     email: model.email,
+    avatarFileId: avatarFileIds.value[0] ?? null,
   }
   if (model.password) {
     dto.password = model.password
@@ -97,6 +105,14 @@ async function onSubmit(): Promise<void> {
       :model="model"
       :rules="rules"
     >
+      <FormItem label="آواتار">
+        <ImageUploader
+          v-model:file-ids="avatarFileIds"
+          v-model:cover-file-id="avatarCoverFileId"
+          :multiple="false"
+          :max-count="1"
+        />
+      </FormItem>
       <FormItem label="نام" name="name">
         <Input v-model:value="model.name" allow-clear />
       </FormItem>

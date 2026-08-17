@@ -1,7 +1,7 @@
 opencollection: 1.0.0
 
 info:
-  name: Maghami System API
+  name: Monitoring API
 
 request:
   headers:

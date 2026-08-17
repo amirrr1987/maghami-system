@@ -43,10 +43,11 @@ function messagesFromException(exception: unknown): string[] {
           formErrors?: unknown;
           fieldErrors?: Record<string, unknown>;
         };
-        const list: string[] = [
-          ...collectStringMessages(flattened.formErrors),
-        ];
-        if (flattened.fieldErrors && typeof flattened.fieldErrors === 'object') {
+        const list: string[] = [...collectStringMessages(flattened.formErrors)];
+        if (
+          flattened.fieldErrors &&
+          typeof flattened.fieldErrors === 'object'
+        ) {
           for (const [field, errors] of Object.entries(flattened.fieldErrors)) {
             for (const error of collectStringMessages(errors)) {
               list.push(`${field}: ${error}`);

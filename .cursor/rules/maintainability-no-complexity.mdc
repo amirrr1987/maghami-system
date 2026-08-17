@@ -1,0 +1,37 @@
+---
+description: Maintainability is mandatory — never introduce unnecessary complexity or overengineering.
+alwaysApply: true
+---
+
+# Maintainability: no unnecessary complexity
+
+**Maintainability beats cleverness.** Prefer the simplest design that correctly solves the current need. Do **not** introduce complexity under any pretext (future-proofing, “clean architecture”, generality, reuse, or speed of delivery).
+
+## Do
+
+- Choose the smallest change that works and stays readable
+- Prefer linear, obvious control flow over abstractions and indirection
+- Reuse existing patterns in this repo; do not invent parallel layers
+- Keep files, APIs, and types easy to delete or change later
+- Push back when a request would add complexity without a clear, present need
+
+## Do not
+
+- Overengineer: extra modules, factories, wrappers, or “frameworks” for one use case
+- Premature abstraction (generic helpers, plugin systems, config trees) before a second real need
+- Deep nesting, clever one-liners, or indirection that hides intent
+- Speculative features, unused parameters, or dead extension points “just in case”
+- Trade clarity for cleverness, DRY-at-all-costs, or architectural fashion
+
+## When asked for a complex approach
+
+Refuse first if a simpler path exists. State the simpler alternative. Only implement the complex path if the user explicitly accepts the cost **and** no simpler correct option remains.
+
+```
+❌ User: wrap every service in a generic UnitOfWork + RepositoryFactory + Strategy registry
+   Agent: Sure, that will scale better…
+
+✅ User: wrap every service in a generic UnitOfWork + RepositoryFactory + Strategy registry
+   Agent: No. That adds complexity we do not need. Call the existing service/repository
+   pattern directly. I will not add those layers.
+```

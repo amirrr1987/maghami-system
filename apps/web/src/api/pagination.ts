@@ -2,7 +2,8 @@ import type { PaginationQuery } from '@maghami-system/schemas'
 
 /** Build `?page=&pageSize=` plus optional filter keys (skips empty/undefined). */
 export function toListQuery(
-  query: PaginationQuery & Record<string, string | number | boolean | undefined | null>,
+  query: PaginationQuery &
+    Record<string, string | number | boolean | undefined | null>,
 ): string {
   const params = new URLSearchParams()
   params.set('page', String(query.page))

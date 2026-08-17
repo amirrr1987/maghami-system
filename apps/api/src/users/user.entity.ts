@@ -26,6 +26,9 @@ export class User {
   @Column({ type: 'boolean', default: true, name: 'is_active' })
   isActive!: boolean;
 
+  @Column({ type: 'uuid', nullable: true, name: 'avatar_file_id' })
+  avatarFileId!: string | null;
+
   @ManyToMany(() => Role, (role) => role.users, {
     cascade: false,
     eager: false,

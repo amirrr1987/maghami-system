@@ -6,7 +6,6 @@
   "license": "UNLICENSED",
   "author": "",
   "scripts": {
-    "predev": "pnpm --dir ../.. --filter @maghami-system/schemas build",
     "prebuild": "pnpm --dir ../.. --filter @maghami-system/schemas build",
     "dev": "nest start --watch",
     "build": "nest build",
@@ -23,7 +22,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@maghami-system/schemas": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^11.0.1",
@@ -32,7 +30,9 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/typeorm": "^10.0.2",
+    "@maghami-system/schemas": "workspace:*",
     "bcrypt": "^5.1.1",
+    "multer": "1.4.5-lts.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.23.0",
@@ -50,6 +50,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
+    "@types/multer": "^1.4.13",
     "@types/node": "^24.0.0",
     "@types/passport-jwt": "^4.0.1",
     "@types/supertest": "^7.0.0",

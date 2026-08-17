@@ -38,7 +38,7 @@ export class RolesService {
     @InjectRepository(Role)
     private readonly roles: Repository<Role>,
     private readonly permissionsService: PermissionsService,
-  ) { }
+  ) {}
 
   /** Copy legacy `name` into empty `label` after schema sync. */
   async backfillEmptyLabels(): Promise<void> {
@@ -132,9 +132,7 @@ export class RolesService {
     }
   }
 
-  async findAll(
-    query: PaginationQuery,
-  ): Promise<PaginatedResult<RoleDto>> {
+  async findAll(query: PaginationQuery): Promise<PaginatedResult<RoleDto>> {
     const { skip, take } = paginationSkipTake(query);
     const [roles, total] = await this.roles.findAndCount({
       relations: { permissions: true },
@@ -171,10 +169,7 @@ export class RolesService {
     }
   }
 
-  async update(
-    value: RoleDto['value'],
-    dto: UpdateRoleDto,
-  ): Promise<RoleDto> {
+  async update(value: RoleDto['value'], dto: UpdateRoleDto): Promise<RoleDto> {
     this.assertMutable(value);
     if (dto.value !== undefined) {
       this.assertNotReservedValue(dto.value);
@@ -290,15 +285,19 @@ export class RolesService {
   }
 
   private rethrowUnique(error: unknown, message: string): never {
-    if (
-      error instanceof QueryFailedError &&
-      typeof error.driverError === 'object' &&
-      error.driverError !== null &&
-      'code' in error.driverError &&
-      error.driverError.code === '23505'
-    ) {
+    if (!(error instanceof QueryFailedError)) {
+      throw error;
+    }
+    if (isPostgresUniqueViolation(error.driverError)) {
       throw new ConflictException(message);
     }
     throw error;
   }
+}
+
+function isPostgresUniqueViolation(driverError: unknown): boolean {
+  if (typeof driverError !== 'object' || driverError === null) {
+    return false;
+  }
+  return Reflect.get(driverError, 'code') === '23505';
 }

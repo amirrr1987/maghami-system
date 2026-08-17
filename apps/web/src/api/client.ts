@@ -95,7 +95,11 @@ export async function apiRequest<T>(
     ...fetchInit
   } = init
   const headers = new Headers(fetchInit.headers)
-  if (fetchInit.body !== undefined && !headers.has('Content-Type')) {
+  if (
+    fetchInit.body !== undefined &&
+    !headers.has('Content-Type') &&
+    !(fetchInit.body instanceof FormData)
+  ) {
     headers.set('Content-Type', 'application/json')
   }
   if (!skipAuth) {

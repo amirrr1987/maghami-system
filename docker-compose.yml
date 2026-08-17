@@ -6,16 +6,16 @@ services:
     environment:
       POSTGRES_USER: ${DATABASE_USER:-postgres}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      POSTGRES_DB: ${DATABASE_NAME:-maghami_system}
+      POSTGRES_DB: ${DATABASE_NAME:-vue_nestjs_admin_template}
     ports:
       - "${DATABASE_PORT:-5432}:5432"
     volumes:
-      - maghami_system_pgdata:/var/lib/postgresql/data
+      - vue_nestjs_admin_template_pgdata:/var/lib/postgresql/data
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${DATABASE_USER:-postgres} -d ${DATABASE_NAME:-maghami_system}",
+          "pg_isready -U ${DATABASE_USER:-postgres} -d ${DATABASE_NAME:-vue_nestjs_admin_template}",
         ]
       interval: 5s
       timeout: 5s
@@ -36,7 +36,7 @@ services:
       DATABASE_PORT: 5432
       DATABASE_USER: ${DATABASE_USER:-postgres}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-postgres}
-      DATABASE_NAME: ${DATABASE_NAME:-maghami_system}
+      DATABASE_NAME: ${DATABASE_NAME:-vue_nestjs_admin_template}
       TYPEORM_SYNC: ${TYPEORM_SYNC:-true}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
@@ -48,6 +48,7 @@ services:
       BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-super-admin@localhost.ir}
       BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-UTMwBgi6vcpsXZc}
       BOOTSTRAP_ADMIN_NAME: ${BOOTSTRAP_ADMIN_NAME:-super-admin}
+      UPLOAD_DIR: ${UPLOAD_DIR:-uploads}
     depends_on:
       db:
         condition: service_healthy
@@ -65,4 +66,4 @@ services:
       - api
 
 volumes:
-  maghami_system_pgdata:
+  vue_nestjs_admin_template_pgdata:

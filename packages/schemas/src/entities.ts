@@ -60,6 +60,7 @@ export interface User {
   email: string;
   name: string;
   isActive: boolean;
+  avatarFileId: string | null;
   /** Assigned roles as label/value (never nested permissions). */
   roles: RoleRef[];
   createdAt: string;
@@ -72,6 +73,29 @@ export interface AuthUser {
   email: string;
   name: string;
   isActive: boolean;
+  avatarFileId: string | null;
+}
+
+/** Uploaded file metadata (content served via authenticated GET). */
+export interface StoredFile {
+  id: string;
+  originalName: string;
+  title: string;
+  alt: string;
+  mimeType: string;
+  sizeBytes: number;
+  folderId: string | null;
+  sortOrder: number;
+  createdAt: string;
+}
+
+/** Flat folder for organizing files (DB only — disk names stay flat). */
+export interface FileFolder {
+  id: string;
+  name: string;
+  /** null = top-level under library root */
+  parentId: string | null;
+  createdAt: string;
 }
 
 export interface ProductCategory {

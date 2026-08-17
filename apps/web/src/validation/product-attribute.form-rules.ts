@@ -7,6 +7,7 @@ import {
 import { z } from 'zod'
 import { zodRule } from './zod-rule'
 
+/** Same max/min as createProductAttributeSchema name (schema uses superRefine, no .shape). */
 const nameSchema = z.string().trim().min(1).max(255)
 
 export const productAttributeFormRules: Record<

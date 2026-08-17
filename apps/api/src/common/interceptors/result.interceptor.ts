@@ -4,10 +4,12 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { isApiResult, okResult } from '@maghami-system/schemas';
 import type { Request } from 'express';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RAW_RESPONSE_KEY } from '../decorators/raw-response.decorator';
 
 function crudSuccessMessages(method: string): string[] {
   switch (method.toUpperCase()) {
@@ -27,10 +29,17 @@ function crudSuccessMessages(method: string): string[] {
 
 @Injectable()
 export class ResultInterceptor implements NestInterceptor {
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<unknown> {
+  constructor(private readonly reflector: Reflector) {}
+
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+    const raw = this.reflector.getAllAndOverride<boolean>(RAW_RESPONSE_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (raw) {
+      return next.handle();
+    }
+
     const http = context.switchToHttp();
     const request = http.getRequest<Request>();
     const response = http.getResponse<{ statusCode: number }>();

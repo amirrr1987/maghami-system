@@ -46,3 +46,4 @@ Call VueUse composables inside a setup store; keep a single persisted object and
 - Untyped `useLocalStorage('key', {})` without a generic / typed default
 - Hand-rolled `localStorage` + `JSON.parse` when `useLocalStorage` already covers persistence
 - Casting storage values as `any`
+- Using `useDraggable` for file/folder list reorder — use `vue-draggable-next` (SortableJS) instead

@@ -16,6 +16,7 @@ const RESOURCE_LABEL_FA: Readonly<
   [PermissionResource.Users]: 'کاربران',
   [PermissionResource.Roles]: 'نقش‌ها',
   [PermissionResource.Permissions]: 'مجوزها',
+  [PermissionResource.Files]: 'فایل‌ها',
   [PermissionResource.Products]: 'محصولات',
   [PermissionResource.ProductCategories]: 'دسته‌بندی کالا',
   [PermissionResource.ProductBrands]: 'برند کالا',
@@ -32,8 +33,8 @@ const ACTION_LABEL_FA: Readonly<Record<PermissionAction, string>> = {
 };
 
 /**
- * Ensures catalog permissions (RBAC + Product Coding), `super-admin` role,
- * and bootstrap user. Controlled by BOOTSTRAP_ADMIN_EMAIL + BOOTSTRAP_ADMIN_PASSWORD.
+ * Ensures core catalog permissions, `super-admin` role, and bootstrap user.
+ * Controlled by BOOTSTRAP_ADMIN_EMAIL + BOOTSTRAP_ADMIN_PASSWORD.
  */
 @Injectable()
 export class AuthBootstrapService implements OnModuleInit {
@@ -52,12 +53,7 @@ export class AuthBootstrapService implements OnModuleInit {
       for (const action of PERMISSION_ACTIONS) {
         const actionLabel = ACTION_LABEL_FA[action];
         const label = `${actionLabel} ${resourceLabel}`;
-        await this.permissionsService.ensure(
-          resource,
-          action,
-          label,
-          label,
-        );
+        await this.permissionsService.ensure(resource, action, label, label);
       }
     }
 
