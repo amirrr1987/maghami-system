@@ -70,21 +70,10 @@ Then open http://localhost:5050/pgadmin4 . The preloaded server **maghami-system
 
 ```bash
 pnpm install
-cp apps/api/.env.example apps/api/.env
+cp .env.example .env
 ```
 
-Keep these defaults in `apps/api/.env` (they match Compose):
-
-```env
-PORT=3000
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_USER=postgres
-DATABASE_PASSWORD=postgres
-DATABASE_NAME=vue_nestjs_admin_template
-TYPEORM_SYNC=true
-CORS_ORIGIN=http://localhost:5173
-```
+Edit the Database / Nest / Auth sections in `.env` if needed. Defaults match local Compose. If you still have `apps/api/.env`, move those values here and delete that file (it overrides the root file).
 
 ### 3. Run API + Web
 
@@ -177,18 +166,7 @@ docker compose down
 | Postgres | `5432` (`DATABASE_PORT`) | not published | `5432` |
 | pgAdmin | `5050` (`PGADMIN_PORT`) | not published (`/pgadmin4` on 80) | `80` |
 
-Override with a root `.env` next to `docker-compose.yml`, for example:
-
-```env
-PORT=3000
-WEB_PORT=5173
-DATABASE_PORT=5432
-DATABASE_USER=postgres
-DATABASE_PASSWORD=postgres
-DATABASE_NAME=vue_nestjs_admin_template
-TYPEORM_SYNC=true
-CORS_ORIGIN=http://localhost:5173
-```
+Override with a root `.env` (copy `.env.example`). Compose interpolates those keys; the API container still gets `DATABASE_HOST` from `docker-compose.yml`.
 
 ---
 
@@ -207,7 +185,7 @@ docker compose up --build
 
 If a root `.env` changed `DATABASE_PASSWORD` after the first Postgres volume was created, either put the original password back or wipe the volume (`docker compose down -v`) and start again.
 
-**API cannot reach DB (mode B)** — ensure `docker compose up db -d` is running and `DATABASE_HOST=localhost` in `apps/api/.env`.
+**API cannot reach DB (mode B)** — ensure `docker compose up db -d` is running and `DATABASE_HOST=localhost` in the root `.env`.
 
 **Build fails on bcrypt** — the API image includes build tools; rebuild with `docker compose build --no-cache api`.
 

@@ -19,9 +19,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 ## This repo (`app.module.ts`)
 
 ```ts
+import { join } from 'node:path'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+
 ConfigModule.forRoot({
   isGlobal: true,
-  envFilePath: ['.env', 'apps/api/.env'],
+  envFilePath: [
+    join(__dirname, '..', '..', '.env'),
+    join(__dirname, '..', '.env'),
+  ],
 }),
 
 TypeOrmModule.forRootAsync({

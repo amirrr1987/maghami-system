@@ -1,5 +1,5 @@
 # VPS / IP test stack: one public port (80). Postgres and API stay on the
-# Docker network. Copy .env.example → .env and set PUBLIC_ORIGIN to
+# Docker network. Copy `.env.example` → `.env` and set PUBLIC_ORIGIN to
 # http://YOUR_IP (include :port if WEB_PORT is not 80).
 #
 #   docker compose -f docker-compose.server.yml up --build -d

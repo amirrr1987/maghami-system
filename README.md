@@ -8,10 +8,10 @@ Monorepo with **NestJS** (`apps/api`) and **Vue 3** (`apps/web`).
 
 ```bash
 pnpm install
-cp apps/api/.env.example apps/api/.env
+cp .env.example .env
 ```
 
-Ensure PostgreSQL is running and matches `apps/api/.env` (or `docker compose up db -d`).
+Ensure PostgreSQL is running and matches the Database section in `.env` (or `docker compose up db -d`).
 
 ## Dev
 

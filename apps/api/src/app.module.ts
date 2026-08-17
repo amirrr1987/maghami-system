@@ -1,3 +1,4 @@
+import { join } from 'node:path';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -39,7 +40,10 @@ import { UsersModule } from './users/users.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env', 'apps/api/.env'],
+      envFilePath: [
+        join(__dirname, '..', '..', '.env'),
+        join(__dirname, '..', '.env'),
+      ],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
