@@ -34,6 +34,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAppAbility } from '@/ability'
 import SettingDrawer from '@/components/SettingDrawer.vue'
 import UserProfileModal from '@/components/UserProfileModal.vue'
+import { useAuthFileUrl } from '@/composables/useAuthFileUrl'
 import { useAuthStore } from '@/stores/auth.store'
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 
@@ -41,6 +42,9 @@ const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
 const { can } = useAppAbility()
+
+const avatarFileId = computed(() => auth.user?.avatarFileId ?? null)
+const { url: avatarUrl } = useAuthFileUrl(avatarFileId)
 
 const collapsed = ref(false)
 const settingOpen = ref(false)
@@ -230,7 +234,7 @@ async function onLogout(): Promise<void> {
         <Space :size="8">
           <Dropdown :trigger="['click']">
             <Space class="cursor-pointer">
-              <Avatar :size="32">
+              <Avatar :size="32" :src="avatarUrl ?? undefined" :alt="auth.user?.name ?? ''">
                 <template #icon>
                   <UserOutlined />
                 </template>
