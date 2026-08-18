@@ -6,6 +6,7 @@ import {
   ClusterOutlined,
   FolderOpenOutlined,
   LogoutOutlined,
+  MenuOutlined,
   NumberOutlined,
   SafetyCertificateOutlined,
   SettingOutlined,
@@ -17,6 +18,7 @@ import {
   Avatar,
   Button,
   Dropdown,
+  Drawer,
   Flex,
   Layout,
   LayoutContent,
@@ -47,10 +49,12 @@ const avatarFileId = computed(() => auth.user?.avatarFileId ?? null)
 const { url: avatarUrl } = useAuthFileUrl(avatarFileId)
 
 const collapsed = ref(false)
+const mobileNavOpen = ref(false)
 const settingOpen = ref(false)
 const profileOpen = ref(false)
 
 const settingsAriaLabel = 'باز کردن تنظیمات'
+const menuNavAriaLabel = 'باز کردن منو'
 
 const selectedKeys = computed(() => [route.name ? String(route.name) : 'users'])
 
@@ -71,6 +75,7 @@ const openKeys = ref<string[]>([])
 watch(
   () => route.name,
   (name) => {
+    mobileNavOpen.value = false
     if (!name) return
     const key = String(name)
     const next = [...openKeys.value]
@@ -203,6 +208,7 @@ const userMenuItems = computed<MenuProps['items']>(() => [
 const onMenuClick: MenuProps['onClick'] = (info) => {
   const key = String(info.key)
   if (key === USER_MANAGEMENT_KEY || key === PRODUCT_CODING_KEY) return
+  mobileNavOpen.value = false
   void router.push({ name: key })
 }
 
@@ -225,13 +231,26 @@ async function onLogout(): Promise<void> {
 <template>
   <Layout class="h-screen">
     <LayoutHeader>
-      <Flex align="center" justify="space-between" class="h-full w-full">
-        <RouterLink to="/">
-          <TypographyTitle :level="5" class="m-0! truncate text-primary!">
-            Maghami system
-          </TypographyTitle>
-        </RouterLink>
-        <Space :size="8">
+      <Flex align="center" justify="space-between" class="h-full w-full gap-2">
+        <Flex align="center" :gap="8" class="min-w-0">
+          <Button
+            type="text"
+            shape="circle"
+            class="lg:hidden shrink-0"
+            :aria-label="menuNavAriaLabel"
+            @click="mobileNavOpen = true"
+          >
+            <template #icon>
+              <MenuOutlined />
+            </template>
+          </Button>
+          <RouterLink to="/" class="min-w-0">
+            <TypographyTitle :level="5" class="m-0! truncate text-primary!">
+              Maghami system
+            </TypographyTitle>
+          </RouterLink>
+        </Flex>
+        <Space :size="8" class="shrink-0">
           <Dropdown :trigger="['click']">
             <Space class="cursor-pointer">
               <Avatar :size="32" :src="avatarUrl ?? undefined" :alt="auth.user?.name ?? ''">
@@ -239,7 +258,7 @@ async function onLogout(): Promise<void> {
                   <UserOutlined />
                 </template>
               </Avatar>
-              <TypographyText>{{ auth.user?.name }}</TypographyText>
+              <TypographyText class="hidden sm:inline">{{ auth.user?.name }}</TypographyText>
             </Space>
             <template #overlay>
               <Menu :items="userMenuItems" @click="onUserMenuClick" />
@@ -262,19 +281,38 @@ async function onLogout(): Promise<void> {
     </LayoutHeader>
 
     <Layout>
-      <LayoutSider v-model:collapsed="collapsed" collapsible breakpoint="lg" :width="270">
-        <Menu
-          mode="inline"
-          v-model:openKeys="openKeys"
-          :selected-keys="selectedKeys"
-          :items="menuItems"
-          @click="onMenuClick"
-        />
-      </LayoutSider>
+      <div class="hidden lg:block shrink-0">
+        <LayoutSider v-model:collapsed="collapsed" collapsible :width="270">
+          <Menu
+            mode="inline"
+            v-model:openKeys="openKeys"
+            :selected-keys="selectedKeys"
+            :items="menuItems"
+            @click="onMenuClick"
+          />
+        </LayoutSider>
+      </div>
       <LayoutContent class="p-4 overflow-y-auto">
         <RouterView />
       </LayoutContent>
     </Layout>
+
+    <Drawer
+      v-model:open="mobileNavOpen"
+      title="منو"
+      placement="right"
+      :width="280"
+      class="lg:hidden"
+      destroy-on-close
+    >
+      <Menu
+        mode="inline"
+        v-model:openKeys="openKeys"
+        :selected-keys="selectedKeys"
+        :items="menuItems"
+        @click="onMenuClick"
+      />
+    </Drawer>
     <SettingDrawer v-model:open="settingOpen" />
     <UserProfileModal v-model:open="profileOpen" />
   </Layout>
