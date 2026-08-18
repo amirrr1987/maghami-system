@@ -20,11 +20,11 @@ export const APP_DIRECTION = 'rtl' as const
 export type AppAppearance = 'light' | 'dark'
 export type AppComponentSize = Exclude<SizeType, undefined>
 export type AppCompact = 'compact' | 'default'
-export type AppFontSize = 12 | 14 | 16 | 18 | 20
-export type AppBorderRadius = 0 | 6 | 12
+export type AppFontSize = 10 | 12 | 14 | 16 | 18
+export type AppBorderRadius = 0 | 3 | 6 | 9 | 12
 
-export const FONT_SIZE_OPTIONS = [12, 14, 16, 18, 20] as const satisfies readonly AppFontSize[]
-export const BORDER_RADIUS_OPTIONS = [0, 6, 12] as const satisfies readonly AppBorderRadius[]
+export const FONT_SIZE_OPTIONS = [10, 12, 14, 16, 18] as const satisfies readonly AppFontSize[]
+export const BORDER_RADIUS_OPTIONS = [0, 3, 6, 9, 12] as const satisfies readonly AppBorderRadius[]
 
 type PersistedConfig = {
   componentSize: AppComponentSize
@@ -56,8 +56,8 @@ function normalizePrefs(raw: PersistedConfig): PersistedConfig {
   return {
     componentSize:
       raw.componentSize === 'small' ||
-      raw.componentSize === 'middle' ||
-      raw.componentSize === 'large'
+        raw.componentSize === 'middle' ||
+        raw.componentSize === 'large'
         ? raw.componentSize
         : defaults.componentSize,
     appearance: raw.appearance === 'dark' ? 'dark' : 'light',

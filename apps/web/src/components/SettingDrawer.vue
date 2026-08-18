@@ -89,7 +89,7 @@ const sizeValue = computed<SegmentedValue>({
 const fontSizeValue = computed<SegmentedValue>({
   get: () => fontSize.value,
   set: (value) => {
-    if (value === 12 || value === 14 || value === 16 || value === 18 || value === 20) {
+    if (value === 10 || value === 12 || value === 14 || value === 16 || value === 18) {
       store.setFontSize(value satisfies AppFontSize)
     }
   },
@@ -98,7 +98,7 @@ const fontSizeValue = computed<SegmentedValue>({
 const borderRadiusValue = computed<SegmentedValue>({
   get: () => borderRadius.value,
   set: (value) => {
-    if (value === 0 || value === 6 || value === 12) {
+    if (value === 0 || value === 3 || value === 6 || value === 9 || value === 12) {
       store.setBorderRadius(value satisfies AppBorderRadius)
     }
   },
@@ -143,10 +143,19 @@ function resetSettings(): void {
         </template>
       </Button>
     </template>
-    <Flex vertical :gap="24">
+    <Flex
+      vertical
+      :gap="24"
+    >
       <div>
-        <TypographyText strong class="mb-2 block">رنگ اصلی</TypographyText>
-        <Flex wrap="wrap" :gap="8">
+        <TypographyText
+          strong
+          class="mb-2 block"
+        >رنگ اصلی</TypographyText>
+        <Flex
+          wrap="wrap"
+          :gap="8"
+        >
           <button
             v-for="preset in primaryColorPresets"
             :key="preset.name"
@@ -158,11 +167,10 @@ function resetSettings(): void {
           >
             <span
               class="flex h-7 w-7 items-center justify-center rounded-full ring-2 ring-offset-2 ring-offset-(--ant-color-bg-container)"
-              :class="
-                palettePrimary(preset.palette) === colorPrimary
+              :class="palettePrimary(preset.palette) === colorPrimary
                   ? 'ring-primary'
                   : 'ring-transparent'
-              "
+                "
               :style="{ backgroundColor: palettePrimary(preset.palette) }"
             >
               <CheckOutlined
@@ -177,36 +185,71 @@ function resetSettings(): void {
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText strong class="mb-2 block">ظاهر</TypographyText>
-        <Segmented v-model:value="appearanceValue" block :options="appearanceOptions" />
+        <TypographyText
+          strong
+          class="mb-2 block"
+        >ظاهر</TypographyText>
+        <Segmented
+          v-model:value="appearanceValue"
+          block
+          :options="appearanceOptions"
+        />
       </div>
 
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText strong class="mb-2 block">حالت فشرده</TypographyText>
-        <Segmented v-model:value="compactValue" block :options="compactOptions" />
+        <TypographyText
+          strong
+          class="mb-2 block"
+        >حالت فشرده</TypographyText>
+        <Segmented
+          v-model:value="compactValue"
+          block
+          :options="compactOptions"
+        />
       </div>
 
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText strong class="mb-2 block">اندازه اجزا</TypographyText>
-        <Segmented v-model:value="sizeValue" block :options="sizeOptions" />
+        <TypographyText
+          strong
+          class="mb-2 block"
+        >اندازه اجزا</TypographyText>
+        <Segmented
+          v-model:value="sizeValue"
+          block
+          :options="sizeOptions"
+        />
       </div>
 
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText strong class="mb-2 block">اندازه فونت</TypographyText>
-        <Segmented v-model:value="fontSizeValue" block :options="fontSizeOptions" />
+        <TypographyText
+          strong
+          class="mb-2 block"
+        >اندازه فونت</TypographyText>
+        <Segmented
+          v-model:value="fontSizeValue"
+          block
+          :options="fontSizeOptions"
+        />
       </div>
 
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText strong class="mb-2 block">گردی گوشه</TypographyText>
-        <Segmented v-model:value="borderRadiusValue" block :options="borderRadiusOptions" />
+        <TypographyText
+          strong
+          class="mb-2 block"
+        >گردی گوشه</TypographyText>
+        <Segmented
+          v-model:value="borderRadiusValue"
+          block
+          :options="borderRadiusOptions"
+        />
       </div>
     </Flex>
   </Drawer>
