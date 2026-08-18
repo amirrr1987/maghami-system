@@ -126,10 +126,6 @@ function setCover(fileId: string): void {
         </template>
         انتخاب از کتابخانه
       </Button>
-      <TypographyText type="secondary" class="text-xs">
-        آپلود فقط از
-        <RouterLink class="underline" to="/files">مدیریت فایل‌ها</RouterLink>
-      </TypographyText>
     </Flex>
 
     <Flex v-if="items.length > 0" wrap="wrap" :gap="12">
