@@ -26,6 +26,8 @@ import {
 } from '@maghami-system/schemas'
 import { reactive, ref, toRefs } from 'vue'
 import type { Role } from '@/api/types'
+import PreviewTags from '@/components/PreviewTags.vue'
+import type { PreviewTagItem } from '@/components/PreviewTags.vue'
 import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
@@ -136,6 +138,13 @@ async function removeRole(role: Role): Promise<void> {
 function asRole(record: unknown): Role {
   return record as Role
 }
+
+function permissionTags(role: Role): PreviewTagItem[] {
+  return role.permissions.map((permission) => ({
+    key: permission.value,
+    label: permission.label,
+  }))
+}
 </script>
 
 <template>
@@ -174,14 +183,7 @@ function asRole(record: unknown): Role {
         </template>
         <template v-else-if="column.key === 'permissions'">
           <Tag v-if="isSuperAdminRoleValue(asRole(record).value)" color="gold"> همه دسترسی‌ها </Tag>
-          <Space v-else wrap>
-            <Tag v-for="permission in asRole(record).permissions" :key="permission.value">
-              {{ permission.label }}
-            </Tag>
-            <TypographyText v-if="asRole(record).permissions.length === 0" type="secondary">
-              —
-            </TypographyText>
-          </Space>
+          <PreviewTags v-else :items="permissionTags(asRole(record))" title="مجوزها" />
         </template>
         <template v-else-if="column.key === 'actions'">
           <TypographyText v-if="isSuperAdminRoleValue(asRole(record).value)" type="secondary">

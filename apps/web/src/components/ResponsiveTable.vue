@@ -112,15 +112,14 @@ function onMobilePageChange(page: number, pageSize: number): void {
             <Flex
               v-for="column in bodyColumns"
               :key="String(column.key ?? column.dataIndex)"
-              align="start"
-              justify="space-between"
-              :gap="12"
+              vertical
+              :gap="4"
               class="w-full"
             >
-              <TypographyText type="secondary" class="shrink-0 text-sm">
+              <TypographyText type="secondary" class="text-sm">
                 {{ column.title }}
               </TypographyText>
-              <div class="min-w-0 text-right">
+              <div class="min-w-0">
                 <slot
                   name="bodyCell"
                   :column="column"

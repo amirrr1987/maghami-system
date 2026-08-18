@@ -12,7 +12,6 @@ import {
   Select,
   Space,
   Switch,
-  Tag,
   TypographyParagraph,
   TypographyText,
 } from 'ant-design-vue'
@@ -22,6 +21,8 @@ import type { CreateUserDto, UpdateUserDto } from '@maghami-system/schemas'
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs } from 'vue'
 import type { PublicUser } from '@/api/types'
+import PreviewTags from '@/components/PreviewTags.vue'
+import type { PreviewTagItem } from '@/components/PreviewTags.vue'
 import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
@@ -158,6 +159,13 @@ function asUser(record: unknown): PublicUser {
 function canToggleActive(user: PublicUser): boolean {
   return can(PermissionAction.Update, PermissionResource.Users) && !auth.isSelf(user.id)
 }
+
+function roleTags(user: PublicUser): PreviewTagItem[] {
+  return user.roles.map((role) => ({
+    key: role.value,
+    label: role.label,
+  }))
+}
 </script>
 
 <template>
@@ -188,14 +196,7 @@ function canToggleActive(user: PublicUser): boolean {
     >
       <template #bodyCell="{ column, record, text }">
         <template v-if="column.key === 'roles'">
-          <Space wrap>
-            <Tag v-for="role in asUser(record).roles" :key="role.value">
-              {{ role.label }}
-            </Tag>
-            <TypographyText v-if="asUser(record).roles.length === 0" type="secondary">
-              —
-            </TypographyText>
-          </Space>
+          <PreviewTags :items="roleTags(asUser(record))" title="نقش‌ها" />
         </template>
         <template v-else-if="column.key === 'isActive'">
           <Switch
