@@ -3,7 +3,7 @@ import { createProductBrandSchema } from '@maghami-system/schemas'
 import { zodRule } from './zod-rule'
 
 export const productBrandFormRules: Record<
-  'name' | 'code' | 'logoUrl' | 'description' | 'isActive',
+  'name' | 'code' | 'logoFileId' | 'description' | 'isActive',
   RuleObject | RuleObject[]
 > = {
   name: [
@@ -14,16 +14,7 @@ export const productBrandFormRules: Record<
     { required: true, whitespace: true, message: 'کد الزامی است' },
     zodRule(createProductBrandSchema.shape.code),
   ],
-  logoUrl: [
-    {
-      async validator(_rule, value: unknown) {
-        if (value === undefined || value === null || value === '') return
-        const parsed = await createProductBrandSchema.shape.logoUrl.safeParseAsync(value)
-        if (parsed.success) return
-        return Promise.reject(parsed.error.issues[0]?.message ?? 'آدرس لوگو نامعتبر است')
-      },
-    },
-  ],
+  logoFileId: [zodRule(createProductBrandSchema.shape.logoFileId)],
   description: [zodRule(createProductBrandSchema.shape.description)],
   isActive: [zodRule(createProductBrandSchema.shape.isActive)],
 }

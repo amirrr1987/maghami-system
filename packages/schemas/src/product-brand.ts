@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import { catalogCodeSchema } from './product-coding-common';
+import { fileIdSchema } from './upload';
 
 export const createProductBrandSchema = z
   .object({
     name: z.string().trim().min(1).max(255),
     code: catalogCodeSchema,
-    logoUrl: z.string().trim().url().max(2048).nullable().optional(),
+    logoFileId: fileIdSchema.nullable().optional(),
     description: z.string().trim().max(2000).nullable().optional(),
     isActive: z.boolean().optional(),
   })

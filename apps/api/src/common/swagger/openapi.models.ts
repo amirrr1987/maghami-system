@@ -383,8 +383,8 @@ export class ProductBrandResponse {
   @ApiProperty({ example: 'ACME' })
   code!: string;
 
-  @ApiPropertyOptional({ nullable: true, type: String })
-  logoUrl!: string | null;
+  @ApiPropertyOptional({ nullable: true, type: String, format: 'uuid' })
+  logoFileId!: string | null;
 
   @ApiPropertyOptional({ nullable: true, type: String })
   description!: string | null;
@@ -406,8 +406,8 @@ export class CreateProductBrandBody {
   @ApiProperty({ example: 'ACME', maxLength: 32 })
   code!: string;
 
-  @ApiPropertyOptional({ nullable: true, maxLength: 2048 })
-  logoUrl?: string | null;
+  @ApiPropertyOptional({ nullable: true, type: String, format: 'uuid' })
+  logoFileId?: string | null;
 
   @ApiPropertyOptional({ nullable: true, maxLength: 2000 })
   description?: string | null;
@@ -423,8 +423,8 @@ export class UpdateProductBrandBody {
   @ApiPropertyOptional({ example: 'ACME', maxLength: 32 })
   code?: string;
 
-  @ApiPropertyOptional({ nullable: true, maxLength: 2048 })
-  logoUrl?: string | null;
+  @ApiPropertyOptional({ nullable: true, type: String, format: 'uuid' })
+  logoFileId?: string | null;
 
   @ApiPropertyOptional({ nullable: true, maxLength: 2000 })
   description?: string | null;

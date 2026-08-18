@@ -118,7 +118,7 @@ export interface ProductBrand {
   id: string;
   name: string;
   code: string;
-  logoUrl: string | null;
+  logoFileId: string | null;
   description: string | null;
   isActive: boolean;
   createdAt: string;

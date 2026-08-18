@@ -20,8 +20,10 @@ import type { FormInstance } from 'ant-design-vue/es/form'
 import type { TableColumnType } from 'ant-design-vue'
 import type { CreateProductBrandDto, UpdateProductBrandDto } from '@maghami-system/schemas'
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref, toRefs, watch } from 'vue'
 import type { ProductBrand } from '@/api/types'
+import ImageUploader from '@/components/ImageUploader.vue'
+import FileThumb from '@/components/FileThumb.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { useProductBrands } from '@/queries/use-product-brands'
@@ -45,12 +47,21 @@ const formRef = ref<FormInstance>()
 const model = reactive({
   name: '',
   code: '',
-  logoUrl: '',
+  logoFileId: null as string | null,
   description: '',
   isActive: true,
 })
 
+const logoFileIds = ref<string[]>([])
+const logoCoverFileId = ref<string | null>(null)
+
+watch(logoFileIds, (ids) => {
+  model.logoFileId = ids[0] ?? null
+  logoCoverFileId.value = ids[0] ?? null
+})
+
 const columns: TableColumnType<ProductBrand>[] = [
+  { title: 'لوگو', key: 'logo', width: 72 },
   { title: 'نام', dataIndex: 'name', key: 'name' },
   { title: 'کد', dataIndex: 'code', key: 'code' },
   { title: 'وضعیت', key: 'isActive', width: 100 },
@@ -60,7 +71,9 @@ const columns: TableColumnType<ProductBrand>[] = [
 function resetModel(): void {
   model.name = ''
   model.code = ''
-  model.logoUrl = ''
+  model.logoFileId = null
+  logoFileIds.value = []
+  logoCoverFileId.value = null
   model.description = ''
   model.isActive = true
 }
@@ -77,7 +90,9 @@ function openEdit(row: ProductBrand): void {
   editing.value = row
   model.name = row.name
   model.code = row.code
-  model.logoUrl = row.logoUrl ?? ''
+  model.logoFileId = row.logoFileId
+  logoFileIds.value = row.logoFileId ? [row.logoFileId] : []
+  logoCoverFileId.value = row.logoFileId
   model.description = row.description ?? ''
   model.isActive = row.isActive
   open.value = true
@@ -91,13 +106,14 @@ async function onSubmit(): Promise<void> {
   }
 
   const description = model.description.trim() !== '' ? model.description.trim() : null
-  const logoUrl = model.logoUrl.trim() !== '' ? model.logoUrl.trim() : null
+  const logoFileId = logoFileIds.value[0] ?? null
+  model.logoFileId = logoFileId
 
   if (editing.value) {
     const dto: UpdateProductBrandDto = {
       name: model.name,
       code: model.code,
-      logoUrl,
+      logoFileId,
       description,
       isActive: model.isActive,
     }
@@ -110,7 +126,7 @@ async function onSubmit(): Promise<void> {
   const dto: CreateProductBrandDto = {
     name: model.name,
     code: model.code,
-    logoUrl,
+    logoFileId,
     description,
     isActive: model.isActive,
   }
@@ -155,7 +171,10 @@ function asRow(record: unknown): ProductBrand {
         @change="onTableChange"
       >
         <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'isActive'">
+          <template v-if="column.key === 'logo'">
+            <FileThumb :file-id="asRow(record).logoFileId" :size="40" :alt="asRow(record).name" />
+          </template>
+          <template v-else-if="column.key === 'isActive'">
             <Tag :color="asRow(record).isActive ? 'success' : 'default'">
               {{ asRow(record).isActive ? 'فعال' : 'غیرفعال' }}
             </Tag>
@@ -213,8 +232,14 @@ function asRow(record: unknown): ProductBrand {
         <FormItem label="کد" name="code">
           <Input v-model:value="model.code" allow-clear />
         </FormItem>
-        <FormItem label="آدرس لوگو" name="logoUrl">
-          <Input v-model:value="model.logoUrl" allow-clear placeholder="https://…" />
+        <FormItem label="لوگو" name="logoFileId">
+          <ImageUploader
+            v-model:file-ids="logoFileIds"
+            v-model:cover-file-id="logoCoverFileId"
+            variant="logo"
+            :multiple="false"
+            :max-count="1"
+          />
         </FormItem>
         <FormItem label="توضیح" name="description">
           <Textarea v-model:value="model.description" :rows="3" allow-clear />

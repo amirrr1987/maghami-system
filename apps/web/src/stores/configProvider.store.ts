@@ -106,7 +106,7 @@ export const useConfigProviderStore = defineStore('configProvider', () => {
     return {
       token: {
         fontFamily: 'Vazirmatn, sans-serif',
-        ...seedColorTokens,
+        // ...seedColorTokens,
         colorPrimary: colorPrimary.value,
         fontSize: fontSize.value,
         borderRadius: borderRadius.value,

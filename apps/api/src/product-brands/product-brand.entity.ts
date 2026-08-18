@@ -19,8 +19,8 @@ export class ProductBrand {
   @Column({ type: 'varchar', length: 32, unique: true })
   code!: string;
 
-  @Column({ type: 'varchar', length: 2048, nullable: true, name: 'logo_url' })
-  logoUrl!: string | null;
+  @Column({ type: 'uuid', nullable: true, name: 'logo_file_id' })
+  logoFileId!: string | null;
 
   @Column({ type: 'text', nullable: true })
   description!: string | null;

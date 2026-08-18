@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { DeleteOutlined, PictureOutlined, StarFilled, StarOutlined } from '@ant-design/icons-vue'
-import { Button, Flex, TypographyText } from 'ant-design-vue'
+import { Button, Flex } from 'ant-design-vue'
 import { onBeforeUnmount, reactive, ref, watch } from 'vue'
-import { RouterLink } from 'vue-router'
 import MediaPickerModal from '@/components/MediaPickerModal.vue'
 import { filesApi } from '@/api/files.api'
 
@@ -19,11 +18,14 @@ const props = withDefaults(
     multiple?: boolean
     maxCount?: number
     disabled?: boolean
+    /** `logo`: 128px square, contain (brand marks). Default: 96px cover. */
+    variant?: 'default' | 'logo'
   }>(),
   {
     multiple: true,
     maxCount: 12,
     disabled: false,
+    variant: 'default',
   },
 )
 
@@ -40,12 +42,11 @@ watch(
   async () => {
     const nextIds = props.fileIds
     const keep = new Set(nextIds)
-    for (const item of [...items]) {
-      if (!keep.has(item.fileId)) {
-        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl)
-        const index = items.findIndex((row) => row.fileId === item.fileId)
-        if (index >= 0) items.splice(index, 1)
-      }
+    const stale = items.filter((item) => !keep.has(item.fileId))
+    for (const item of stale) {
+      if (item.previewUrl) URL.revokeObjectURL(item.previewUrl)
+      const index = items.findIndex((row) => row.fileId === item.fileId)
+      if (index >= 0) items.splice(index, 1)
     }
     for (const id of nextIds) {
       if (items.some((row) => row.fileId === id)) continue
@@ -115,6 +116,14 @@ function setCover(fileId: string): void {
     item.isCover = item.fileId === fileId
   }
 }
+
+const previewBoxClass =
+  props.variant === 'logo'
+    ? 'relative h-32 w-32 overflow-hidden rounded border border-neutral-200 bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900'
+    : 'relative h-24 w-24 overflow-hidden rounded border border-neutral-200 dark:border-neutral-700'
+
+const previewImgClass =
+  props.variant === 'logo' ? 'h-full w-full object-contain p-2' : 'h-full w-full object-cover'
 </script>
 
 <template>
@@ -132,13 +141,13 @@ function setCover(fileId: string): void {
       <div
         v-for="item in items"
         :key="item.fileId"
-        class="relative h-24 w-24 overflow-hidden rounded border border-neutral-200 dark:border-neutral-700"
+        :class="previewBoxClass"
       >
         <img
           v-if="item.previewUrl"
           :src="item.previewUrl"
           alt=""
-          class="h-full w-full object-cover"
+          :class="previewImgClass"
         />
         <div class="absolute inset-x-0 bottom-0 flex justify-between bg-black/50 p-1">
           <Button

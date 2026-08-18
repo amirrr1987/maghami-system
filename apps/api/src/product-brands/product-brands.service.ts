@@ -11,6 +11,7 @@ import type {
 } from '@maghami-system/schemas';
 import { paginationSkipTake, toPaginatedResult } from '@maghami-system/schemas';
 import { QueryFailedError, Repository } from 'typeorm';
+import { FilesService } from '../files/files.service';
 import { ProductBrand } from './product-brand.entity';
 import type {
   CreateProductBrandDto,
@@ -22,6 +23,7 @@ export class ProductBrandsService {
   constructor(
     @InjectRepository(ProductBrand)
     private readonly brands: Repository<ProductBrand>,
+    private readonly files: FilesService,
   ) {}
 
   async findAll(
@@ -45,10 +47,11 @@ export class ProductBrandsService {
   }
 
   async create(dto: CreateProductBrandDto): Promise<ProductBrandDto> {
+    await this.assertLogoFile(dto.logoFileId);
     const entity = this.brands.create({
       name: dto.name.trim(),
       code: dto.code.trim(),
-      logoUrl: dto.logoUrl ?? null,
+      logoFileId: dto.logoFileId ?? null,
       description: dto.description ?? null,
       isActive: dto.isActive ?? true,
     });
@@ -66,7 +69,10 @@ export class ProductBrandsService {
     const brand = await this.findEntity(id);
     if (dto.name !== undefined) brand.name = dto.name.trim();
     if (dto.code !== undefined) brand.code = dto.code.trim();
-    if (dto.logoUrl !== undefined) brand.logoUrl = dto.logoUrl ?? null;
+    if (dto.logoFileId !== undefined) {
+      await this.assertLogoFile(dto.logoFileId);
+      brand.logoFileId = dto.logoFileId ?? null;
+    }
     if (dto.description !== undefined) {
       brand.description = dto.description ?? null;
     }
@@ -98,12 +104,17 @@ export class ProductBrandsService {
       id: brand.id,
       name: brand.name,
       code: brand.code,
-      logoUrl: brand.logoUrl,
+      logoFileId: brand.logoFileId,
       description: brand.description,
       isActive: brand.isActive,
       createdAt: brand.createdAt as unknown as string,
       updatedAt: brand.updatedAt as unknown as string,
     };
+  }
+
+  private async assertLogoFile(fileId: string | null | undefined): Promise<void> {
+    if (!fileId) return;
+    await this.files.findEntity(fileId);
   }
 
   private rethrowUnique(error: unknown, message: string): never {
