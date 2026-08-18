@@ -13,7 +13,6 @@ import {
   Select,
   Space,
   Switch,
-  Table,
   Tag,
   TypographyParagraph,
 } from 'ant-design-vue'
@@ -27,6 +26,7 @@ import type {
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs, watch } from 'vue'
 import type { ProductAttribute } from '@/api/types'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { useProductAttributes } from '@/queries/use-product-attributes'
@@ -195,7 +195,7 @@ function asRow(record: unknown): ProductAttribute {
     </TypographyParagraph>
 
     <Can :I="PermissionAction.Read" :a="PermissionResource.ProductAttributes">
-      <Table
+      <ResponsiveTable
         row-key="id"
         size="middle"
         :columns="columns"
@@ -204,7 +204,7 @@ function asRow(record: unknown): ProductAttribute {
         :pagination="pagination"
         @change="onTableChange"
       >
-        <template #bodyCell="{ column, record }">
+        <template #bodyCell="{ column, record, text }">
           <template v-if="column.key === 'isActive'">
             <Tag :color="asRow(record).isActive ? 'success' : 'default'">
               {{ asRow(record).isActive ? 'فعال' : 'غیرفعال' }}
@@ -239,8 +239,9 @@ function asRow(record: unknown): ProductAttribute {
               </Can>
             </Space>
           </template>
+          <template v-else>{{ text }}</template>
         </template>
-      </Table>
+      </ResponsiveTable>
     </Can>
 
     <Modal

@@ -112,7 +112,9 @@ export class ProductBrandsService {
     };
   }
 
-  private async assertLogoFile(fileId: string | null | undefined): Promise<void> {
+  private async assertLogoFile(
+    fileId: string | null | undefined,
+  ): Promise<void> {
     if (!fileId) return;
     await this.files.findEntity(fileId);
   }

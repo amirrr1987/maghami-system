@@ -12,7 +12,6 @@ import {
   Select,
   Space,
   Switch,
-  Table,
   Tag,
   Textarea,
   TypographyParagraph,
@@ -23,6 +22,7 @@ import type { CreateProductCategoryDto, UpdateProductCategoryDto } from '@magham
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs } from 'vue'
 import type { ProductCategory } from '@/api/types'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { useProductCategories } from '@/queries/use-product-categories'
@@ -161,7 +161,7 @@ function parentLabel(parentId: string | null): string {
     </TypographyParagraph>
 
     <Can :I="PermissionAction.Read" :a="PermissionResource.ProductCategories">
-      <Table
+      <ResponsiveTable
         row-key="id"
         size="middle"
         :columns="columns"
@@ -170,7 +170,7 @@ function parentLabel(parentId: string | null): string {
         :pagination="pagination"
         @change="onTableChange"
       >
-        <template #bodyCell="{ column, record }">
+        <template #bodyCell="{ column, record, text }">
           <template v-if="column.key === 'parentId'">
             {{ parentLabel(asRow(record).parentId) }}
           </template>
@@ -208,8 +208,9 @@ function parentLabel(parentId: string | null): string {
               </Can>
             </Space>
           </template>
+          <template v-else>{{ text }}</template>
         </template>
-      </Table>
+      </ResponsiveTable>
     </Can>
 
     <Modal

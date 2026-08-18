@@ -10,7 +10,6 @@ import {
   Popconfirm,
   Select,
   Space,
-  Table,
   Tag,
   Textarea,
   TypographyParagraph,
@@ -27,6 +26,7 @@ import {
 } from '@maghami-system/schemas'
 import { reactive, ref, toRefs } from 'vue'
 import type { Role } from '@/api/types'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { usePermissionOptions } from '@/queries/use-permissions'
@@ -157,7 +157,7 @@ function asRole(record: unknown): Role {
       نقش‌ها مجوزها را نگه می‌دارند؛ نقش سیستمی super-admin جدا است و همه دسترسی را دارد
     </TypographyParagraph>
 
-    <Table
+    <ResponsiveTable
       row-key="value"
       size="middle"
       :columns="columns"
@@ -166,7 +166,7 @@ function asRole(record: unknown): Role {
       :pagination="pagination"
       @change="onTableChange"
     >
-      <template #bodyCell="{ column, record }">
+      <template #bodyCell="{ column, record, text }">
         <template v-if="column.key === 'description'">
           <TypographyText>
             {{ asRole(record).description || '—' }}
@@ -216,8 +216,9 @@ function asRole(record: unknown): Role {
             </Popconfirm>
           </Space>
         </template>
+        <template v-else>{{ text }}</template>
       </template>
-    </Table>
+    </ResponsiveTable>
 
     <Modal
       v-model:open="open"

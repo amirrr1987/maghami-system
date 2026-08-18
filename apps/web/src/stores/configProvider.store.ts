@@ -56,8 +56,8 @@ function normalizePrefs(raw: PersistedConfig): PersistedConfig {
   return {
     componentSize:
       raw.componentSize === 'small' ||
-        raw.componentSize === 'middle' ||
-        raw.componentSize === 'large'
+      raw.componentSize === 'middle' ||
+      raw.componentSize === 'large'
         ? raw.componentSize
         : defaults.componentSize,
     appearance: raw.appearance === 'dark' ? 'dark' : 'light',

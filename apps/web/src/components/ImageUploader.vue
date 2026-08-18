@@ -138,17 +138,8 @@ const previewImgClass =
     </Flex>
 
     <Flex v-if="items.length > 0" wrap="wrap" :gap="12">
-      <div
-        v-for="item in items"
-        :key="item.fileId"
-        :class="previewBoxClass"
-      >
-        <img
-          v-if="item.previewUrl"
-          :src="item.previewUrl"
-          alt=""
-          :class="previewImgClass"
-        />
+      <div v-for="item in items" :key="item.fileId" :class="previewBoxClass">
+        <img v-if="item.previewUrl" :src="item.previewUrl" alt="" :class="previewImgClass" />
         <div class="absolute inset-x-0 bottom-0 flex justify-between bg-black/50 p-1">
           <Button
             v-if="multiple"

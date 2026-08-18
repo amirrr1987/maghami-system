@@ -12,7 +12,6 @@ import {
   Select,
   Space,
   Switch,
-  Table,
   Tag,
   TypographyParagraph,
   TypographyText,
@@ -23,6 +22,7 @@ import type { CreateUserDto, UpdateUserDto } from '@maghami-system/schemas'
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs } from 'vue'
 import type { PublicUser } from '@/api/types'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { useRoleOptions } from '@/queries/use-roles'
@@ -177,7 +177,7 @@ function canToggleActive(user: PublicUser): boolean {
 
     <TypographyParagraph type="secondary"> مدیریت کاربران و تخصیص نقش (RBAC) </TypographyParagraph>
 
-    <Table
+    <ResponsiveTable
       row-key="id"
       size="middle"
       :columns="columns"
@@ -186,7 +186,7 @@ function canToggleActive(user: PublicUser): boolean {
       :pagination="pagination"
       @change="onTableChange"
     >
-      <template #bodyCell="{ column, record }">
+      <template #bodyCell="{ column, record, text }">
         <template v-if="column.key === 'roles'">
           <Space wrap>
             <Tag v-for="role in asUser(record).roles" :key="role.value">
@@ -238,8 +238,9 @@ function canToggleActive(user: PublicUser): boolean {
           </Space>
           <TypographyText v-else type="secondary">شما</TypographyText>
         </template>
+        <template v-else>{{ text }}</template>
       </template>
-    </Table>
+    </ResponsiveTable>
 
     <Modal
       v-model:open="open"

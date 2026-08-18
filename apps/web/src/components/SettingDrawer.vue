@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { CheckOutlined, UndoOutlined } from '@ant-design/icons-vue'
-import { Divider, Drawer, Flex, Segmented, TypographyText, Button, type Tooltip } from 'ant-design-vue'
+import {
+  Divider,
+  Drawer,
+  Flex,
+  Segmented,
+  TypographyText,
+  Button,
+  type Tooltip,
+} from 'ant-design-vue'
 import type { SegmentedProps } from 'ant-design-vue/es/segmented'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -132,31 +140,17 @@ function resetSettings(): void {
   >
     <template #extra>
       <Tooltip title="بازنشانی تنظیمات">
-        <Button
-          type="text"
-          danger
-          aria-label="بازنشانی تنظیمات"
-          @click="resetSettings"
-        >
+        <Button type="text" danger aria-label="بازنشانی تنظیمات" @click="resetSettings">
           <template #icon>
             <UndoOutlined />
           </template>
         </Button>
       </Tooltip>
     </template>
-    <Flex
-      vertical
-      :gap="24"
-    >
+    <Flex vertical :gap="24">
       <div>
-        <TypographyText
-          strong
-          class="mb-2 block"
-        >رنگ اصلی</TypographyText>
-        <Flex
-          wrap="wrap"
-          :gap="8"
-        >
+        <TypographyText strong class="mb-2 block">رنگ اصلی</TypographyText>
+        <Flex wrap="wrap" :gap="8">
           <button
             v-for="preset in primaryColorPresets"
             :key="preset.name"
@@ -168,10 +162,11 @@ function resetSettings(): void {
           >
             <span
               class="flex h-7 w-7 items-center justify-center rounded-full ring-2 ring-offset-2 ring-offset-(--ant-color-bg-container)"
-              :class="palettePrimary(preset.palette) === colorPrimary
-                ? 'ring-primary'
-                : 'ring-transparent'
-                "
+              :class="
+                palettePrimary(preset.palette) === colorPrimary
+                  ? 'ring-primary'
+                  : 'ring-transparent'
+              "
               :style="{ backgroundColor: palettePrimary(preset.palette) }"
             >
               <CheckOutlined
@@ -186,71 +181,36 @@ function resetSettings(): void {
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText
-          strong
-          class="mb-2 block"
-        >ظاهر</TypographyText>
-        <Segmented
-          v-model:value="appearanceValue"
-          block
-          :options="appearanceOptions"
-        />
+        <TypographyText strong class="mb-2 block">ظاهر</TypographyText>
+        <Segmented v-model:value="appearanceValue" block :options="appearanceOptions" />
       </div>
 
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText
-          strong
-          class="mb-2 block"
-        >حالت فشرده</TypographyText>
-        <Segmented
-          v-model:value="compactValue"
-          block
-          :options="compactOptions"
-        />
+        <TypographyText strong class="mb-2 block">حالت فشرده</TypographyText>
+        <Segmented v-model:value="compactValue" block :options="compactOptions" />
       </div>
 
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText
-          strong
-          class="mb-2 block"
-        >اندازه اجزا</TypographyText>
-        <Segmented
-          v-model:value="sizeValue"
-          block
-          :options="sizeOptions"
-        />
+        <TypographyText strong class="mb-2 block">اندازه اجزا</TypographyText>
+        <Segmented v-model:value="sizeValue" block :options="sizeOptions" />
       </div>
 
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText
-          strong
-          class="mb-2 block"
-        >اندازه فونت</TypographyText>
-        <Segmented
-          v-model:value="fontSizeValue"
-          block
-          :options="fontSizeOptions"
-        />
+        <TypographyText strong class="mb-2 block">اندازه فونت</TypographyText>
+        <Segmented v-model:value="fontSizeValue" block :options="fontSizeOptions" />
       </div>
 
       <Divider class="m-0!" />
 
       <div>
-        <TypographyText
-          strong
-          class="mb-2 block"
-        >گردی گوشه</TypographyText>
-        <Segmented
-          v-model:value="borderRadiusValue"
-          block
-          :options="borderRadiusOptions"
-        />
+        <TypographyText strong class="mb-2 block">گردی گوشه</TypographyText>
+        <Segmented v-model:value="borderRadiusValue" block :options="borderRadiusOptions" />
       </div>
     </Flex>
   </Drawer>

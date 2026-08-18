@@ -11,7 +11,6 @@ import {
   Popconfirm,
   Space,
   Switch,
-  Table,
   Tag,
   Textarea,
   TypographyParagraph,
@@ -24,6 +23,7 @@ import { reactive, ref, toRefs, watch } from 'vue'
 import type { ProductBrand } from '@/api/types'
 import ImageUploader from '@/components/ImageUploader.vue'
 import FileThumb from '@/components/FileThumb.vue'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { useProductBrands } from '@/queries/use-product-brands'
@@ -161,7 +161,7 @@ function asRow(record: unknown): ProductBrand {
     <TypographyParagraph type="secondary">مدیریت برندهای کالا</TypographyParagraph>
 
     <Can :I="PermissionAction.Read" :a="PermissionResource.ProductBrands">
-      <Table
+      <ResponsiveTable
         row-key="id"
         size="middle"
         :columns="columns"
@@ -170,7 +170,7 @@ function asRow(record: unknown): ProductBrand {
         :pagination="pagination"
         @change="onTableChange"
       >
-        <template #bodyCell="{ column, record }">
+        <template #bodyCell="{ column, record, text }">
           <template v-if="column.key === 'logo'">
             <FileThumb :file-id="asRow(record).logoFileId" :size="40" :alt="asRow(record).name" />
           </template>
@@ -208,8 +208,9 @@ function asRow(record: unknown): ProductBrand {
               </Can>
             </Space>
           </template>
+          <template v-else>{{ text }}</template>
         </template>
-      </Table>
+      </ResponsiveTable>
     </Can>
 
     <Modal

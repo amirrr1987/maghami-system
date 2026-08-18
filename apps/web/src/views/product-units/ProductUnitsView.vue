@@ -11,7 +11,6 @@ import {
   Popconfirm,
   Space,
   Switch,
-  Table,
   Tag,
   TypographyParagraph,
 } from 'ant-design-vue'
@@ -21,6 +20,7 @@ import type { CreateProductUnitDto, UpdateProductUnitDto } from '@maghami-system
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { reactive, ref, toRefs } from 'vue'
 import type { ProductUnit } from '@/api/types'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { useProductUnits } from '@/queries/use-product-units'
@@ -139,7 +139,7 @@ function asRow(record: unknown): ProductUnit {
     </TypographyParagraph>
 
     <Can :I="PermissionAction.Read" :a="PermissionResource.ProductUnits">
-      <Table
+      <ResponsiveTable
         row-key="id"
         size="middle"
         :columns="columns"
@@ -148,7 +148,7 @@ function asRow(record: unknown): ProductUnit {
         :pagination="pagination"
         @change="onTableChange"
       >
-        <template #bodyCell="{ column, record }">
+        <template #bodyCell="{ column, record, text }">
           <template v-if="column.key === 'isActive'">
             <Tag :color="asRow(record).isActive ? 'success' : 'default'">
               {{ asRow(record).isActive ? 'فعال' : 'غیرفعال' }}
@@ -183,8 +183,9 @@ function asRow(record: unknown): ProductUnit {
               </Can>
             </Space>
           </template>
+          <template v-else>{{ text }}</template>
         </template>
-      </Table>
+      </ResponsiveTable>
     </Can>
 
     <Modal

@@ -13,7 +13,6 @@ import {
   Select,
   Space,
   Switch,
-  Table,
   Tag,
   TypographyParagraph,
 } from 'ant-design-vue'
@@ -26,6 +25,7 @@ import type {
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs } from 'vue'
 import type { ProductCodePattern } from '@/api/types'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { useProductCategories } from '@/queries/use-product-categories'
@@ -169,7 +169,7 @@ function categoryLabel(categoryId: string): string {
     </TypographyParagraph>
 
     <Can :I="PermissionAction.Read" :a="PermissionResource.ProductCodePatterns">
-      <Table
+      <ResponsiveTable
         row-key="id"
         size="middle"
         :columns="columns"
@@ -178,7 +178,7 @@ function categoryLabel(categoryId: string): string {
         :pagination="pagination"
         @change="onTableChange"
       >
-        <template #bodyCell="{ column, record }">
+        <template #bodyCell="{ column, record, text }">
           <template v-if="column.key === 'categoryId'">
             {{ categoryLabel(asRow(record).categoryId) }}
           </template>
@@ -216,8 +216,9 @@ function categoryLabel(categoryId: string): string {
               </Can>
             </Space>
           </template>
+          <template v-else>{{ text }}</template>
         </template>
-      </Table>
+      </ResponsiveTable>
     </Can>
 
     <Modal

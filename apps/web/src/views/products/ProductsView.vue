@@ -13,7 +13,6 @@ import {
   Select,
   Space,
   Switch,
-  Table,
   Tag,
   Textarea,
   TypographyParagraph,
@@ -26,6 +25,7 @@ import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 import { computed, reactive, ref, toRefs, watch } from 'vue'
 import { productsApi } from '@/api/products.api'
 import type { Product } from '@/api/types'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { useProductAttributes } from '@/queries/use-product-attributes'
@@ -364,7 +364,7 @@ function asProduct(record: unknown): Product {
         </Input>
       </Space>
 
-      <Table
+      <ResponsiveTable
         row-key="id"
         size="middle"
         :columns="columns"
@@ -373,7 +373,7 @@ function asProduct(record: unknown): Product {
         :pagination="pagination"
         @change="onTableChange"
       >
-        <template #bodyCell="{ column, record }">
+        <template #bodyCell="{ column, record, text }">
           <template v-if="column.key === 'barcode'">
             {{ asProduct(record).barcode ?? '—' }}
           </template>
@@ -411,8 +411,9 @@ function asProduct(record: unknown): Product {
               </Can>
             </Space>
           </template>
+          <template v-else>{{ text }}</template>
         </template>
-      </Table>
+      </ResponsiveTable>
     </Can>
 
     <Modal

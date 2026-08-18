@@ -10,7 +10,6 @@ import {
   Popconfirm,
   Select,
   Space,
-  Table,
   Textarea,
   TypographyParagraph,
   TypographyText,
@@ -25,6 +24,7 @@ import {
 } from '@maghami-system/schemas'
 import { reactive, ref, toRefs } from 'vue'
 import type { Permission } from '@/api/types'
+import ResponsiveTable from '@/components/ResponsiveTable.vue'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
 import { usePermissions } from '@/queries/use-permissions'
@@ -156,7 +156,7 @@ function asPermission(record: unknown): Permission {
       کاتالوگ مجوزها — هر جفت منبع + عمل یکتا است
     </TypographyParagraph>
 
-    <Table
+    <ResponsiveTable
       row-key="id"
       size="middle"
       :columns="columns"
@@ -165,7 +165,7 @@ function asPermission(record: unknown): Permission {
       :pagination="pagination"
       @change="onTableChange"
     >
-      <template #bodyCell="{ column, record }">
+      <template #bodyCell="{ column, record, text }">
         <template v-if="column.key === 'description'">
           <TypographyText>
             {{ asPermission(record).description || '—' }}
@@ -201,8 +201,9 @@ function asPermission(record: unknown): Permission {
             </Popconfirm>
           </Space>
         </template>
+        <template v-else>{{ text }}</template>
       </template>
-    </Table>
+    </ResponsiveTable>
 
     <Modal
       v-model:open="open"
