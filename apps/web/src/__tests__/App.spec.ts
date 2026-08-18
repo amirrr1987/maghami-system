@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { createHead } from '@unhead/vue/client'
+import type { VueHeadClient } from '@unhead/vue'
 import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
-import { mount, flushPromises } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { createPinia } from 'pinia'
+import { nextTick } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import App from '../App.vue'
 
@@ -24,7 +26,7 @@ describe('App', () => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     })
-    const head = createHead()
+    const head: VueHeadClient = createHead({ document })
 
     const wrapper = mount(App, {
       global: {
@@ -33,7 +35,8 @@ describe('App', () => {
     })
 
     expect(wrapper.exists()).toBe(true)
-    await flushPromises()
+    await nextTick()
+    head.render()
     expect(document.title).toBe('خانه | Maghami system')
   })
 })
