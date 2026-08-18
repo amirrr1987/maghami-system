@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import { ConfigProvider } from 'ant-design-vue'
-import { RouterView } from 'vue-router'
+import { useHead } from '@unhead/vue'
+import type { UseHeadInput } from '@unhead/vue'
+import { RouterView, useRoute } from 'vue-router'
 import { useConfigProviderStore } from './stores/configProvider.store'
 
-import { useHead } from '@unhead/vue'
+const SITE_TITLE = 'Maghami system'
 
 const configProviderStore = useConfigProviderStore()
+const route = useRoute()
 
-useHead({
-  title: 'Web',
-})
-
+const head: UseHeadInput = {
+  title: () => {
+    const page = route.meta.title
+    return page ? `${page} | ${SITE_TITLE}` : SITE_TITLE
+  },
+  htmlAttrs: {
+    lang: 'fa',
+    dir: 'rtl',
+  },
+}
+useHead(head)
 </script>
 
 <template>

@@ -72,8 +72,6 @@ function normalizePrefs(raw: PersistedConfig): PersistedConfig {
 }
 
 function applyDocument(appearance: AppAppearance): void {
-  document.documentElement.lang = 'fa'
-  document.documentElement.dir = APP_DIRECTION
   document.documentElement.classList.toggle('dark', appearance === 'dark')
 }
 

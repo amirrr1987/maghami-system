@@ -1,7 +1,10 @@
 import { PermissionAction, PermissionResource, type AbilityRule } from '@maghami-system/schemas'
+import NProgress from 'nprogress'
+import type { NProgressOptions } from 'nprogress'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 import { firstAllowedRouteName, routeAllowed } from './access'
+import 'nprogress/nprogress.css'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -12,6 +15,12 @@ declare module 'vue-router' {
     ability?: AbilityRule
   }
 }
+
+const nprogressOptions: Partial<NProgressOptions> = {
+  showSpinner: false,
+  trickleSpeed: 200,
+}
+NProgress.configure(nprogressOptions)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -154,6 +163,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
+  NProgress.start()
   const auth = useAuthStore()
   if (!auth.bootstrapped) {
     await auth.fetchMe()
@@ -187,6 +197,14 @@ router.beforeEach(async (to) => {
   }
 
   return true
+})
+
+router.afterEach(() => {
+  NProgress.done()
+})
+
+router.onError(() => {
+  NProgress.done()
 })
 
 export default router

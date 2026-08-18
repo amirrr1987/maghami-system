@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { createPinia } from 'pinia'
+import { createHead } from '@unhead/vue/client'
 import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
+import { createPinia } from 'pinia'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import App from '../App.vue'
 
@@ -13,7 +14,7 @@ describe('App', () => {
         {
           path: '/',
           component: { template: '<div>home</div>' },
-          meta: { public: true },
+          meta: { public: true, title: 'خانه' },
         },
       ],
     })
@@ -23,13 +24,16 @@ describe('App', () => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
     })
+    const head = createHead()
 
     const wrapper = mount(App, {
       global: {
-        plugins: [createPinia(), [VueQueryPlugin, { queryClient }], router],
+        plugins: [createPinia(), head, [VueQueryPlugin, { queryClient }], router],
       },
     })
 
     expect(wrapper.exists()).toBe(true)
+    await flushPromises()
+    expect(document.title).toBe('خانه | Maghami system')
   })
 })

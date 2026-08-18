@@ -16,7 +16,8 @@ import {
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { LoginDto } from '@maghami-system/schemas'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { useRouteQuery } from '@vueuse/router'
+import { reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ApiError } from '@/api/types'
 import { resolvePostLoginLocation } from '@/router/access'
@@ -26,6 +27,7 @@ import { loginFormRules } from '@/validation/login.form-rules'
 const auth = useAuthStore()
 const router = useRouter()
 const route = useRoute()
+const reason = useRouteQuery('reason')
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 const errorMessage = ref<string | null>(null)
@@ -42,7 +44,7 @@ const UNMAPPED_ACCESS_MESSAGE =
   'مجوز دارید ولی با هیچ صفحه‌ای منطبق نیست. resource باید یکی از enumهای کاتالوگ باشد (مثل users / files).'
 
 function applyReasonFromQuery(): void {
-  if (route.query.reason === 'no_access') {
+  if (reason.value === 'no_access') {
     errorMessage.value = NO_ACCESS_MESSAGE
   }
 }
@@ -123,8 +125,7 @@ async function onSubmit(): Promise<void> {
   }
 }
 
-onMounted(applyReasonFromQuery)
-watch(() => route.query.reason, applyReasonFromQuery)
+watch(reason, applyReasonFromQuery, { immediate: true })
 </script>
 
 <template>
