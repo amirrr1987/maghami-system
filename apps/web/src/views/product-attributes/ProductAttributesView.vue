@@ -4,6 +4,7 @@ import { Can } from '@casl/vue'
 import {
   Button,
   Card,
+  Flex,
   Form,
   FormItem,
   Input,
@@ -14,7 +15,6 @@ import {
   Switch,
   Table,
   Tag,
-  Textarea,
   TypographyParagraph,
 } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
@@ -25,7 +25,7 @@ import type {
   UpdateProductAttributeDto,
 } from '@maghami-system/schemas'
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
-import { computed, reactive, ref, toRefs } from 'vue'
+import { computed, reactive, ref, toRefs, watch } from 'vue'
 import type { ProductAttribute } from '@/api/types'
 import { useAppAbility } from '@/ability'
 import { useServerTablePagination } from '@/composables/useServerTablePagination'
@@ -46,6 +46,18 @@ const { pagination, onChange: onTableChange } = useServerTablePagination({
   fetchPage: (query) => attributeStore.fetchPage(query),
 })
 
+const OPTION_MAX = 100
+const OPTION_VALUE_MAX = 128
+
+type OptionDraft = { key: number; value: string }
+
+let optionSeq = 0
+
+function optionDraft(value = ''): OptionDraft {
+  optionSeq += 1
+  return { key: optionSeq, value }
+}
+
 const open = ref(false)
 const editing = ref<ProductAttribute | null>(null)
 const formRef = ref<FormInstance>()
@@ -54,11 +66,17 @@ const model = reactive({
   name: '',
   code: '',
   type: 'TEXT' as ProductAttributeType,
-  optionsText: '',
+  options: [optionDraft()] as OptionDraft[],
   isActive: true,
 })
 
 const showOptions = computed(() => model.type === 'SELECT')
+
+watch(showOptions, (visible) => {
+  if (visible && model.options.length === 0) {
+    model.options = [optionDraft()]
+  }
+})
 
 const columns: TableColumnType<ProductAttribute>[] = [
   { title: 'نام', dataIndex: 'name', key: 'name' },
@@ -72,8 +90,18 @@ function resetModel(): void {
   model.name = ''
   model.code = ''
   model.type = 'TEXT'
-  model.optionsText = ''
+  model.options = [optionDraft()]
   model.isActive = true
+}
+
+function addOption(): void {
+  if (model.options.length >= OPTION_MAX) return
+  model.options.push(optionDraft())
+}
+
+function removeOption(index: number): void {
+  if (model.options.length <= 1) return
+  model.options.splice(index, 1)
 }
 
 function openCreate(): void {
@@ -89,17 +117,16 @@ function openEdit(row: ProductAttribute): void {
   model.name = row.name
   model.code = row.code
   model.type = row.type
-  model.optionsText = (row.options ?? []).join('\n')
+  const existing = row.options ?? []
+  model.options =
+    existing.length > 0 ? existing.map((value) => optionDraft(value)) : [optionDraft()]
   model.isActive = row.isActive
   open.value = true
 }
 
 function parseOptions(): string[] | null {
   if (model.type !== 'SELECT') return null
-  return model.optionsText
-    .split('\n')
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0)
+  return model.options.map((row) => row.value.trim()).filter((value) => value.length > 0)
 }
 
 async function onSubmit(): Promise<void> {
@@ -239,8 +266,46 @@ function asRow(record: unknown): ProductAttribute {
         <FormItem label="نوع" name="type">
           <Select v-model:value="model.type" :options="PRODUCT_ATTRIBUTE_TYPE_OPTIONS" />
         </FormItem>
-        <FormItem v-if="showOptions" label="گزینه‌ها (هر خط یک گزینه)" name="options">
-          <Textarea v-model:value="model.optionsText" :rows="4" allow-clear />
+        <FormItem v-if="showOptions" label="گزینه‌ها" name="options">
+          <Space direction="vertical" class="w-full" :size="8">
+            <Flex
+              v-for="(row, index) in model.options"
+              :key="row.key"
+              align="center"
+              :gap="8"
+              class="w-full"
+            >
+              <Input
+                v-model:value="row.value"
+                class="min-w-0 flex-1"
+                allow-clear
+                :maxlength="OPTION_VALUE_MAX"
+                :placeholder="`گزینه ${index + 1}`"
+              />
+              <Button
+                type="text"
+                danger
+                :disabled="model.options.length <= 1"
+                :aria-label="`حذف گزینه ${index + 1}`"
+                @click="removeOption(index)"
+              >
+                <template #icon>
+                  <DeleteOutlined />
+                </template>
+              </Button>
+            </Flex>
+            <Button
+              type="dashed"
+              block
+              :disabled="model.options.length >= OPTION_MAX"
+              @click="addOption"
+            >
+              <template #icon>
+                <PlusOutlined />
+              </template>
+              افزودن گزینه
+            </Button>
+          </Space>
         </FormItem>
         <FormItem label="فعال" name="isActive">
           <Switch v-model:checked="model.isActive" />
