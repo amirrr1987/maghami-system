@@ -1,27 +1,66 @@
 ---
 name: vueuse-core
 description: >
-  Type-safe @vueuse/core utilities in apps/web — useLocalStorage / RemovableRef,
-  useStorage options. Use when persisting UI prefs, reactive browser APIs, or
-  VueUse composables.
+  Type-safe @vueuse/core v14 in apps/web — useLocalStorage, RemovableRef,
+  UseStorageOptions, Serializer. Use when persisting UI prefs or VueUse
+  composables from @vueuse/core.
 ---
 
 # @vueuse/core (type-safe)
 
-Docs: [vueuse.org](https://vueuse.org). Version: `@vueuse/core` **^14** in `apps/web`.
+Docs: [vueuse.org](https://vueuse.org). Version: `@vueuse/core` **14.4.0** (`@vueuse/shared` same version).
 
 ## Source of truth
 
-Import composables and types from **`@vueuse/core`** (re-exports shared types such as `RemovableRef`). Do not invent parallel option interfaces or use `any`.
-
 ```ts
 import { useLocalStorage } from '@vueuse/core'
-import type { RemovableRef, UseStorageOptions } from '@vueuse/core'
+import type { RemovableRef, UseStorageOptions, Serializer } from '@vueuse/core'
 ```
+
+`RemovableRef` is re-exported from `@vueuse/shared`:
+
+```ts
+type RemovableRef<T> = Ref<T, T | null | undefined>
+```
+
+It is a Vue `Ref` whose **setter** allows `null | undefined` (clears storage). There is **no** `.remove()` method on this type in v14.
+
+## UseStorageOptions\<T\>
+
+From `useStorage` (also the 3rd argument of `useLocalStorage`):
+
+```ts
+interface Serializer<T> {
+  read: (raw: string) => T
+  write: (value: T) => string
+}
+
+interface UseStorageOptions<T>
+  extends ConfigurableEventFilter, ConfigurableWindow, ConfigurableFlush {
+  deep?: boolean
+  listenToStorageChanges?: boolean
+  writeDefaults?: boolean
+  mergeDefaults?: boolean | ((storageValue: T, defaults: T) => T)
+  serializer?: Serializer<T>
+  onError?: (error: unknown) => void
+  shallow?: boolean
+  initOnMounted?: boolean
+}
+```
+
+Inherited (from `@vueuse/shared` / `@vueuse/core`): `eventFilter?`, `window?`, `flush?: WatchOptions['flush']`.
 
 ## useLocalStorage
 
-Returns `RemovableRef<T>` (a `Ref` with `.remove()`). Pass a typed initial value so `T` is inferred:
+```ts
+function useLocalStorage<T>(
+  key: MaybeRefOrGetter<string>,
+  initialValue: MaybeRefOrGetter<T>,
+  options?: UseStorageOptions<T>,
+): RemovableRef<T>
+```
+
+Overloads also exist for `string` / `boolean` / `number`.
 
 ```ts
 type Prefs = { theme: 'light' | 'dark'; lang: 'en' | 'fa' }
@@ -32,18 +71,14 @@ const prefs: RemovableRef<Prefs> = useLocalStorage<Prefs>('app.prefs', {
 })
 
 prefs.value.lang = 'fa'
-prefs.remove() // clears the storage key
+prefs.value = null // allowed by RemovableRef setter
 ```
 
-`useLocalStorage` is `useStorage` bound to `window.localStorage`. Optional third argument: `UseStorageOptions<T>` from the package (`deep`, `listenToStorageChanges`, `serializer`, …).
-
-## Pinia
-
-Call VueUse composables inside a setup store; keep a single persisted object and expose `computed` getters + setters rather than duplicating manual `JSON.parse` / type guards.
+This app: `apps/web/src/stores/configProvider.store.ts`.
 
 ## Anti-patterns
 
-- Untyped `useLocalStorage('key', {})` without a generic / typed default
-- Hand-rolled `localStorage` + `JSON.parse` when `useLocalStorage` already covers persistence
-- Casting storage values as `any`
-- Using `useDraggable` for file/folder list reorder — use `vue-draggable-next` (SortableJS) instead
+- Claiming `.remove()` exists on `RemovableRef` (v14)
+- Untyped `useLocalStorage('key', {})`
+- Duplicate `JSON.parse` / `localStorage` wrappers
+- `useDraggable` for list reorder — `vue-draggable-next`

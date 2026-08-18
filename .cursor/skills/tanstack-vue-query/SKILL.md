@@ -1,18 +1,19 @@
 ---
 name: tanstack-vue-query
 description: >
-  Type-safe TanStack Vue Query v5 in apps/web — VueQueryPlugin, QueryClient,
-  useQuery, useMutation, queryKeys. Use when fetching or mutating server data
-  (lists, CRUD) instead of Pinia stores.
+  Type-safe TanStack Vue Query v5 in apps/web — QueryClient, UseQueryOptions,
+  UseMutationOptions, Register, QueryKey. Use when fetching or mutating server
+  data instead of Pinia list stores.
 ---
 
 # @tanstack/vue-query (type-safe)
 
-Docs: [tanstack.com/query/latest/docs/framework/vue](https://tanstack.com/query/latest/docs/framework/vue/overview). Version: `@tanstack/vue-query` **^5** in `apps/web`.
+Docs: [tanstack.com/query/latest/docs/framework/vue](https://tanstack.com/query/latest/docs/framework/vue/overview).  
+Version: `@tanstack/vue-query` **5.101.4**.
 
 ## Source of truth
 
-Import from **`@tanstack/vue-query`**. Do not invent parallel cache/store types or use `any`.
+Import from **`@tanstack/vue-query`**. Do not invent cache types.
 
 ```ts
 import {
@@ -24,20 +25,50 @@ import {
   useQueryClient,
 } from '@tanstack/vue-query'
 import type {
-  UseQueryOptions,
-  UseMutationOptions,
+  QueryClientConfig,
+  DefaultOptions,
   VueQueryPluginOptions,
+  UseQueryOptions,
+  UseQueryReturnType,
+  UseMutationOptions,
+  UseMutationReturnType,
+  QueryKey,
+  QueryFunction,
+  InvalidateQueryFilters,
+  Register,
 } from '@tanstack/vue-query'
 ```
 
-`defaultError` / `queryMeta` are augmented in `apps/web/src/query/register.d.ts` (`Register` from the package).
+`defaultError` / `queryMeta` are augmented via package `Register`:
+
+`apps/web/src/query/register.d.ts` — `defaultError: ApiError`, `queryMeta.errorMessage?: string`.
+
+## Plugin + client
+
+```ts
+import { QueryCache, QueryClient } from '@tanstack/vue-query'
+import type { QueryClientConfig } from '@tanstack/vue-query'
+
+const config: QueryClientConfig = {
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      notifyApiError(error, query.meta?.errorMessage ?? 'بارگذاری ناموفق بود')
+    },
+  }),
+  defaultOptions: {
+    queries: { retry: 1, refetchOnWindowFocus: false },
+  },
+}
+export const queryClient = new QueryClient(config)
+```
+
+`apps/web/src/main.ts`: `app.use(VueQueryPlugin, { queryClient } satisfies VueQueryPluginOptions)`.
 
 ## This repo
 
-- **Plugin:** `apps/web/src/main.ts` — `app.use(VueQueryPlugin, { queryClient })` with the singleton in `apps/web/src/query/client.ts`
-- **Keys:** `apps/web/src/query/keys.ts` — `queryKeys.users.list(query)` (prefix `all` for invalidate)
-- **Composables:** `apps/web/src/queries/use-*.ts` — `useQuery` for lists, `useMutation` for create/update/delete
-- **Pinia** stays for session (`auth.store`) and UI prefs (`configProvider.store`) only
+- Keys: `apps/web/src/query/keys.ts` — `QueryKey` arrays (`queryKeys.users.list(query)`)
+- Composables: `apps/web/src/queries/use-*.ts`
+- Pinia: session + UI prefs only
 
 ```ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
@@ -61,18 +92,11 @@ const createMutation = useMutation({
 })
 ```
 
-Return the composable result from **`reactive({ ... })`** so templates unwrap `productList` / `loading`. In views, take pagination refs with **`toRefs`** from `vue` (not Pinia `storeToRefs`):
-
-```ts
-import { toRefs } from 'vue'
-
-const users = useUsers()
-const { page, pageSize, total } = toRefs(users)
-```
+`useQuery` → `UseQueryReturnType`; `useMutation` → `UseMutationReturnType`. Unwrap list composables with `reactive` + `toRefs` from **`vue`**.
 
 ## Anti-patterns
 
-- Pinia stores that duplicate list/CRUD cache already in Vue Query
-- Hand-rolled `loading`/`items` refs instead of `useQuery` `data` / `isFetching`
+- Pinia stores that duplicate Vue Query lists
+- Hand-rolled `loading` / `items` instead of `data` / `isFetching`
 - Untyped `queryKey: string` or `as any` on mutation variables
-- Calling `useQueryClient()` in `main.ts` before `app.use(VueQueryPlugin)` — use the exported `queryClient` singleton
+- `useQueryClient()` in `main.ts` before the plugin — use the exported singleton

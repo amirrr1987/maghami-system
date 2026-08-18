@@ -1,3 +1,4 @@
+import { createHead } from '@unhead/vue/client'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { abilitiesPlugin } from '@casl/vue'
@@ -13,8 +14,10 @@ import { useAuthStore } from './stores/auth.store'
 
 const app = createApp(App)
 const pinia = createPinia()
+const head = createHead()
 
 app.use(pinia)
+app.use(head)
 app.use(VueQueryPlugin, { queryClient })
 app.use(abilitiesPlugin, ability, {
   useGlobalProperties: true,
