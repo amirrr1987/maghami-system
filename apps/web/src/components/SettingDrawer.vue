@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CheckOutlined, UndoOutlined } from '@ant-design/icons-vue'
-import { Divider, Drawer, Flex, Segmented, TypographyText, Button } from 'ant-design-vue'
+import { Divider, Drawer, Flex, Segmented, TypographyText, Button, type Tooltip } from 'ant-design-vue'
 import type { SegmentedProps } from 'ant-design-vue/es/segmented'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -131,17 +131,18 @@ function resetSettings(): void {
     @close="close"
   >
     <template #extra>
-      <Button
-        type="text"
-        danger
-        aria-label="بازنشانی تنظیمات"
-        title="بازنشانی تنظیمات"
-        @click="resetSettings"
-      >
-        <template #icon>
-          <UndoOutlined />
-        </template>
-      </Button>
+      <Tooltip title="بازنشانی تنظیمات">
+        <Button
+          type="text"
+          danger
+          aria-label="بازنشانی تنظیمات"
+          @click="resetSettings"
+        >
+          <template #icon>
+            <UndoOutlined />
+          </template>
+        </Button>
+      </Tooltip>
     </template>
     <Flex
       vertical
@@ -168,8 +169,8 @@ function resetSettings(): void {
             <span
               class="flex h-7 w-7 items-center justify-center rounded-full ring-2 ring-offset-2 ring-offset-(--ant-color-bg-container)"
               :class="palettePrimary(preset.palette) === colorPrimary
-                  ? 'ring-primary'
-                  : 'ring-transparent'
+                ? 'ring-primary'
+                : 'ring-transparent'
                 "
               :style="{ backgroundColor: palettePrimary(preset.palette) }"
             >
