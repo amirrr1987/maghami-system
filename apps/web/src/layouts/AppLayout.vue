@@ -35,9 +35,9 @@ import { computed, h, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppAbility } from '@/ability'
 import SettingDrawer from '@/components/SettingDrawer.vue'
-import UserProfileModal from '@/components/UserProfileModal.vue'
+import UserProfileModal from '@/modules/auth/components/UserProfileModal.vue'
 import { useAuthFileUrl } from '@/composables/useAuthFileUrl'
-import { useAuthStore } from '@/stores/auth.store'
+import { useAuthStore } from '@/modules/auth/store/auth.store'
 import { PermissionAction, PermissionResource } from '@maghami-system/schemas'
 
 const route = useRoute()

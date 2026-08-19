@@ -1,8 +1,19 @@
-import { PermissionAction, PermissionResource, type AbilityRule } from '@maghami-system/schemas'
 import NProgress from 'nprogress'
 import type { NProgressOptions } from 'nprogress'
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth.store'
+import type { AbilityRule } from '@maghami-system/schemas'
+import { useAuthStore } from '@/modules/auth/store/auth.store'
+import { authRoutes } from '@/modules/auth/routes'
+import { usersRoutes } from '@/modules/users/routes'
+import { rolesRoutes } from '@/modules/roles/routes'
+import { permissionsRoutes } from '@/modules/permissions/routes'
+import { filesRoutes } from '@/modules/files/routes'
+import { productsRoutes } from '@/modules/products/routes'
+import { productCategoriesRoutes } from '@/modules/product-categories/routes'
+import { productBrandsRoutes } from '@/modules/product-brands/routes'
+import { productUnitsRoutes } from '@/modules/product-units/routes'
+import { productAttributesRoutes } from '@/modules/product-attributes/routes'
+import { productCodePatternsRoutes } from '@/modules/product-code-patterns/routes'
 import { firstAllowedRouteName, routeAllowed } from './access'
 import 'nprogress/nprogress.css'
 
@@ -25,138 +36,23 @@ NProgress.configure(nprogressOptions)
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/auth/LoginView.vue'),
-      meta: { title: 'ورود', public: true },
-    },
+    ...authRoutes,
     {
       path: '/',
       component: () => import('@/layouts/AppLayout.vue'),
       meta: { requiresAuth: true },
       children: [
         { path: '', redirect: { name: 'users' } },
-        {
-          path: 'users',
-          name: 'users',
-          component: () => import('@/views/users/UsersView.vue'),
-          meta: {
-            title: 'کاربران',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.Users,
-            },
-          },
-        },
-        {
-          path: 'roles',
-          name: 'roles',
-          component: () => import('@/views/roles/RolesView.vue'),
-          meta: {
-            title: 'نقش‌ها',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.Roles,
-            },
-          },
-        },
-        {
-          path: 'permissions',
-          name: 'permissions',
-          component: () => import('@/views/permissions/PermissionsView.vue'),
-          meta: {
-            title: 'مجوزها',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.Permissions,
-            },
-          },
-        },
-        {
-          path: 'files',
-          name: 'files',
-          component: () => import('@/views/files/FilesView.vue'),
-          meta: {
-            title: 'مدیریت فایل‌ها',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.Files,
-            },
-          },
-        },
-        {
-          path: 'products',
-          name: 'products',
-          component: () => import('@/views/products/ProductsView.vue'),
-          meta: {
-            title: 'محصولات',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.Products,
-            },
-          },
-        },
-        {
-          path: 'product-categories',
-          name: 'product-categories',
-          component: () => import('@/views/product-categories/ProductCategoriesView.vue'),
-          meta: {
-            title: 'دسته‌بندی کالا',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.ProductCategories,
-            },
-          },
-        },
-        {
-          path: 'product-brands',
-          name: 'product-brands',
-          component: () => import('@/views/product-brands/ProductBrandsView.vue'),
-          meta: {
-            title: 'برند کالا',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.ProductBrands,
-            },
-          },
-        },
-        {
-          path: 'product-units',
-          name: 'product-units',
-          component: () => import('@/views/product-units/ProductUnitsView.vue'),
-          meta: {
-            title: 'واحد کالا',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.ProductUnits,
-            },
-          },
-        },
-        {
-          path: 'product-attributes',
-          name: 'product-attributes',
-          component: () => import('@/views/product-attributes/ProductAttributesView.vue'),
-          meta: {
-            title: 'ویژگی کالا',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.ProductAttributes,
-            },
-          },
-        },
-        {
-          path: 'product-code-patterns',
-          name: 'product-code-patterns',
-          component: () => import('@/views/product-code-patterns/ProductCodePatternsView.vue'),
-          meta: {
-            title: 'الگوی کدینگ',
-            ability: {
-              action: PermissionAction.Read,
-              subject: PermissionResource.ProductCodePatterns,
-            },
-          },
-        },
+        ...usersRoutes,
+        ...rolesRoutes,
+        ...permissionsRoutes,
+        ...filesRoutes,
+        ...productsRoutes,
+        ...productCategoriesRoutes,
+        ...productBrandsRoutes,
+        ...productUnitsRoutes,
+        ...productAttributesRoutes,
+        ...productCodePatternsRoutes,
       ],
     },
   ],

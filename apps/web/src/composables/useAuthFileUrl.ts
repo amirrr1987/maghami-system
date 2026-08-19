@@ -1,5 +1,5 @@
 import { onBeforeUnmount, ref, watch, type Ref } from 'vue'
-import { filesApi } from '@/api/files.api'
+import { filesApi } from '@/modules/files/api/files.api'
 
 /**
  * Loads a private file as a blob object URL (revoked on change/unmount).

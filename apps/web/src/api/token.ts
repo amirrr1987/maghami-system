@@ -6,6 +6,6 @@ export {
   initSession,
   setAccessToken,
   useSession,
-} from '@/composables/useSession'
+} from '@/modules/auth/composables/useSession'
 
-export type { SessionTokens } from '@/composables/useSession'
+export type { SessionTokens } from '@/modules/auth/composables/useSession'
