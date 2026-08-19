@@ -236,7 +236,7 @@ async function onLogout(): Promise<void> {
           <Button
             type="text"
             shape="circle"
-            class="lg:hidden shrink-0"
+            class="lg:hidden! shrink-0"
             :aria-label="menuNavAriaLabel"
             @click="mobileNavOpen = true"
           >
