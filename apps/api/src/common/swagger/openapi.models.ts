@@ -855,6 +855,19 @@ export class LoginResponse extends AuthMeResponse {
 
   @ApiProperty({ example: 'Bearer', enum: ['Bearer'] })
   tokenType!: 'Bearer';
+
+  @ApiProperty({
+    example: 86400,
+    description: 'Access JWT lifetime in seconds (`JWT_EXPIRES_IN`)',
+  })
+  accessTokenExpiresIn!: number;
+
+  @ApiProperty({
+    example: 604800,
+    description:
+      'Refresh JWT / HttpOnly cookie lifetime in seconds (`JWT_REFRESH_EXPIRES_IN`)',
+  })
+  refreshTokenExpiresIn!: number;
 }
 
 /** Shared pagination fields for list endpoints (antdv Table remote mode). */

@@ -1,22 +1,8 @@
 import type { ConfigService } from '@nestjs/config';
 import type { Request, Response } from 'express';
+import { jwtRefreshExpiresInSeconds } from './jwt-duration';
 
 export const REFRESH_COOKIE_NAME = 'maghami-system_refresh';
-
-/** Parse `7d` / `24h` / `30m` / `60s` into seconds. */
-export function durationToSeconds(
-  value: string | undefined,
-  fallbackSeconds: number,
-): number {
-  if (!value) return fallbackSeconds;
-  const match = /^(\d+)\s*([smhd])$/i.exec(value.trim());
-  if (!match) return fallbackSeconds;
-  const amount = Number(match[1]);
-  const unit = match[2].toLowerCase();
-  const factor =
-    unit === 's' ? 1 : unit === 'm' ? 60 : unit === 'h' ? 3600 : 86400;
-  return amount * factor;
-}
 
 export function readCookie(request: Request, name: string): string | undefined {
   const header = request.headers.cookie;
@@ -39,10 +25,7 @@ export function refreshCookieOptions(config: ConfigService): {
   path: string;
   maxAge: number;
 } {
-  const maxAgeSec = durationToSeconds(
-    config.get<string>('JWT_REFRESH_EXPIRES_IN'),
-    7 * 24 * 60 * 60,
-  );
+  const maxAgeSec = jwtRefreshExpiresInSeconds(config);
   const cookieSecure = config.get<string>('COOKIE_SECURE');
   const secure =
     cookieSecure === 'true' ||

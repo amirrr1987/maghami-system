@@ -12,6 +12,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { PermissionsGuard } from './guards/permissions.guard';
+import { jwtAccessExpiresIn } from './jwt-duration';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
@@ -32,7 +33,7 @@ import { JwtStrategy } from './jwt.strategy';
         return {
           secret,
           signOptions: {
-            expiresIn: config.get<string>('JWT_EXPIRES_IN', '1d'),
+            expiresIn: jwtAccessExpiresIn(config),
           },
         };
       },

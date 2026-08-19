@@ -208,4 +208,8 @@ export interface AuthSession {
 export interface LoginResult extends AuthSession {
   accessToken: string;
   tokenType: 'Bearer';
+  /** Access JWT lifetime in seconds (from `JWT_EXPIRES_IN`). */
+  accessTokenExpiresIn: number;
+  /** Refresh JWT / cookie lifetime in seconds (from `JWT_REFRESH_EXPIRES_IN`). */
+  refreshTokenExpiresIn: number;
 }

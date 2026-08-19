@@ -12,6 +12,12 @@ import { FilesService } from '../files/files.service';
 import { UsersService } from '../users/users.service';
 import type { User } from '../users/user.entity';
 import type { JwtPayload } from './jwt-payload';
+import {
+  jwtAccessExpiresIn,
+  jwtAccessExpiresInSeconds,
+  jwtRefreshExpiresIn,
+  jwtRefreshExpiresInSeconds,
+} from './jwt-duration';
 
 export interface AuthTokenPair {
   accessToken: string;
@@ -95,19 +101,21 @@ export class AuthService {
       sub: user.id,
       email: user.email,
     };
+    const accessTokenExpiresIn = jwtAccessExpiresInSeconds(this.config);
+    const refreshTokenExpiresIn = jwtRefreshExpiresInSeconds(this.config);
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         { ...base, typ: 'access' } satisfies JwtPayload,
         {
           secret: this.accessSecret(),
-          expiresIn: this.config.get<string>('JWT_EXPIRES_IN', '1d'),
+          expiresIn: jwtAccessExpiresIn(this.config),
         },
       ),
       this.jwtService.signAsync(
         { ...base, typ: 'refresh' } satisfies JwtPayload,
         {
           secret: this.refreshSecret(),
-          expiresIn: this.config.get<string>('JWT_REFRESH_EXPIRES_IN', '7d'),
+          expiresIn: jwtRefreshExpiresIn(this.config),
         },
       ),
     ]);
@@ -118,6 +126,8 @@ export class AuthService {
       login: {
         accessToken,
         tokenType: 'Bearer',
+        accessTokenExpiresIn,
+        refreshTokenExpiresIn,
         user: session.user,
         abilities: session.abilities,
         permissionCodes: session.permissionCodes,

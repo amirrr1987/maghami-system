@@ -102,7 +102,7 @@ import {
 
 Self-service profile (`PATCH /auth/me`): `updateProfileSchema` / `UpdateProfileDto` — name, email, optional password, optional `avatarFileId`. Not `users:update`; cannot change roles or `isActive`.
 
-Auth tokens: `LoginResult` is session + `accessToken` + `tokenType` only. Refresh token is an HttpOnly cookie (API), not part of the shared JSON contract.
+Auth tokens: `LoginResult` is session + `accessToken` + `tokenType` + `accessTokenExpiresIn` + `refreshTokenExpiresIn` (seconds). Refresh JWT is HttpOnly cookie only, not in JSON.
 
 ```ts
 import {

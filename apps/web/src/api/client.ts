@@ -65,7 +65,7 @@ async function tryRefreshSession(): Promise<boolean> {
         }
         if (!response.ok) return false
         const tokens = unwrapApiResult<LoginResult>(body, response.status)
-        setAccessToken(tokens.accessToken)
+        setAccessToken(tokens.accessToken, tokens.accessTokenExpiresIn)
         return true
       } catch {
         return false

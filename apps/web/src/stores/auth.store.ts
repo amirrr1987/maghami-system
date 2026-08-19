@@ -15,6 +15,8 @@ import { ApiError } from '@/api/types'
 import { clearTokens, getAccessToken, setAccessToken } from '@/api/token'
 import { queryClient } from '@/query/client'
 
+const REFRESH_BEFORE_EXPIRY_MS = 60_000
+
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(getAccessToken())
   const user = ref<AuthUser | null>(null)
@@ -23,12 +25,46 @@ export const useAuthStore = defineStore('auth', () => {
   const bootstrapped = ref(false)
   const savingProfile = ref(false)
 
+  let accessRefreshTimer: ReturnType<typeof setTimeout> | null = null
+
   const isAuthenticated = computed(() => Boolean(accessToken.value))
 
-  function applySession(session: AuthSession, token?: LoginResult['accessToken']): void {
+  function clearAccessRefreshTimer(): void {
+    if (accessRefreshTimer !== null) {
+      clearTimeout(accessRefreshTimer)
+      accessRefreshTimer = null
+    }
+  }
+
+  async function refreshAccessToken(): Promise<boolean> {
+    try {
+      const result = await authApi.refresh()
+      applySession(result, result.accessToken, result.accessTokenExpiresIn)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  function scheduleAccessRefresh(expiresInSeconds: number): void {
+    clearAccessRefreshTimer()
+    const delayMs = Math.max(0, expiresInSeconds * 1000 - REFRESH_BEFORE_EXPIRY_MS)
+    accessRefreshTimer = setTimeout(() => {
+      void refreshAccessToken()
+    }, delayMs)
+  }
+
+  function applySession(
+    session: AuthSession,
+    token?: LoginResult['accessToken'],
+    accessTokenExpiresIn?: LoginResult['accessTokenExpiresIn'],
+  ): void {
     if (token !== undefined) {
       accessToken.value = token
-      setAccessToken(token)
+      setAccessToken(token, accessTokenExpiresIn)
+      if (accessTokenExpiresIn !== undefined) {
+        scheduleAccessRefresh(accessTokenExpiresIn)
+      }
     }
     user.value = session.user
     abilities.value = session.abilities
@@ -37,6 +73,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function clearSession(): void {
+    clearAccessRefreshTimer()
     accessToken.value = null
     user.value = null
     abilities.value = []
@@ -52,7 +89,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(dto: LoginDto): Promise<LoginResult> {
     const result = await authApi.login(dto)
-    applySession(result, result.accessToken)
+    applySession(result, result.accessToken, result.accessTokenExpiresIn)
     bootstrapped.value = true
     return result
   }
@@ -68,10 +105,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchMe(): Promise<void> {
     if (!accessToken.value) {
-      try {
-        const result = await authApi.refresh()
-        applySession(result, result.accessToken)
-      } catch {
+      const ok = await refreshAccessToken()
+      if (!ok) {
         clearSession()
         bootstrapped.value = true
         return
