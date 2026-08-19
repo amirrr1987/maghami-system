@@ -1,5 +1,5 @@
 import { useSessionStorage } from '@vueuse/core'
-import type { RemovableRef } from '@vueuse/core'
+import type { RemovableRef, Serializer } from '@vueuse/core'
 
 /** Access JWT + expiry in sessionStorage. Refresh JWT stays HttpOnly cookie only. */
 export interface SessionTokens {
@@ -16,22 +16,36 @@ const emptySession = (): SessionTokens => ({
   expiresAt: null,
 })
 
+function normalizeSession(value: unknown): SessionTokens {
+  if (!value || typeof value !== 'object') return emptySession()
+  const record = value as Record<string, unknown>
+  return {
+    accessToken: typeof record.accessToken === 'string' ? record.accessToken : null,
+    expiresAt:
+      typeof record.expiresAt === 'number' && Number.isFinite(record.expiresAt)
+        ? record.expiresAt
+        : null,
+  }
+}
+
+const sessionSerializer: Serializer<SessionTokens> = {
+  read: (raw) => normalizeSession(JSON.parse(raw)),
+  write: (value) => JSON.stringify(value),
+}
+
 let sessionRef: RemovableRef<SessionTokens> | null = null
 
-function migrateLegacyLocalStorage(): Partial<SessionTokens> | null {
+function migrateLegacyLocalStorage(): SessionTokens {
   try {
     const accessToken = localStorage.getItem(LEGACY_ACCESS_TOKEN_KEY)
-    if (!accessToken) return null
+    if (!accessToken) return emptySession()
     const rawExpiresAt = localStorage.getItem(LEGACY_EXPIRES_AT_KEY)
     const expiresAt = rawExpiresAt ? Number(rawExpiresAt) : null
     localStorage.removeItem(LEGACY_ACCESS_TOKEN_KEY)
     localStorage.removeItem(LEGACY_EXPIRES_AT_KEY)
-    return {
-      accessToken,
-      expiresAt: expiresAt !== null && Number.isFinite(expiresAt) ? expiresAt : null,
-    }
+    return normalizeSession({ accessToken, expiresAt })
   } catch {
-    return null
+    return emptySession()
   }
 }
 
@@ -39,19 +53,18 @@ function migrateLegacyLocalStorage(): Partial<SessionTokens> | null {
 export function initSession(): RemovableRef<SessionTokens> {
   if (sessionRef) return sessionRef
 
-  const migrated = migrateLegacyLocalStorage()
-  sessionRef = useSessionStorage<SessionTokens>(
-    SESSION_KEY,
-    migrated ?? emptySession(),
-  )
+  const initial = migrateLegacyLocalStorage()
+  sessionRef = useSessionStorage<SessionTokens>(SESSION_KEY, initial, {
+    mergeDefaults: true,
+    serializer: sessionSerializer,
+  })
+  sessionRef.value = normalizeSession(sessionRef.value)
+
   return sessionRef
 }
 
 export function useSession(): RemovableRef<SessionTokens> {
-  if (!sessionRef) {
-    initSession()
-  }
-  return sessionRef!
+  return initSession()
 }
 
 export function getAccessToken(): string | null {
