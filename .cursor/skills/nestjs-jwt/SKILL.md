@@ -64,7 +64,7 @@ logout(@Res({ passthrough: true }) response: Response): void {
 }
 ```
 
-Access JWT in Authorization Bearer; refresh JWT only in HttpOnly cookie (`typ: 'refresh'`). Access strategy rejects refresh tokens as Bearer. Web client: `credentials: 'include'`, access in `localStorage`, never store refresh in JS.
+Access JWT in Authorization Bearer; refresh JWT only in HttpOnly cookie (`typ: 'refresh'`). Access strategy rejects refresh tokens as Bearer. Web client: `credentials: 'include'`, access in `sessionStorage` via `useSession` (`@vueuse/core`), never store refresh in JS.
 
 ## Anti-patterns
 

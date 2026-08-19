@@ -8,6 +8,7 @@ import './assets/main.css'
 import { ability } from './ability'
 import App from './App.vue'
 import { setUnauthorizedHandler } from './api/client'
+import { initSession } from './composables/useSession'
 import { queryClient } from './query/client'
 import router from './router'
 import { useAuthStore } from './stores/auth.store'
@@ -15,6 +16,8 @@ import { useAuthStore } from './stores/auth.store'
 const app = createApp(App)
 const pinia = createPinia()
 const head = createHead()
+
+initSession()
 
 app.use(pinia)
 app.use(head)

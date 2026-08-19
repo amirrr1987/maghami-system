@@ -12,13 +12,13 @@ import { message } from 'ant-design-vue'
 import { updateAbilityFromRules } from '@/ability'
 import { authApi } from '@/api/auth.api'
 import { ApiError } from '@/api/types'
-import { clearTokens, getAccessToken, setAccessToken } from '@/api/token'
+import { useSession } from '@/composables/useSession'
 import { queryClient } from '@/query/client'
 
 const REFRESH_BEFORE_EXPIRY_MS = 60_000
 
 export const useAuthStore = defineStore('auth', () => {
-  const accessToken = ref<string | null>(getAccessToken())
+  const session = useSession()
   const user = ref<AuthUser | null>(null)
   const abilities = ref<AbilityRule[]>([])
   const permissionCodes = ref<string[]>([])
@@ -27,7 +27,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   let accessRefreshTimer: ReturnType<typeof setTimeout> | null = null
 
-  const isAuthenticated = computed(() => Boolean(accessToken.value))
+  const accessToken = computed(() => session.value.accessToken)
+  const isAuthenticated = computed(() => Boolean(session.value.accessToken))
 
   function clearAccessRefreshTimer(): void {
     if (accessRefreshTimer !== null) {
@@ -55,30 +56,34 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function applySession(
-    session: AuthSession,
+    authSession: AuthSession,
     token?: LoginResult['accessToken'],
     accessTokenExpiresIn?: LoginResult['accessTokenExpiresIn'],
   ): void {
     if (token !== undefined) {
-      accessToken.value = token
-      setAccessToken(token, accessTokenExpiresIn)
+      session.value = {
+        accessToken: token,
+        expiresAt:
+          accessTokenExpiresIn !== undefined
+            ? Date.now() + accessTokenExpiresIn * 1000
+            : session.value.expiresAt,
+      }
       if (accessTokenExpiresIn !== undefined) {
         scheduleAccessRefresh(accessTokenExpiresIn)
       }
     }
-    user.value = session.user
-    abilities.value = session.abilities
-    permissionCodes.value = session.permissionCodes
-    updateAbilityFromRules(session.abilities)
+    user.value = authSession.user
+    abilities.value = authSession.abilities
+    permissionCodes.value = authSession.permissionCodes
+    updateAbilityFromRules(authSession.abilities)
   }
 
   function clearSession(): void {
     clearAccessRefreshTimer()
-    accessToken.value = null
+    session.value = { accessToken: null, expiresAt: null }
     user.value = null
     abilities.value = []
     permissionCodes.value = []
-    clearTokens()
     updateAbilityFromRules([])
     queryClient.clear()
   }
@@ -98,7 +103,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await authApi.logout()
     } catch {
-      // Cookie clear is best-effort; always drop local access token.
+      // Cookie clear is best-effort; always drop tab session tokens.
     }
     clearSession()
   }
@@ -118,8 +123,8 @@ export const useAuthStore = defineStore('auth', () => {
       return
     }
     try {
-      const session = await authApi.me()
-      applySession(session)
+      const me = await authApi.me()
+      applySession(me)
     } catch {
       clearSession()
     } finally {
@@ -130,8 +135,8 @@ export const useAuthStore = defineStore('auth', () => {
   async function updateProfile(dto: UpdateProfileDto): Promise<boolean> {
     savingProfile.value = true
     try {
-      const session = await authApi.updateProfile(dto)
-      applySession(session)
+      const profile = await authApi.updateProfile(dto)
+      applySession(profile)
       message.success('پروفایل ذخیره شد')
       return true
     } catch (error) {
